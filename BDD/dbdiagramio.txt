@@ -1,0 +1,107 @@
+Table User {
+  id integer [pk, increment]
+  username varchar [unique, not null]
+  email varchar [unique, not null]
+  password varchar [not null]
+  role UserRole [default: 'citizen']
+  created_at datetime [default: `now()`]
+  is_active bool [default: true]
+}
+
+Table Friend {
+  id integer [pk, increment]
+  user_1 integer [ref: > User.id, not null]
+  user_2 integer [ref: > User.id, not null]
+  status FriendStatus [default: 'pending']
+  created_at datetime [default: `now()`]
+}
+
+Table Ressource {
+  id integer [pk, increment]
+  user_id integer [ref: > User.id, not null]
+  title varchar
+  content text
+  views integer [default: 0]
+  relation_id integer [ref: > Relation.id, not null]
+  type_id integer [ref: > Type.id, not null]
+  category_id integer [ref: > Category.id, not null]
+  visibility VisibilityStatus [default: 'private']
+  status ModerationStatus [default: 'pending']
+  created_at datetime [default: `now()`]
+}
+
+Table Comment {
+  id integer [pk, increment]
+  ressource_id integer [ref: > Ressource.id, not null]
+  parent_id integer [ref: > Comment.id] 
+  content text
+  created_at datetime [default: `now()`]
+  user_id integer [ref: > User.id, not null]
+}
+
+Table Progression {
+  id integer [pk, increment]
+  user_id integer [ref: > User.id, not null]
+  ressource_id integer [ref: > Ressource.id, not null]
+  is_favorite bool [default: false]
+  is_saved bool [default: false]
+  is_viewed bool [default: false]
+  updated_at datetime [default: `now()`]
+}
+
+Table Activity {
+  id integer [pk, increment]
+  creator_id integer [ref: > User.id, not null]
+  title varchar [not null]
+  description text
+  event_date datetime
+  location varchar
+  created_at datetime [default: `now()`]
+}
+
+Table ActivityParticipant {
+  id integer [pk, increment]
+  activity_id integer [ref: > Activity.id, not null]
+  user_id integer [ref: > User.id, not null]
+  joined_at datetime [default: `now()`]
+}
+
+Enum UserRole {
+  citizen
+  moderator
+  administrator
+  super_admin
+}
+
+Enum VisibilityStatus {
+  private
+  shared
+  public
+}
+
+Enum ModerationStatus {
+  pending
+  published
+  rejected
+}
+
+Enum FriendStatus {
+  pending
+  accepted
+  rejected
+}
+
+Table Relation {
+  id integer [pk, increment]
+  name varchar 
+}
+
+Table Type {
+  id integer [pk, increment]
+  name varchar 
+}
+
+Table Category {
+  id integer [pk, increment]
+  name varchar 
+}
