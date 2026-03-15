@@ -12,7 +12,7 @@ Contenu :
 
 Structure d'un repository :
 
-- save(S entity) : Magique. Si l'ID est vide, il fait un INSERT. Si l'ID existe déjà, il fait un UPDATE.
+- save(S entity) : Si l'ID est vide, il fait un INSERT. Si l'ID existe déjà, il fait un UPDATE.
 - findById(ID id) : Cherche une ligne par sa clé primaire (renvoie un Optional).
 - findAll() : Récupère toutes les lignes de la table (renvoie une List).
 - existsById(ID id) : Renvoie un booléen (pratique pour vérifier avant de créer).
