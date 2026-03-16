@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr" data-fr-theme="light" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Les Ressources - (Re)Sources Relationnelles</title>
+
+    <link rel="stylesheet" th:href="@{/dsfr/dsfr.min.css}">
+    
+    <link rel="stylesheet" th:href="@{/dsfr/utility/icons/icons.min.css}">
+</head>
+<body>
+
+    <header role="banner" class="fr-header">
+        <div class="fr-header__body">
+            <div class="fr-container">
+                <div class="fr-header__body-row">
+                    <div class="fr-header__brand fr-enlarge-link">
+                        <div class="fr-header__brand-top">
+                            <div class="fr-header__logo">
+                                <p class="fr-logo">
+                                    République<br>Française
+                                </p>
+                            </div>
+                        </div>
+                        <div class="fr-header__service">
+                            <a href="/app/ressources" title="Accueil - (Re)Sources Relationnelles">
+                                <p class="fr-header__service-title">(Re)Sources Relationnelles</p>
+                            </a>
+                            <p class="fr-header__service-tagline">Projet CESI</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main role="main" id="content">
+        <div class="fr-container fr-mt-4w fr-mb-4w">
+            <h1>Catalogue des Ressources</h1>
+
+            <div th:if="${#lists.isEmpty(ressources)}" class="fr-alert fr-alert--info">
+                <h3 class="fr-alert__title">Aucune ressource</h3>
+                <p>Aucune ressource n'est disponible pour le moment.</p>
+            </div>
+
+            <div class="fr-grid-row fr-grid-row--gutters">
+                <div class="fr-col-12 fr-col-md-6 fr-col-lg-4" th:each="res : ${ressources}">
+                    <div class="fr-card fr-enlarge-link">
+                        <div class="fr-card__body">
+                            <div class="fr-card__content">
+                                <h3 class="fr-card__title">
+                                    <a href="#" th:text="${res.title}">Titre de la ressource</a>
+                                </h3>
+                                <p class="fr-card__desc" th:text="${res.content}">Description de la ressource...</p>
+                                <div class="fr-card__start">
+                                    <p class="fr-card__detail" th:text="'Par ' + ${res.user.username}">Auteur</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="module" th:src="@{/dsfr/dsfr.module.min.js}"></script>
+    <script type="text/javascript" nomodule th:src="@{/dsfr/dsfr.nomodule.min.js}"></script>
+
+</body>
+</html>
