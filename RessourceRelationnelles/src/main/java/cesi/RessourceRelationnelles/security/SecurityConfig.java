@@ -24,10 +24,10 @@ public class SecurityConfig {
                         ).permitAll()
 
                         // SUPER ADMIN
-                        .requestMatchers("/super-admin/**").hasRole("SUPER_ADMIN")
+                        .requestMatchers("/super-admin/**").hasRole("SUPERADMIN")
 
                         // ADMIN (admin + super admin)
-                        .requestMatchers("/admin/**").hasAnyRole("ADMINISTRATOR", "SUPER_ADMIN")
+                        .requestMatchers("/admin/**").hasAnyRole("ADMINISTRATOR", "SUPERADMIN")
 
                         // CONNECTÉ (citizen, moderator, admin, super_admin)
                         .requestMatchers("/app/**").authenticated()
@@ -37,7 +37,7 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginPage("/auth")
-                        .defaultSuccessUrl("/", true) // ou "/app" si tu préfères
+                        .defaultSuccessUrl("/home", true) // ou "/app" si tu préfères
                         .permitAll()
                 )
                 .logout(logout -> logout
