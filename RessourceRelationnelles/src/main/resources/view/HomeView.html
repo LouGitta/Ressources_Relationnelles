@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil - Ressources Relationnelles</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <header>
+        <h1>Bienvenue sur Ressources Relationnelles</h1>
+        <nav>
+            <ul>
+                <li><a th:href="@{/}">Accueil</a></li>
+                <li><a th:href="@{/ressources}">Ressources</a></li>
+                <li><a th:href="@{/contact}">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>Présentation</h2>
+            <p>Cette application vous permet de gérer et consulter des ressources relationnelles.</p>
+        </section>
+        <section>
+            <h2>Dernières ressources</h2>
+            <ul>
+                <li th:each="ressource : ${ressources}">
+                    <a th:href="@{'/ressources/' + ${ressource.id}}" th:text="${ressource.nom}"></a>
+                </li>
+            </ul>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2026 Ressources Relationnelles</p>
+    </footer>
+</body>
+</html>
