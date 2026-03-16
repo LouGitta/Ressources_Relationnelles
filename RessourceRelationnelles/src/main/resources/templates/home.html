@@ -1,3 +1,8 @@
+<!--
+    Page d'accueil du projet (Re)Sources Relationnelles
+    Affiche le catalogue des ressources disponibles
+    Intègre le framework DSFR pour le design conforme français
+-->
 <!DOCTYPE html>
 <html lang="fr" data-fr-theme="light" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -15,6 +20,7 @@
             <div class="fr-container">
                 <div class="fr-header__body-row">
                     <div class="fr-header__brand fr-enlarge-link">
+                        <!-- Logo République Française (conformité gouvernementale) -->
                         <div class="fr-header__brand-top">
                             <div class="fr-header__logo">
                                 <a href="/" title="Accueil - Nom de l’entité (ministère, secrétariat d‘état, gouvernement)">
@@ -26,6 +32,39 @@
                             </div>
                             <div class="fr-header__navbar">
                                 <button data-fr-opened="false" aria-controls="modal-header" title="Menu" type="button" id="button-header" class="fr-btn--menu fr-btn">Menu</button>
+                            </div>
+                        </div>
+                        <div class="fr-header__tools">
+                            <div class="fr-header__tools-links">
+                            <!-- Si utilisateur non connecté -->
+                                <th:block th:unless="${isConnected}">
+                                    <ul class="fr-links-group">
+                                        <li>
+                                            <a class="fr-links" href="/app/auth">Se connecter</a>
+                                        </li>
+                                        <li>
+                                            <a class="fr-links"> / </a>
+                                        </li>
+                                        <li>
+                                            <a class="fr-links" href="/app/createAccount">Créer un compte</a>
+                                        </li>
+                                    </ul>
+                                </th:block>
+
+                            <!-- Si utilisateur connecté -->
+                                <th:block th:if="${isConnected}">
+                                    <ul class="fr-links-group">
+                                        <li>
+                                            <a class="fr-links" href="/app/profile">Mon profil</a>
+                                        </li>
+                                        <li>
+                                            <a class="fr-links"> / </a>
+                                        </li>
+                                        <li>
+                                            <a class="fr-links" href="/logout">Se déconnecter</a>
+                                        </li>
+                                    </ul>
+                                </th:block>
                             </div>
                         </div>
                     </div>
@@ -58,23 +97,40 @@
     </header>
     <main role="main" id="content">
         <div class="fr-container fr-mt-4w fr-mb-4w">
+            <!-- Titre principal du page -->
             <h1>Catalogue des Ressources</h1>
 
+            <!-- ALERTE : Affichée si aucune ressource disponible -->
+            <!-- th:if="${#lists.isEmpty(ressources)}" = Affiche seulement si la liste est vide -->
             <div th:if="${#lists.isEmpty(ressources)}" class="fr-alert fr-alert--info">
                 <h3 class="fr-alert__title">Aucune ressource</h3>
                 <p>Aucune ressource n'est disponible pour le moment.</p>
             </div>
 
+            <!-- GRILLE DE RESSOURCES -->
+            <!-- System de grille responsive DSFR avec gouttières entre les éléments -->
             <div class="fr-grid-row fr-grid-row--gutters">
+                
+                <!-- BOUCLE : Itère sur chaque ressource disponible -->
+                <!-- th:each="res : ${ressources}" = Boucle sur la liste des ressources du contrôleur -->
                 <div class="fr-col-12 fr-col-md-6 fr-col-lg-4" th:each="res : ${ressources}">
+                    <!-- CARTE RESSOURCE -->
+                    <!-- Classe "fr-enlarge-link" fait agrandir les liens au survol -->
                     <div class="fr-card fr-enlarge-link">
                         <div class="fr-card__body">
                             <div class="fr-card__content">
+                                <!-- Titre de la ressource (cliquable) -->
+                                <!-- th:text="${res.title}" = Affiche le titre depuis l'objet ressource -->
                                 <h3 class="fr-card__title">
                                     <a href="#" th:text="${res.title}">Titre de la ressource</a>
                                 </h3>
+                                <!-- Description/contenu de la ressource -->
+                                <!-- th:text="${res.content}" = Affiche le contenu depuis l'objet ressource -->
                                 <p class="fr-card__desc" th:text="${res.content}">Description de la ressource...</p>
+                                <!-- Informations additionnelles -->
                                 <div class="fr-card__start">
+                                    <!-- Affiche l'auteur de la ressource -->
+                                    <!-- Combine du texte statique avec une valeur dynamique ${res.user.username} -->
                                     <p class="fr-card__detail" th:text="'Par ' + ${res.user.username}">Auteur</p>
                                 </div>
                             </div>
@@ -85,6 +141,12 @@
         </div>
     </main>
     <script type="module" th:src="@{/dsfr/dsfr.module.min.js}"></script>
+    <!-- Script nomodule pour les anciens navigateurs (fallback) -->
     <script type="text/javascript" nomodule th:src="@{/dsfr/dsfr.nomodule.min.js}"></script>
 </body>
+<!--
+    Page d'accueil du projet (Re)Sources Relationnelles
+    Affiche le catalogue des ressources disponibles
+    Intègre le framework DSFR pour le design conforme français
+-->
 </html>
