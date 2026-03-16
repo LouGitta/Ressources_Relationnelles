@@ -28,10 +28,10 @@ public class User {
     private String email;
 
     @Column(nullable = false, length = 255)
-    private String password;
+    private String password; // Bcrypt hashed password
 
     @Enumerated(EnumType.STRING)
-    private Role role = Role.citizen;
+    private Role role = Role.CITIZEN;
 
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
