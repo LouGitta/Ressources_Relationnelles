@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mentions Légales</title>
+    <link rel="stylesheet" th:href="@{/static/dsfr.css}">
+</head>
+<body>
+    <header>
+        <h1>Mentions Légales</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Éditeur du site</h2>
+            <p>
+                Nom de l'entreprise : <span th:text="${companyName}">EAL</span><br>
+                Adresse : <span th:text="${companyAddress}">Numéro Rue Nom Rue de Nom Ville</span><br>
+                Téléphone : <span th:text="${companyPhone}">Numéro de téléphone</span><br>
+                Email : <span th:text="${companyEmail}">Adresse-email@adress.mail</span>
+            </p>
+        </section>
+        <section>
+            <h2>Hébergement</h2>
+            <p>
+                Hébergeur : <span th:text="${hostName}">Hébergeur</span><br>
+                Adresse : <span th:text="${hostAddress}">Adresse de l'hébergeur</span><br>
+                Téléphone : <span th:text="${hostPhone}">Numéro de téléphone</span>
+            </p>
+        </section>
+        <section>
+            <h2>Propriété intellectuelle</h2>
+            <p>
+                Le contenu du site est protégé par les lois en vigueur sur la propriété intellectuelle.
+            </p>
+        </section>
+        <section>
+            <h2>Contact</h2>
+            <p>
+                Pour toute question, vous pouvez nous contacter à l'adresse suivante : 
+                <a th:href="'mailto:' + ${companyEmail}" th:text="${companyEmail}">Adresse-email@adress.mail</a>
+            </p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; <span th:text="${#dates.format(today, 'yyyy')}">2024</span> <span th:text="${companyName}">EAL</span></p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr/dist/dsfr.min.css">
+</head>
+<body>
+    <div class="fr-container">
+        <div class="fr-grid-row fr-grid-row--center fr-my-10w">
+            <div class="fr-col-12 fr-col-md-6">
+                <div class="fr-card fr-p-5w">
+                    <h1 class="fr-h3 fr-mb-3w">Connexion</h1>
+                    
+                    <form th:action="@{/login}" method="post">
+                        <div class="fr-form-group">
+                            <label class="fr-label" for="username">
+                                Nom d'utilisateur
+                            </label>
+                            <input class="fr-input" type="text" id="username" name="username" required>
+                        </div>
+                        
+                        <div class="fr-form-group">
+                            <label class="fr-label" for="password">
+                                Mot de passe
+                            </label>
+                            <input class="fr-input" type="password" id="password" name="password" required>
+                        </div>
+                        
+                        <button class="fr-btn" type="submit">
+                            Se connecter
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr/dist/dsfr.noModule.min.js"></script>
+</body>
+</html>
