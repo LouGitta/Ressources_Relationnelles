@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr" data-fr-theme="light" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Administration - Gestion des Items</title>
+    <link rel="stylesheet" th:href="@{/dsfr/dsfr.min.css}">
+    <link rel="stylesheet" th:href="@{/dsfr/utility/icons/icons.min.css}">
+</head>
+<body>
+
+    <main role="main" id="content">
+        <div class="fr-container fr-mt-4w fr-mb-4w">
+            
+            <div class="fr-grid-row fr-grid-row--middle fr-mb-3w">
+                <div class="fr-col-12 fr-col-md-8">
+                    <h1>Gestion des Ressources</h1>
+                </div>
+                <div class="fr-col-12 fr-col-md-4 text-right">
+                    <a href="/admin/items/new" class="fr-btn fr-icon-add-line fr-btn--icon-left">
+                        Nouvel Item
+                    </a>
+                </div>
+            </div>
+
+            <div class="fr-table fr-table--layout-fixed fr-table--no-caption">
+                <table>
+                    <caption>Liste des items à administrer</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Titre</th>
+                            <th scope="col">Auteur</th>
+                            <th scope="col">Statut</th>
+                            <th scope="col" style="text-align: right;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${items}">
+                            <td th:text="${item.id}">1</td>
+                            <td th:text="${item.title}">Titre de l'exemple</td>
+                            <td th:text="${item.user.username}">Alice</td>
+                            
+                            <td>
+                                <p class="fr-badge fr-badge--success" th:if="${item.status.name() == 'published'}">Publié</p>
+                                <p class="fr-badge fr-badge--warning" th:if="${item.status.name() == 'pending'}">En attente</p>
+                                <p class="fr-badge fr-badge--error" th:if="${item.status.name() == 'rejected'}">Rejeté</p>
+                            </td>
+
+                            <td>
+                                <ul class="fr-btns-group fr-btns-group--sm fr-btns-group--inline-reverse fr-btns-group--equisized">
+                                    <li>
+                                        <form th:action="@{/admin/items/delete/{id}(id=${item.id})}" method="post" style="display:inline;">
+                                            <button type="submit" class="fr-btn fr-btn--secondary fr-icon-delete-line" title="Supprimer" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet item ?');">
+                                                <span class="fr-sr-only">Supprimer</span>
+                                            </button>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <a th:href="@{/admin/items/edit/{id}(id=${item.id})}" class="fr-btn fr-icon-edit-line" title="Modifier">
+                                            <span class="fr-sr-only">Modifier</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div th:if="${#lists.isEmpty(items)}" class="fr-alert fr-alert--info fr-mt-2w">
+                <p>Aucun item trouvé dans la base de données.</p>
+            </div>
+
+        </div>
+    </main>
+
+    <script type="module" th:src="@{/dsfr/dsfr.module.min.js}"></script>
+    <script type="text/javascript" nomodule th:src="@{/dsfr/dsfr.nomodule.min.js}"></script>
+</body>
+</html>
