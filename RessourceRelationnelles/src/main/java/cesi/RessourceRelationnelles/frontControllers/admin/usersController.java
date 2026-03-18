@@ -1,3 +1,5 @@
+package cesi.RessourceRelationnelles.frontControllers.admin;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,23 +9,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import cesi.RessourceRelationnelles.services.RessourceService;
+import cesi.RessourceRelationnelles.services.UserService;
 
 @Controller
-@RequestMapping("/admin/items")
-public class AdminItemController {
+@RequestMapping("/admin/users")
+public class usersController {
 
     @Autowired
-    private RessourceService ressourceService;
+    private UserService userService;
 
     @GetMapping
     public String listItems(Model model) {
-        model.addAttribute("items", ressourceService.getAll());
-        return "admin-items";
-    }
-
-    @PostMapping("/delete/{id}")
-    public String deleteItem(@PathVariable Integer id) {
-        ressourceService.delete(id);
-        return "redirect:/admin/items";
+        model.addAttribute("listUsers", userService.getAll());
+        return "admin/users";
     }
 }

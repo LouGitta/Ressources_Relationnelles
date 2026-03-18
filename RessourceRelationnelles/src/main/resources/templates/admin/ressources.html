@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      th:replace="~{layouts/layoutAdmin :: layout(~{::main})}">
+<body>
+
+    <main role="main" id="content">
+        <div class="fr-container fr-mt-4w fr-mb-4w">
+            
+            <div class="fr-grid-row fr-grid-row--middle fr-mb-3w">
+                <div class="fr-col-12 fr-col-md-8">
+                    <h1>Gestion des Ressources</h1>
+                </div>
+                <div class="fr-col-12 fr-col-md-4" style="display: flex; justify-content: flex-end;">
+                    <a href="/admin/items/new" class="fr-btn fr-icon-add-line fr-btn--icon-left">Nouvel Item</a>
+                </div>
+            </div>
+
+            <div class="fr-table fr-table--no-caption">
+                <table style="width: 100%;">
+                    <caption>Liste des ressources</caption>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Titre</th>
+                            <th>Auteur</th>
+                            <th>Vues</th>
+                            <th>Relation</th>
+                            <th>Type de ressource</th>
+                            <th>Visibilité</th>
+                            <th>Création</th>
+                            <th>Statut</th>
+                            <th style="text-align: right;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="ressource : ${listRessources}">
+                            <td th:text="${ressource.id}"></td>
+                            <td th:text="${ressource.title}"></td>
+                            <td th:text="${ressource.user.username}"></td>
+                            <td th:text="${ressource.views}"></td>
+                            <td th:text="${ressource.relation.name}"></td>
+                            <td th:text="${ressource.type.name}"></td>
+                            <td th:text="${ressource.visibility}"></td>
+                            <td th:text="${#temporals.format(ressource.createdAt, 'dd/MM/yyyy')}"></td>
+                            <td>
+                                <span class="fr-badge fr-badge--success" th:if="${ressource.status.name() == 'published'}">Publié</span>
+                                <span class="fr-badge fr-badge--warning" th:if="${ressource.status.name() == 'pending'}">En attente</span>
+                                <span class="fr-badge fr-badge--error" th:if="${ressource.status.name() == 'rejected'}">Rejeté</span>
+                            </td>
+                            <td style="text-align: right;">
+                                <a th:href="@{/admin/items/edit/{id}(id=${ressource.id})}" class="fr-btn fr-btn--tertiary-no-outline fr-icon-edit-line" title="Modifier"></a>
+                                <a th:href="@{/admin/items/show/{id}(id=${ressource.id})}" class="fr-btn fr-btn--tertiary-no-outline fr-icon-eye-line" title="Voir"></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div th:if="${#lists.isEmpty(listRessources)}" class="fr-alert fr-alert--info fr-mt-2w">
+                    <p>Aucune ressource à afficher.</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>
