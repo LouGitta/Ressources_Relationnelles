@@ -10,55 +10,7 @@
 </head>
 <body>
 
-    <header role="banner" class="fr-header">
-        <div class="fr-header__body">
-            <div class="fr-container">
-                <div class="fr-header__body-row">
-                    <div class="fr-header__brand fr-enlarge-link">
-                        <div class="fr-header__brand-top">
-                            <div class="fr-header__logo">
-                                <p class="fr-logo">
-                                    République<br>Française
-                                </p>
-                            </div>
-                        </div>
-                        <div class="fr-header__service">
-                            <a href="/app/ressources" title="Accueil - (Re)Sources Relationnelles">
-                                <p class="fr-header__service-title">(Re)Sources Relationnelles</p>
-                            </a>
-                            <p class="fr-header__service-tagline">Projet CESI</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <nav role="navigation" class="fr-nav" aria-label="Navigation principale">
-        <div class="fr-container">
-            <div class="fr-nav__inner">
-                <button class="fr-btn--menu fr-btn" aria-controls="modal-menu-options" aria-expanded="false">
-                    Menu
-                </button>
-                <div class="fr-menu" id="modal-menu-options">
-                    <ul class="fr-menu__list">
-                        <li class="fr-menu__item">
-                            <a class="fr-nav__link" href="/app/ressources">Accueil</a>
-                        </li>
-                        <li class="fr-menu__item">
-                            <a class="fr-nav__link" href="/app/contact">Contact</a>
-                        </li>
-                        <li class="fr-menu__item">
-                            <a class="fr-nav__link" href="/app/cgu">CGU</a>
-                        </li>
-                        <li class="fr-menu__item">
-                            <a class="fr-nav__link" href="/app/legalMention">Mentions Légales</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <th:block th:include="fragments/header :: header"></th:block>
 
     <main role="main" id="content">
         <div class="fr-container fr-my-4w">
@@ -222,7 +174,7 @@
         <div class="fr-container">
             <div class="fr-footer__body">
                 <div class="fr-footer__brand fr-enlarge-link">
-                    <a href="/app/ressources" title="Retour à l'accueil">
+                    <a href="/home" title="Retour à l'accueil">
                         <p class="fr-logo">
                             République<br>Française
                         </p>

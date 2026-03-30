@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr" data-fr-theme="light" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Catalogue - (Re)Sources Relationnelles</title>
+    <link rel="stylesheet" th:href="@{/dsfr/dsfr.min.css}">
+    <link rel="stylesheet" th:href="@{/dsfr/utility/icons/icons.min.css}">
+</head>
+<body>
+
+    <th:block th:include="fragments/header :: header"></th:block>
+
+    <main role="main" id="content">
+        <div class="fr-container fr-mt-4w fr-mb-4w">
+            <div class="fr-grid-row fr-grid-row--middle fr-mb-4w">
+                <div class="fr-col">
+                    <h1>Catalogue des Ressources</h1>
+                </div>
+                <div class="fr-col-auto" th:if="${isConnected}">
+                    <a href="/app/ressource/create" class="fr-btn fr-icon-add-line fr-btn--icon-left">
+                        Proposer une ressource
+                    </a>
+                </div>
+            </div>
+            
+            <h2>Rechercher une ressource</h2>
+
+            <form action="/app/ressource" method="get" class="fr-mb-5w fr-p-3w">
+                <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--bottom">
+                    
+                    <div class="fr-col-12 fr-col-md-3">
+                        <div class="fr-input-group">
+                            <label class="fr-label" for="title">Mot-clé dans le titre</label>
+                            <input class="fr-input" type="text" id="title" name="title" th:value="${selectedTitle}">
+                        </div>
+                    </div>
+                    
+                    <div class="fr-col-12 fr-col-md-3">
+                        <div class="fr-select-group">
+                            <label class="fr-label" for="categoryId">Catégorie</label>
+                            <select class="fr-select" id="categoryId" name="categoryId">
+                                <option value="">Toutes les catégories</option>
+                                <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}" th:selected="${cat.id == selectedCategoryId}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="fr-col-12 fr-col-md-2">
+                        <div class="fr-select-group">
+                            <label class="fr-label" for="visibility">Visibilité</label>
+                            <select class="fr-select" id="visibility" name="visibility">
+                                <option value="">Toutes</option>
+                                <option th:each="vis : ${visibilities}" th:value="${vis}" th:text="${vis}" th:selected="${vis == selectedVisibility}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="fr-col-12 fr-col-md-2">
+                        <div class="fr-select-group">
+                            <label class="fr-label" for="status">Statut</label>
+                            <select class="fr-select" id="status" name="status">
+                                <option value="">Tous</option>
+                                <option th:each="stat : ${statuses}" th:value="${stat}" th:text="${stat}" th:selected="${stat == selectedStatus}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="fr-col-12 fr-col-md-2">
+                        <button class="fr-btn fr-fi-search-line fr-btn--icon-left fr-mt-md-0" type="submit" style="width: 100%;">Filtrer</button>
+                    </div>
+                </div>
+            </form>
+
+            <div th:if="${#lists.isEmpty(ressources)}" class="fr-alert fr-alert--info">
+                <p>Aucune ressource ne correspond à vos critères de recherche.</p>
+            </div>
+
+            <div class="fr-grid-row fr-grid-row--gutters">
+                <div class="fr-col-12 fr-col-md-6 fr-col-lg-4" th:each="res : ${ressources}">
+                    <div class="fr-card fr-enlarge-link">
+                        <div class="fr-card__body">
+                            <div class="fr-card__content">
+                                <h3 class="fr-card__title">
+                                    <a th:href="@{/app/ressource/{id}(id=${res.id})}" th:text="${res.title}">Titre</a>
+                                </h3>
+                                <p class="fr-card__desc" th:text="${#strings.abbreviate(res.content, 150)}">Contenu</p>
+                                <div class="fr-card__start">
+                                    <p class="fr-card__detail">
+                                        <span class="fr-badge fr-badge--sm fr-badge--info fr-mb-1v" th:text="${res.category.name}"></span><br>
+                                        <span th:text="'Par ' + ${res.user.username}">Auteur</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="module" th:src="@{/dsfr/dsfr.module.min.js}"></script>
+    <script type="text/javascript" nomodule th:src="@{/dsfr/dsfr.nomodule.min.js}"></script>
+</body>
+</html>

@@ -10,152 +10,80 @@
 </head>
 <body>
 
-    <header role="banner" class="fr-header">
-        <div class="fr-header__body">
-            <div class="fr-container">
-                <div class="fr-header__body-row">
-                    <div class="fr-header__brand fr-enlarge-link">
-                        <div class="fr-header__brand-top">
-                            <div class="fr-header__logo">
-                                <p class="fr-logo">
-                                    République<br>Française
-                                </p>
-                            </div>
-                        </div>
-                        <div class="fr-header__service">
-                            <a href="/app/ressources" title="Accueil - (Re)Sources Relationnelles">
-                                <p class="fr-header__service-title">(Re)Sources Relationnelles</p>
-                            </a>
-                            <p class="fr-header__service-tagline">Projet CESI</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <nav role="navigation" class="fr-nav" aria-label="Navigation principale">
-        <div class="fr-container">
-            <div class="fr-nav__inner">
-                <button class="fr-btn--menu fr-btn" aria-controls="modal-menu-options" aria-expanded="false">
-                    Menu
-                </button>
-                <div class="fr-menu" id="modal-menu-options">
-                    <ul class="fr-menu__list">
-                        <li class="fr-menu__item">
-                            <a class="fr-nav__link" href="/app/ressources">Accueil</a>
-                        </li>
-                        <li class="fr-menu__item">
-                            <a class="fr-nav__link" href="/app/contact">Contact</a>
-                        </li>
-                        <li class="fr-menu__item">
-                            <a class="fr-nav__link" href="/app/cgu">CGU</a>
-                        </li>
-                        <li class="fr-menu__item">
-                            <a class="fr-nav__link" href="/app/legalMention">Mentions Légales</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <th:block th:include="fragments/header :: header"></th:block>
 
     <main role="main" id="content">
         <div class="fr-container fr-my-4w">
             <div class="fr-grid-row fr-grid-row--gutters">
+                
                 <div class="fr-col-12 fr-col-lg-8">
                     <h1 class="fr-h1">Contactez-nous</h1>
                     
-                    <div class="fr-alert fr-alert--info fr-my-2w">
+                    <div class="fr-alert fr-alert--info fr-my-3w">
                         <h3 class="fr-alert__title">Nous sommes à votre écoute</h3>
                         <p>Remplissez le formulaire ci-dessous pour nous envoyer votre message. Nous vous répondrons dans les plus brefs délais.</p>
                     </div>
 
-                    <div th:if="${success}" class="fr-alert fr-alert--success fr-my-2w">
+                    <div th:if="${success}" class="fr-alert fr-alert--success fr-my-3w">
                         <h3 class="fr-alert__title">Message envoyé avec succès</h3>
                         <p th:text="${success}"></p>
                     </div>
 
-                    <form th:action="@{/contact}" method="post" th:object="${contact}" class="fr-form-group">
+                    <form th:action="@{/contact}" method="post" class="fr-form-group">
                         <fieldset class="fr-fieldset fr-fieldset--fullwidth">
                             <legend class="fr-fieldset__legend--regular fr-fieldset__legend">
                                 <span class="fr-fieldset__legend-content">Vos informations</span>
                             </legend>
 
-                            <div class="fr-form-group">
+                            <div class="fr-input-group">
                                 <label class="fr-label" for="name">
                                     Nom complet
                                     <span class="fr-badge fr-badge--sm fr-badge--info">Obligatoire</span>
                                 </label>
-                                <input class="fr-input" type="text" id="name" th:field="*{name}" placeholder="Votre nom" required>
-                                <span class="fr-error-text" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                                <input class="fr-input" type="text" id="name" name="name" placeholder="Votre nom" required>
                             </div>
 
-                            <div class="fr-form-group">
+                            <div class="fr-input-group">
                                 <label class="fr-label" for="email">
                                     Adresse email
                                     <span class="fr-badge fr-badge--sm fr-badge--info">Obligatoire</span>
                                 </label>
-                                <input class="fr-input" type="email" id="email" th:field="*{email}" placeholder="votre.email@exemple.fr" required>
-                                <span class="fr-error-text" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                                <input class="fr-input" type="email" id="email" name="email" placeholder="votre.email@exemple.fr" required>
                             </div>
                         </fieldset>
 
-                        <fieldset class="fr-fieldset fr-fieldset--fullwidth">
+                        <fieldset class="fr-fieldset fr-fieldset--fullwidth fr-mt-2w">
                             <legend class="fr-fieldset__legend--regular fr-fieldset__legend">
                                 <span class="fr-fieldset__legend-content">Votre message</span>
                             </legend>
 
-                            <div class="fr-form-group">
+                            <div class="fr-input-group">
                                 <label class="fr-label" for="message">
                                     Message
                                     <span class="fr-badge fr-badge--sm fr-badge--info">Obligatoire</span>
                                 </label>
-                                <textarea class="fr-input" id="message" th:field="*{message}" placeholder="Décrivez votre demande..." rows="8" required></textarea>
-                                <span class="fr-error-text" th:if="${#fields.hasErrors('message')}" th:errors="*{message}"></span>
+                                <textarea class="fr-input" id="message" name="message" placeholder="Décrivez votre demande..." rows="8" required></textarea>
                             </div>
                         </fieldset>
 
-                        <div class="fr-form-group">
-                            <button class="fr-btn" type="submit">
-                                <span class="fr-btn__text">Envoyer le message</span>
+                        <div class="fr-mt-4w">
+                            <button class="fr-btn fr-icon-mail-send-line fr-btn--icon-left" type="submit">
+                                Envoyer le message
                             </button>
                         </div>
                     </form>
-
-                    <div class="fr-card fr-my-4w">
-                        <div class="fr-card__body">
-                            <h3 class="fr-card__title">Autres moyens de nous contacter</h3>
-                            <div class="fr-card__content">
-                                <ul class="fr-raw-list">
-                                    <li><strong>Email :</strong> contact@ressourcesrelationnelles.fr</li>
-                                    <li><strong>Téléphone :</strong> +33 (0) 1 23 45 67 89</li>
-                                    <li><strong>Adresse :</strong> Paris, France</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <aside class="fr-col-12 fr-col-lg-4">
-                    <div class="fr-card">
+                    
+                    <div class="fr-card fr-mb-3w">
                         <div class="fr-card__body">
-                            <h3 class="fr-card__title">Horaires d'accès</h3>
-                            <div class="fr-card__content">
-                                <p><strong>Lundi au vendredi :</strong><br>9h00 - 18h00</p>
-                                <p><strong>Le week-end :</strong><br>Fermé</p>
+                            <h3 class="fr-card__title">Autres moyens de nous contacter</h3>
+                            <div class="fr-card__content fr-mt-2w">
+                                <p class="fr-text--sm fr-mb-1w"><strong><span class="fr-icon-mail-line fr-mr-1w" aria-hidden="true"></span> Email :</strong><br> contact@ressourcesrelationnelles.fr</p>
+                                <p class="fr-text--sm fr-mb-1w"><strong><span class="fr-icon-phone-line fr-mr-1w" aria-hidden="true"></span> Téléphone :</strong><br> +33 (0) 1 23 45 67 89</p>
+                                <p class="fr-text--sm fr-mb-0"><strong><span class="fr-icon-map-pin-2-line fr-mr-1w" aria-hidden="true"></span> Adresse :</strong><br> Paris, France</p>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="fr-card fr-my-2w">
-                        <div class="fr-card__body">
-                            <h3 class="fr-card__title">Questions fréquentes</h3>
-                            <ul>
-                                <li><a href="/app/cgu">Conditions d'utilisation</a></li>
-                                <li><a href="/app/legalMention">Mentions légales</a></li>
-                                <li><a href="/app/ressources">Catalogue des ressources</a></li>
-                            </ul>
                         </div>
                     </div>
                 </aside>
@@ -165,20 +93,11 @@
 
     <footer class="fr-footer" role="contentinfo">
         <div class="fr-container">
-            <div class="fr-footer__body">
-                <div class="fr-footer__brand fr-enlarge-link">
-                    <a href="/app/ressources" title="Retour à l'accueil">
-                        <p class="fr-logo">
-                            République<br>Française
-                        </p>
-                    </a>
-                </div>
-            </div>
             <div class="fr-footer__bottom">
                 <ul class="fr-footer__bottom-list">
-                    <li><a href="/app/legalMention">Mentions légales</a></li>
-                    <li><a href="/app/cgu">CGU</a></li>
-                    <li><a href="/app/contact">Contact</a></li>
+                    <a href="/app/legalMention">Mentions légales</a>
+                    <a href="/app/cgu">CGU</a>
+                    <a href="/app/contact">Contact</a>
                 </ul>
                 <div class="fr-footer__bottom-copy">
                     <p>© 2026 Projet CESI - Tous droits réservés</p>

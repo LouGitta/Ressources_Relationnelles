@@ -1,48 +1,58 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="fr" data-fr-theme="light" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Mentions Légales</title>
-    <link rel="stylesheet" th:href="@{/static/dsfr.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Mentions Légales - (Re)Sources Relationnelles</title>
+    <link rel="stylesheet" th:href="@{/dsfr/dsfr.min.css}">
+    <link rel="stylesheet" th:href="@{/dsfr/utility/icons/icons.min.css}">
 </head>
 <body>
-    <header>
-        <h1>Mentions Légales</h1>
-    </header>
-    <main>
-        <section>
-            <h2>Éditeur du site</h2>
-            <p>
-                Nom de l'entreprise : <span th:text="${companyName}">EAL</span><br>
-                Adresse : <span th:text="${companyAddress}">Numéro Rue Nom Rue de Nom Ville</span><br>
-                Téléphone : <span th:text="${companyPhone}">Numéro de téléphone</span><br>
-                Email : <span th:text="${companyEmail}">Adresse-email@adress.mail</span>
-            </p>
-        </section>
-        <section>
-            <h2>Hébergement</h2>
-            <p>
-                Hébergeur : <span th:text="${hostName}">Hébergeur</span><br>
-                Adresse : <span th:text="${hostAddress}">Adresse de l'hébergeur</span><br>
-                Téléphone : <span th:text="${hostPhone}">Numéro de téléphone</span>
-            </p>
-        </section>
-        <section>
-            <h2>Propriété intellectuelle</h2>
-            <p>
-                Le contenu du site est protégé par les lois en vigueur sur la propriété intellectuelle.
-            </p>
-        </section>
-        <section>
-            <h2>Contact</h2>
-            <p>
-                Pour toute question, vous pouvez nous contacter à l'adresse suivante : 
-                <a th:href="'mailto:' + ${companyEmail}" th:text="${companyEmail}">Adresse-email@adress.mail</a>
-            </p>
-        </section>
+    <th:block th:include="fragments/header :: header"></th:block>
+
+    <main role="main" id="content" class="fr-container fr-my-4w">
+        <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-12 fr-col-lg-8">
+                <h1 class="fr-h1">Mentions Légales</h1>
+
+                <section class="fr-my-4w">
+                    <h2 class="fr-h2">Éditeur du site</h2>
+                    <p>
+                        Nom de l'entreprise : <span th:text="${companyName}">EAL</span><br>
+                        Adresse : <span th:text="${companyAddress}">Numéro Rue Nom Rue de Nom Ville</span><br>
+                        Téléphone : <span th:text="${companyPhone}">Numéro de téléphone</span><br>
+                        Email : <span th:text="${companyEmail}">Adresse-email@adress.mail</span>
+                    </p>
+                </section>
+
+                <section class="fr-my-4w">
+                    <h2 class="fr-h2">Hébergement</h2>
+                    <p>
+                        Hébergeur : <span th:text="${hostName}">Hébergeur</span><br>
+                        Adresse : <span th:text="${hostAddress}">Adresse de l'hébergeur</span><br>
+                        Téléphone : <span th:text="${hostPhone}">Numéro de téléphone</span>
+                    </p>
+                </section>
+
+                <section class="fr-my-4w">
+                    <h2 class="fr-h2">Propriété intellectuelle</h2>
+                    <p>
+                        Le contenu du site est protégé par les lois en vigueur sur la propriété intellectuelle.
+                    </p>
+                </section>
+
+                <section class="fr-my-4w">
+                    <h2 class="fr-h2">Contact</h2>
+                    <p>
+                        Pour toute question, vous pouvez nous contacter à l'adresse suivante : 
+                        <a th:href="'mailto:' + ${companyEmail}" th:text="${companyEmail}">Adresse-email@adress.mail</a>
+                    </p>
+                </section>
+            </div>
+        </div>
     </main>
-    <footer>
-        <p>&copy; <span th:text="${#dates.format(today, 'yyyy')}">2024</span> <span th:text="${companyName}">EAL</span></p>
-    </footer>
+
+    <script type="module" th:src="@{/dsfr/dsfr.module.min.js}"></script>
+    <script type="text/javascript" nomodule th:src="@{/dsfr/dsfr.nomodule.min.js}"></script>
 </body>
 </html>
