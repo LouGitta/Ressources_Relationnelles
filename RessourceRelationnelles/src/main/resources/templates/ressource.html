@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr" data-fr-theme="light" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Les Ressources - (Re)Sources Relationnelles</title>
+
+    <link rel="stylesheet" th:href="@{/dsfr/dsfr.min.css}">
+    
+    <link rel="stylesheet" th:href="@{/dsfr/utility/icons/icons.min.css}">
+</head>
+<body>
+
+    <th:block th:include="fragments/header :: header"></th:block>
+
+    <main role="main" id="content">
+        <div class="fr-container fr-mt-4w fr-mb-4w">
+            
+            <h1 th:text="${ressource.title}">Titre de la ressource</h1>
+            <div th:if="${isConnected}" class="fr-mb-3w">
+                <form th:action="@{/app/ressource/{id}/favorite(id=${ressource.id})}" method="post">
+                    <button type="submit" class="fr-btn fr-btn--sm fr-btn--secondary fr-btn--icon-left"
+                            th:classappend="${isFavorite ? 'fr-icon-star-fill' : 'fr-icon-star-line'}">
+                        <span th:text="${isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}">Favoris</span>
+                    </button>
+                </form>
+            </div>
+            <div class="fr-text--sm fr-mb-3w">
+                <span th:text="'Publié le ' + ${#temporals.format(ressource.createdAt, 'dd/MM/yyyy')}">Date</span>
+                <span th:text="' par ' + ${ressource.user.username}">Auteur</span>
+            </div>
+            
+            <div class="fr-mb-5w">
+                <p th:text="${ressource.content}">Contenu complet de la ressource...</p>
+            </div>
+
+            <hr>
+
+            <h2 class="fr-mt-5w">Commentaires</h2>
+            
+            <div th:if="${#lists.isEmpty(comments)}" class="fr-alert fr-alert--info fr-mb-3w">
+                <p>Aucun commentaire pour le moment. Soyez le premier à réagir !</p>
+            </div>
+
+            <div class="fr-card fr-mb-2w" th:each="comment : ${comments}">
+                <div class="fr-card__body">
+                    <div class="fr-grid-row fr-grid-row--middle">
+                        <div class="fr-col">
+                            <p class="fr-card__detail" th:text="${comment.user.username} + ' - le ' + ${#temporals.format(comment.createdAt, 'dd/MM/yyyy HH:mm')}">Auteur et date</p>
+                        </div>
+                        
+                        <div class="fr-col-auto" th:if="${isConnected}">
+                            <th:block th:with="isAuthor=${comment.user.id == currentUser?.id}, 
+                                                isAdmin=${userRole == 'moderator' or userRole == 'administrator' or userRole == 'super_admin'}">
+                                <form th:if="${isAuthor or isAdmin}" 
+                                    th:action="@{/app/comments/{id}/delete(id=${comment.id})}" method="post">
+                                    <input type="hidden" name="ressourceId" th:value="${ressource.id}" />
+                                    <button type="submit" class="fr-btn fr-btn--sm fr-btn--secondary fr-icon-delete-line">
+                                        Supprimer
+                                    </button>
+                                </form>
+                            </th:block>
+                        </div>
+                    </div>
+                    
+                    <p class="fr-card__desc fr-mt-2w" th:text="${comment.content}">Texte du commentaire</p>
+                </div>
+            </div>
+
+            <div th:if="${isConnected}" class="fr-mt-4w">
+                <form th:action="@{/app/ressource/{id}/comments(id=${ressource.id})}" method="post">
+                    <div class="fr-input-group">
+                        <label class="fr-label" for="content">Votre commentaire</label>
+                        <textarea class="fr-input" id="content" name="content" required rows="4"></textarea>
+                    </div>
+                    <button type="submit" class="fr-btn fr-mt-2w">Ajouter mon commentaire</button>
+                </form>
+            </div>
+            
+            <div th:unless="${isConnected}" class="fr-alert fr-alert--warning fr-mt-4w">
+                <p>Vous devez <a href="/app/auth">être connecté</a> pour laisser un commentaire.</p>
+            </div>
+        </div>
+    </main>
+    <script type="module" th:src="@{/dsfr/dsfr.module.min.js}"></script>
+    <script type="text/javascript" nomodule th:src="@{/dsfr/dsfr.nomodule.min.js}"></script>
+</body>
+</html>

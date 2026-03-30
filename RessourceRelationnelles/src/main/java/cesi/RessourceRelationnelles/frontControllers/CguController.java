@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class CguController {
-    @GetMapping("/cgu")
+    @GetMapping("/app/cgu")
     public String afficherCgu() {
         return "cgu";
     }
