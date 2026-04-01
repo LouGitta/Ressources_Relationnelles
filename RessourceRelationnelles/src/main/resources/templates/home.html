@@ -10,7 +10,9 @@
     <link rel="stylesheet" th:href="@{/dsfr/utility/icons/icons.min.css}">
 </head>
 <body>
+
     <th:block th:include="fragments/header :: header"></th:block>
+
     <main role="main" id="content">
         <div class="fr-container fr-mt-4w fr-mb-4w">
             <h1>Ressources Récentes</h1>
@@ -41,7 +43,9 @@
             </div>
         </div>
     </main>
+
     <footer th:insert="~{fragments/footer :: footer}"></footer>
+
     <script type="module" th:src="@{/dsfr/dsfr.module.min.js}"></script>
     <script type="text/javascript" nomodule th:src="@{/dsfr/dsfr.nomodule.min.js}"></script>
 </body>
