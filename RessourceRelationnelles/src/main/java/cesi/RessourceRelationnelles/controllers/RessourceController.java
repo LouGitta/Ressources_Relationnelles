@@ -34,6 +34,9 @@ public class RessourceController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Ressource> update(@PathVariable Integer id, @RequestBody Ressource ressource) {
+        if (ressourceService.getById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         ressource.setId(id);
         return ResponseEntity.ok(ressourceService.save(ressource));
     }

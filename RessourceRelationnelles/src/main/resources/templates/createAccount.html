@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer un compte</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr/dist/dsfr.min.css">
+</head>
+<body>
+    <div class="fr-container">
+        <div class="fr-grid-row fr-grid-row--center">
+            <div class="fr-col-12 fr-col-md-6">
+                <div class="fr-card">
+                    <div class="fr-card__body">
+                        <h1 class="fr-h1">Créer un compte</h1>
+                        <form method="post" th:action="@{/createAccount}">
+                            <div class="fr-form-group">
+                                <label class="fr-label" for="firstname">Prénom</label>
+                                <input class="fr-input" type="text" id="firstname" name="firstname" required>
+                            </div>
+                            <div class="fr-form-group">
+                                <label class="fr-label" for="lastname">Nom</label>
+                                <input class="fr-input" type="text" id="lastname" name="lastname" required>
+                            </div>
+                            <div class="fr-form-group">
+                                <label class="fr-label" for="email">Email</label>
+                                <input class="fr-input" type="email" id="email" name="email" required>
+                            </div>
+                            <div class="fr-form-group">
+                                <label class="fr-label" for="password">Mot de passe</label>
+                                <input class="fr-input" type="password" id="password" name="password" required>
+                            </div>
+                            <div class="fr-form-group">
+                                <label class="fr-label" for="confirmPassword">Confirmer le mot de passe</label>
+                                <input class="fr-input" type="password" id="confirmPassword" name="confirmPassword" required>
+                            </div>
+                            <button class="fr-btn" type="submit">Créer un compte</button>
+                        </form>
+                        <p class="fr-mt-2w">Vous avez déjà un compte? <a href="/login">Se connecter</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer th:insert="~{fragments/footer :: footer}"></footer>
+    <script src="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr/dist/dsfr.module.min.js"></script>
+</body>
+</html>
