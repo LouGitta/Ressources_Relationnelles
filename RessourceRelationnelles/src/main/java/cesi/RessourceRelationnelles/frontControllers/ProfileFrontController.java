@@ -25,9 +25,12 @@ public class ProfileFrontController {
 
     @GetMapping("/app/profile")
     public String afficherProfil(Model model, HttpServletRequest request) {
-        // User currentUser = userService.getById(1).orElseThrow();
-
+        // --- MODE DEV : On force l'utilisateur ID 1 ---
+        User user = userService.getById(1).orElseThrow();
+        model.addAttribute("user", user);
+        model.addAttribute("isConnected", true);
         
+        /* PROD - Vérification réelle de sécurité (quand Spring Security sera implémenté)
         Principal principal = request.getUserPrincipal();
         if (principal == null) {
             return "redirect:/app/auth";
@@ -35,6 +38,7 @@ public class ProfileFrontController {
         User user = userService.getByUsername(principal.getName()).orElseThrow();
         model.addAttribute("user", user);
         model.addAttribute("isConnected", true);
+        */
 
         // 1. Ses ressources créées
         List<Ressource> myRessources = ressourceService.getByUser(user.getId());

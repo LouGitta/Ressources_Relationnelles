@@ -12,7 +12,7 @@
             <h1>Proposer une nouvelle ressource</h1>
             <p class="fr-text--sm">Toute ressource proposée sera soumise à validation par un modérateur avant publication.</p>
 
-            <form th:action="@{/app/ressource/create}" method="post" class="fr-mt-4w">
+            <form th:action="@{/app/ressources/create}" method="post" class="fr-mt-4w">
                 <div class="fr-input-group">
                     <label class="fr-label" for="title">Titre de la ressource</label>
                     <input class="fr-input" type="text" id="title" name="title" required>
@@ -62,11 +62,13 @@
 
                 <div class="fr-mt-4w">
                     <button type="submit" class="fr-btn">Envoyer pour validation</button>
-                    <a href="/app/ressource" class="fr-btn fr-btn--secondary fr-ml-2w">Annuler</a>
+                    <a href="/app/ressources" class="fr-btn fr-btn--secondary fr-ml-2w">Annuler</a>
                 </div>
             </form>
         </div>
     </main>
+
+    <footer th:insert="~{fragments/footer :: footer}"></footer>
 
     <script type="module" th:src="@{/dsfr/dsfr.module.min.js}"></script>
 </body>

@@ -19,10 +19,7 @@ public class FriendService {
     }
 
     public List<Friend> getAllAcceptedFriends(Integer userId) {
-        List<Friend> friends1 = friendRepository.findByUser1_Id(userId, FriendStatus.accepted);
-        List<Friend> friends2 = friendRepository.findByUser2_Id(userId, FriendStatus.accepted);
-        friends1.addAll(friends2);
-        return friends1;
+        return friendRepository.findAllAcceptedByUserId(userId, FriendStatus.accepted);
     }
 
     public List<Friend> getByUser1(Integer user1) {

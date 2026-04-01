@@ -31,18 +31,16 @@ public class RessourceFrontController {
     private UserService userService;
 
     @Autowired
-    private ProgressionService progressionService;
-
-    @Autowired
     private DeviceDetector deviceDetector;
 
-    @GetMapping("/app/ressource/{id}")
+    @Autowired
+    private ProgressionService progressionService;
+
+    @GetMapping("/app/ressources/{id}")
     public String afficherRessource(@PathVariable Integer id, Model model, HttpServletRequest request) {
 
-        
-
         // --- MODE DEV : On force la connexion pour l'affichage ---
-        /*boolean isConnected = true;
+        boolean isConnected = true;
         model.addAttribute("isConnected", isConnected);
         model.addAttribute("isMobile", deviceDetector.isMobile(request));
 
@@ -50,10 +48,12 @@ public class RessourceFrontController {
         User currentUser = userService.getById(1).orElseThrow();
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("userRole", currentUser.getRole().name());
-        */
+        
+        /* PROD - Vérification réelle de sécurité (quand Spring Security sera implémenté)
         Principal principal = request.getUserPrincipal();
         if (principal == null) return "redirect:/app/auth";
         User currentUser = userService.getByUsername(principal.getName()).orElseThrow();
+        */
         Optional<Ressource> ressourceOpt = ressourceService.getById(id);
         
         if (ressourceOpt.isPresent()) {
@@ -63,7 +63,7 @@ public class RessourceFrontController {
             boolean isAuthor = ressource.getUser().getId().equals(currentUser.getId());
 
             if (!isPublished && !isAuthor) {
-                return "redirect:/app/ressource"; 
+                return "redirect:/app/ressources"; 
             }
 
             model.addAttribute("ressource", ressource);
@@ -80,6 +80,6 @@ public class RessourceFrontController {
             return "ressource";
         }
         
-        return "redirect:/home";
+        return "redirect:/app/home";
     }
 }

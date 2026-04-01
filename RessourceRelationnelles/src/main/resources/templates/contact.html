@@ -91,20 +91,7 @@
         </div>
     </main>
 
-    <footer class="fr-footer" role="contentinfo">
-        <div class="fr-container">
-            <div class="fr-footer__bottom">
-                <ul class="fr-footer__bottom-list">
-                    <a href="/app/legalMention">Mentions légales</a>
-                    <a href="/app/cgu">CGU</a>
-                    <a href="/app/contact">Contact</a>
-                </ul>
-                <div class="fr-footer__bottom-copy">
-                    <p>© 2026 Projet CESI - Tous droits réservés</p>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <footer th:insert="~{fragments/footer :: footer}"></footer>
 
     <script th:src="@{/dsfr/dsfr.nomodule.min.js}"></script>
     <script th:src="@{/dsfr/dsfr.module.min.js}"></script>

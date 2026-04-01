@@ -18,7 +18,7 @@
             
             <h1 th:text="${ressource.title}">Titre de la ressource</h1>
             <div th:if="${isConnected}" class="fr-mb-3w">
-                <form th:action="@{/app/ressource/{id}/favorite(id=${ressource.id})}" method="post">
+                <form th:action="@{/app/ressources/{id}/favorite(id=${ressource.id})}" method="post">
                     <button type="submit" class="fr-btn fr-btn--sm fr-btn--secondary fr-btn--icon-left"
                             th:classappend="${isFavorite ? 'fr-icon-star-fill' : 'fr-icon-star-line'}">
                         <span th:text="${isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}">Favoris</span>
@@ -68,7 +68,7 @@
             </div>
 
             <div th:if="${isConnected}" class="fr-mt-4w">
-                <form th:action="@{/app/ressource/{id}/comments(id=${ressource.id})}" method="post">
+                <form th:action="@{/app/ressources/{id}/comments(id=${ressource.id})}" method="post">
                     <div class="fr-input-group">
                         <label class="fr-label" for="content">Votre commentaire</label>
                         <textarea class="fr-input" id="content" name="content" required rows="4"></textarea>
@@ -82,6 +82,9 @@
             </div>
         </div>
     </main>
+
+    <footer th:insert="~{fragments/footer :: footer}"></footer>
+
     <script type="module" th:src="@{/dsfr/dsfr.module.min.js}"></script>
     <script type="text/javascript" nomodule th:src="@{/dsfr/dsfr.nomodule.min.js}"></script>
 </body>
