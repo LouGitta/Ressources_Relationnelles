@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      th:replace="~{layouts/layoutAdmin :: layout(~{::main})}">
+<body>
+
+    <main role="main" id="content">
+        <div class="fr-container fr-mt-4w fr-mb-4w">
+            
+            <div class="fr-grid-row fr-grid-row--middle fr-mb-3w">
+                <div class="fr-col-12 fr-col-md-8">
+                    <h1>Gestion des utilisateurs</h1>
+                </div>
+                <div class="fr-col-12 fr-col-md-4" style="display: flex; justify-content: flex-end;">
+                    <a href="/admin/users/new" class="fr-btn fr-icon-add-line fr-btn--icon-left">Ajouter un utilisateur</a>
+                </div>
+            </div>
+            <div class="fr-grid-row">
+                <div class="fr-col-12">
+                    
+                    <div class="fr-table fr-table--no-caption">
+                        <table style="min-width: 100%; display: table; width: 100%;">
+                            <caption>Liste des utilisateurs</caption>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nom d'utilisateur</th>
+                                    <th>Mail</th>
+                                    <th>Role</th>
+                                    <th>Date de création</th>
+                                    <th>Actif</th>
+                                    <th style="text-align: right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="user : ${listUsers}">
+                                    <td th:text="${user.id}"></td>
+                                    <td th:text="${user.username}"></td>
+                                    <td th:text="${user.email}"></td>
+                                    <td>
+                                        <span class="fr-badge fr-badge--info" th:text="${user.role}"></span>
+                                    </td>
+                                    <td th:text="${#temporals.format(user.createdAt, 'dd/MM/yyyy')}"></td>
+                                    <td>
+                                        <span th:if="${user.isActive}" class="fr-badge fr-badge--success">OUI</span>
+                                        <span th:unless="${user.isActive}" class="fr-badge fr-badge--error">NON</span>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <a th:href="@{/admin/users/edit/{id}(id=${user.id})}" class="fr-btn fr-btn--tertiary-no-outline fr-icon-edit-line" title="Modifier"></a>
+                                        <a th:href="@{/admin/users/show/{id}(id=${user.id})}" class="fr-btn fr-btn--tertiary-no-outline fr-icon-eye-line" title="Voir"></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <div th:if="${#lists.isEmpty(listUsers)}" class="fr-alert fr-alert--info fr-mt-2w">
+                            <p>Aucun utilisateur à afficher.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
