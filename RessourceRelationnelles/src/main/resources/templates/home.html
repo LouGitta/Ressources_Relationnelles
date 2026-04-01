@@ -27,7 +27,7 @@
                         <div class="fr-card__body">
                             <div class="fr-card__content">
                                 <h3 class="fr-card__title">
-                                    <a th:href="@{/app/ressource/{id}(id=${res.id})}" th:text="${res.title}">Titre de la ressource</a>
+                                    <a th:href="@{/app/ressources/{id}(id=${res.id})}" th:text="${res.title}">Titre de la ressource</a>
                                 </h3>
                                 <p class="fr-card__desc" th:text="${#strings.abbreviate(res.content, 150)}">Description de la ressource...</p>
                                 
@@ -41,6 +41,7 @@
             </div>
         </div>
     </main>
+    <footer th:insert="~{fragments/footer :: footer}"></footer>
     <script type="module" th:src="@{/dsfr/dsfr.module.min.js}"></script>
     <script type="text/javascript" nomodule th:src="@{/dsfr/dsfr.nomodule.min.js}"></script>
 </body>

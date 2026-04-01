@@ -30,7 +30,7 @@ public class RessourceCreateFrontController {
     @Autowired
     private DeviceDetector deviceDetector;
 
-    @GetMapping("/app/ressource/create")
+    @GetMapping("/app/ressources/create")
     public String showCreateForm(Model model, HttpServletRequest request) {
         
         /* MODE DEV : On désactive la redirection de sécurité
@@ -50,7 +50,7 @@ public class RessourceCreateFrontController {
         return "ressourceCreate";
     }
 
-    @PostMapping("/app/ressource/create")
+    @PostMapping("/app/ressources/create")
     public String saveRessource(
             @RequestParam String title,
             @RequestParam String content,
@@ -60,13 +60,14 @@ public class RessourceCreateFrontController {
             @RequestParam Visibility visibility,
             HttpServletRequest request) {
 
+        // --- MODE DEV : On force l'utilisation de l'utilisateur avec l'ID 1 ---
+        User currentUser = userService.getById(1).orElseThrow();
+        
+        /* PROD - Vérification réelle de sécurité (quand Spring Security sera implémenté)
         Principal principal = request.getUserPrincipal();
         if (principal == null) return "redirect:/app/auth";
         User currentUser = userService.getByUsername(principal.getName()).orElseThrow();
-        
-
-        // MODE DEV : On force l'utilisation de l'utilisateur avec l'ID 1
-        // User currentUser = userService.getById(1).orElseThrow();
+        */
         
         Ressource ressource = new Ressource();
         ressource.setTitle(title);
@@ -83,6 +84,6 @@ public class RessourceCreateFrontController {
 
         ressourceService.save(ressource);
 
-        return "redirect:/app/ressource"; 
+        return "redirect:/app/ressources"; 
     }
 }

@@ -43,10 +43,13 @@ public class TypeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Type> save(@PathVariable Integer id, @RequestBody Type type) {
+    public ResponseEntity<Type> update(@PathVariable Integer id, @RequestBody Type type) {
+        if (typeService.getById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         type.setId(id);
-        Type savedType = typeService.save(type);
-        return ResponseEntity.ok(savedType);
+        Type updatedType = typeService.save(type);
+        return ResponseEntity.ok(updatedType);
     }
 
     @DeleteMapping("/{id}")

@@ -31,20 +31,19 @@ public class CommentFrontController {
     private RessourceService ressourceService;
 
     // --- AJOUTER UN COMMENTAIRE ---
-    @PostMapping("/app/ressource/{id}/comments")
+    @PostMapping("/app/ressources/{id}/comments")
     public String addComment(@PathVariable("id") Integer ressourceId,
                              @RequestParam("content") String content,
                              HttpServletRequest request) {
-
+        // --- MODE DEV : On force l'utilisateur avec l'ID 1 ---
+        Optional<User> userOpt = userService.getById(1);
+        
+        /* PROD - Vérification réelle de sécurité (quand Spring Security sera implémenté)
         Principal principal = request.getUserPrincipal();
         if (principal == null) {
             return "redirect:/app/auth"; 
         }
         Optional<User> userOpt = userService.getByUsername(principal.getName());
-        
-        /*
-         MODE DEV : On force l'utilisateur avec l'ID 1
-        Optional<User> userOpt = userService.getById(1);
         */
         
         Optional<Ressource> ressourceOpt = ressourceService.getById(ressourceId);
@@ -59,7 +58,7 @@ public class CommentFrontController {
             commentService.save(comment);
         }
 
-        return "redirect:/app/ressource/" + ressourceId;
+        return "redirect:/app/ressources/" + ressourceId;
     }
 
     // --- SUPPRIMER UN COMMENTAIRE ---
@@ -67,17 +66,15 @@ public class CommentFrontController {
     public String deleteComment(@PathVariable("id") Integer commentId,
                                 @RequestParam("ressourceId") Integer ressourceId,
                                 HttpServletRequest request) {
-
+        // --- MODE DEV : On force l'utilisateur avec l'ID 1 ---
+        Optional<User> userOpt = userService.getById(1);
         
+        /* PROD - Vérification réelle de sécurité (quand Spring Security sera implémenté)
         Principal principal = request.getUserPrincipal();
         if (principal == null) {
             return "redirect:/app/auth";
         }
         Optional<User> userOpt = userService.getByUsername(principal.getName());
-        
-
-        /* MODE DEV : On force l'utilisateur avec l'ID 1
-        Optional<User> userOpt = userService.getById(1);
         */
         Optional<Comment> commentOpt = commentService.getById(commentId);
 
@@ -96,6 +93,6 @@ public class CommentFrontController {
             }
         }
 
-        return "redirect:/app/ressource/" + ressourceId;
+        return "redirect:/app/ressources/" + ressourceId;
     }
 }

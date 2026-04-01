@@ -31,7 +31,7 @@
                         </thead>
                         <tbody>
                             <tr th:each="res : ${myRessources}">
-                                <td><a th:href="@{/app/ressource/{id}(id=${res.id})}" th:text="${res.title}">Titre</a></td>
+                                <td><a th:href="@{/app/ressources/{id}(id=${res.id})}" th:text="${res.title}">Titre</a></td>
                                 <td>
                                     <span th:classappend="${res.status.name() == 'published' ? 'fr-badge--success' : (res.status.name() == 'pending' ? 'fr-badge--new' : 'fr-badge--error')}" 
                                           class="fr-badge" th:text="${res.status}">Statut</span>
@@ -49,7 +49,7 @@
                         <div class="fr-card fr-card--sm fr-enlarge-link">
                             <div class="fr-card__body">
                                 <h4 class="fr-card__title">
-                                    <a th:href="@{/app/ressource/{id}(id=${fav.ressource.id})}" th:text="${fav.ressource.title}">Titre favori</a>
+                                    <a th:href="@{/app/ressources/{id}(id=${fav.ressource.id})}" th:text="${fav.ressource.title}">Titre favori</a>
                                 </h4>
                             </div>
                         </div>
@@ -68,6 +68,8 @@
             </div>
         </div>
     </main>
+
+    <footer th:insert="~{fragments/footer :: footer}"></footer>
 
     <script type="module" th:src="@{/dsfr/dsfr.module.min.js}"></script>
 </body>

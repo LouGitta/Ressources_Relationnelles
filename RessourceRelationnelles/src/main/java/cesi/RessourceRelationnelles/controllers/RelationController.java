@@ -43,10 +43,13 @@ public class RelationController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Relation> save(@PathVariable Integer id, @RequestBody Relation relation) {
+    public ResponseEntity<Relation> update(@PathVariable Integer id, @RequestBody Relation relation) {
+        if (relationService.getById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         relation.setId(id);
-        Relation savedRelation = relationService.save(relation);
-        return ResponseEntity.ok(savedRelation);
+        Relation updatedRelation = relationService.save(relation);
+        return ResponseEntity.ok(updatedRelation);
     }
 
     @DeleteMapping("/{id}")

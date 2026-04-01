@@ -18,7 +18,7 @@
                     <h1>Catalogue des Ressources</h1>
                 </div>
                 <div class="fr-col-auto" th:if="${isConnected}">
-                    <a href="/app/ressource/create" class="fr-btn fr-icon-add-line fr-btn--icon-left">
+                    <a href="/app/ressources/create" class="fr-btn fr-icon-add-line fr-btn--icon-left">
                         Proposer une ressource
                     </a>
                 </div>
@@ -26,7 +26,7 @@
             
             <h2>Rechercher une ressource</h2>
 
-            <form action="/app/ressource" method="get" class="fr-mb-5w fr-p-3w">
+            <form action="/app/ressources" method="get" class="fr-mb-5w fr-p-3w">
                 <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--bottom">
                     
                     <div class="fr-col-12 fr-col-md-3">
@@ -51,7 +51,7 @@
                             <label class="fr-label" for="visibility">Visibilité</label>
                             <select class="fr-select" id="visibility" name="visibility">
                                 <option value="">Toutes</option>
-                                <option th:each="vis : ${visibilities}" th:value="${vis}" th:text="${vis}" th:selected="${vis == selectedVisibility}"></option>
+                                <option th:each="vis : ${visibilities}" th:value="${vis.name()}" th:text="${vis.label}" th:selected="${vis == selectedVisibility}"></option>
                             </select>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
                         <div class="fr-card__body">
                             <div class="fr-card__content">
                                 <h3 class="fr-card__title">
-                                    <a th:href="@{/app/ressource/{id}(id=${res.id})}" th:text="${res.title}">Titre</a>
+                                    <a th:href="@{/app/ressources/{id}(id=${res.id})}" th:text="${res.title}">Titre</a>
                                 </h3>
                                 <p class="fr-card__desc" th:text="${#strings.abbreviate(res.content, 150)}">Contenu</p>
                                 <div class="fr-card__start">
@@ -98,6 +98,8 @@
             </div>
         </div>
     </main>
+
+    <footer th:insert="~{fragments/footer :: footer}"></footer>
 
     <script type="module" th:src="@{/dsfr/dsfr.module.min.js}"></script>
     <script type="text/javascript" nomodule th:src="@{/dsfr/dsfr.nomodule.min.js}"></script>

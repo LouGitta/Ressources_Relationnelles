@@ -27,16 +27,23 @@ public class RessourceCatalogFrontController {
     @Autowired
     private DeviceDetector deviceDetector;
 
-    @GetMapping("/app/ressource")
+    @GetMapping("/app/ressources")
     public String afficherCatalogue(
             @RequestParam(required = false) String title,
             @RequestParam(required = false) Integer categoryId,
             @RequestParam(required = false) Visibility visibility,
             Model model, HttpServletRequest request) {
 
+        // --- MODE DEV : On simule la connexion ---
         boolean isConnected = true;
         model.addAttribute("isConnected", isConnected);
         model.addAttribute("isMobile", deviceDetector.isMobile(request));
+        
+        /* PROD - Vérification réelle de sécurité (quand Spring Security sera implémenté)
+        boolean isConnected = request.getUserPrincipal() != null;
+        model.addAttribute("isConnected", isConnected);
+        model.addAttribute("isMobile", deviceDetector.isMobile(request));
+        */
         
         model.addAttribute("categories", categoryService.getAll());
         model.addAttribute("visibilities", Visibility.values());

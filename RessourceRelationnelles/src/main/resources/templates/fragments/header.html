@@ -13,7 +13,7 @@
                         <div class="fr-header__brand fr-enlarge-link">
                             <div class="fr-header__brand-top">
                                 <div class="fr-header__logo">
-                                    <a href="/home" title="Accueil - (Re)Sources Relationnelles">
+                                    <a href="/app/home" title="Accueil - (Re)Sources Relationnelles">
                                         <p class="fr-logo">
                                             Ressources
                                             <br>relationnelles
@@ -25,7 +25,7 @@
                                 </div>
                             </div>
                             <div class="fr-header__service">
-                                <a href="/home" title="Accueil - (Re)Sources Relationnelles">
+                                <a href="/app/home" title="Accueil - (Re)Sources Relationnelles">
                                     <p class="fr-header__service-title">(Re)Sources Relationnelles</p>
                                 </a>
                                 <p class="fr-header__service-tagline">Projet CESI</p>
@@ -72,10 +72,10 @@
                     <nav class="fr-nav" role="navigation" aria-label="Menu principal">
                         <ul class="fr-nav__list">
                             <li class="fr-nav__item">
-                                <a type="link" href="/home" class="fr-nav__link">Accueil</a>
+                                <a type="link" href="/app/home" class="fr-nav__link">Accueil</a>
                             </li>
                             <li class="fr-nav__item">
-                                <a type="link" href="/app/ressource" class="fr-nav__link">Ressources</a>
+                                <a type="link" href="/app/ressources" class="fr-nav__link">Ressources</a>
                             </li>
                             <li class="fr-nav__item" th:if="${isConnected}">
                                 <a type="link" href="/app/profile" class="fr-nav__link">Profil</a>
@@ -101,7 +101,7 @@
                         <th:block th:if="${isMobile}">
                             <ul class="fr-menu__list">
                                 <li class="fr-menu__item">
-                                    <a class="fr-nav__link" href="/home">Accueil</a>
+                                    <a class="fr-nav__link" href="/app/home">Accueil</a>
                                 </li>
                                 <li class="fr-menu__item">
                                     <a class="fr-nav__link" href="/app/contact">Contact</a>

@@ -37,6 +37,9 @@ public class FriendController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Friend> update(@PathVariable Integer id, @RequestBody Friend friend) {
+        if (friendService.getById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         friend.setId(id);
         return ResponseEntity.ok(friendService.save(friend));
     }

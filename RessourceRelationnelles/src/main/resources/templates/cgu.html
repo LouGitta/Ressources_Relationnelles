@@ -155,44 +155,12 @@
                             </ul>
                         </div>
                     </nav>
-
-                    <div class="fr-card fr-my-4w">
-                        <div class="fr-card__body">
-                            <h3 class="fr-card__title">Documents utiles</h3>
-                            <ul>
-                                <li><a href="/app/legalMention">Mentions Légales</a></li>
-                                <li><a href="/app/contact">Nous contacter</a></li>
-                            </ul>
-                        </div>
-                    </div>
                 </aside>
             </div>
         </div>
     </main>
 
-    <footer class="fr-footer" role="contentinfo">
-        <div class="fr-container">
-            <div class="fr-footer__body">
-                <div class="fr-footer__brand fr-enlarge-link">
-                    <a href="/home" title="Retour à l'accueil">
-                        <p class="fr-logo">
-                            République<br>Française
-                        </p>
-                    </a>
-                </div>
-            </div>
-            <div class="fr-footer__bottom">
-                <ul class="fr-footer__bottom-list">
-                    <li><a href="/app/legalMention">Mentions légales</a></li>
-                    <li><a href="/app/cgu">CGU</a></li>
-                    <li><a href="/app/contact">Contact</a></li>
-                </ul>
-                <div class="fr-footer__bottom-copy">
-                    <p>© 2026 Projet CESI - Tous droits réservés</p>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <footer th:insert="~{fragments/footer :: footer}"></footer>
 
     <script th:src="@{/dsfr/dsfr.nomodule.min.js}"></script>
     <script th:src="@{/dsfr/dsfr.module.min.js}"></script>

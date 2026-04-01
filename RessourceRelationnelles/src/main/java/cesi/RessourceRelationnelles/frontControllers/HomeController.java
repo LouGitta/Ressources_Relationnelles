@@ -24,22 +24,40 @@ public class HomeController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/home")
+    @GetMapping("/app/home")
     public String afficherHome(Model model, HttpServletRequest request) {
         // Détecte si l'utilisateur est connecté
-        // Vérifie si l'utilisateur est authentifié via la session
+        // --- MODE DEV : On simule la connexion ---
         boolean isConnected = true;
-        // debug boolean isConnected = request.getUserPrincipal() != null;
         model.addAttribute("isConnected", isConnected);
+        
+        /* PROD - Vérification réelle de sécurité (quand Spring Security sera implémenté)
+        boolean isConnected = request.getUserPrincipal() != null;
+        model.addAttribute("isConnected", isConnected);
+        */
         
         // Détecte si c'est un appareil mobile
         model.addAttribute("isMobile", deviceDetector.isMobile(request));
         
+        // --- MODE DEV : On force l'utilisateur ID 1 ---
         cesi.RessourceRelationnelles.models.User currentUser = userService.getById(1).orElseThrow();
         boolean isAdmin = currentUser.getRole() == cesi.RessourceRelationnelles.models.Role.moderator || 
                         currentUser.getRole() == cesi.RessourceRelationnelles.models.Role.administrator || 
                       currentUser.getRole() == cesi.RessourceRelationnelles.models.Role.super_admin;
         model.addAttribute("isAdmin", isAdmin);
+        
+        /* PROD - Vérification réelle de sécurité (quand Spring Security sera implémenté)
+        Principal principal = request.getUserPrincipal();
+        if (principal != null) {
+            cesi.RessourceRelationnelles.models.User currentUser = userService.getByUsername(principal.getName()).orElseThrow();
+            boolean isAdmin = currentUser.getRole() == cesi.RessourceRelationnelles.models.Role.moderator || 
+                            currentUser.getRole() == cesi.RessourceRelationnelles.models.Role.administrator || 
+                          currentUser.getRole() == cesi.RessourceRelationnelles.models.Role.super_admin;
+            model.addAttribute("isAdmin", isAdmin);
+        } else {
+            model.addAttribute("isAdmin", false);
+        }
+        */
         List<Ressource> recentRessources = ressourceService.getRecentRessources();
         model.addAttribute("recentRessources", recentRessources);
         return "home";
