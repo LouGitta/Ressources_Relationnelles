@@ -45,4 +45,20 @@ public class RessourceService {
     public List<Ressource> getByUser(Integer userId) {
     return ressourceRepository.findByUser_Id(userId);
     }
+
+    public long countAll() {
+        return ressourceRepository.count();
+    }
+
+    public List<Object[]> countRessourcesByCategory() {
+        return ressourceRepository.countRessourcesByCategory();
+    }
+
+    public List<Object[]> countByStatus() {
+        return ressourceRepository.countRessourcesByStatus();
+    }
+
+    public List<Object[]> countByVisibility() {
+        return ressourceRepository.countRessourcesByVisibility();
+    }
 }
