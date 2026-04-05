@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layouts/layoutAdmin :: layout(~{::main})}">
+<body>
+
+    <main role="main" id="content">
+        <div class="fr-container fr-mt-4w fr-mb-4w">
+            
+            <div class="fr-grid-row fr-grid-row--middle fr-mb-3w">
+                <div class="fr-col-12 fr-col-md-8">
+                    <h1>Gestion des Relations</h1>
+                </div>
+                <div class="fr-col-12 fr-col-md-4" style="display: flex; justify-content: flex-end;">
+                    <a href="/admin/relations/new" class="fr-btn fr-icon-add-line fr-btn--icon-left">Nouveau type de relation</a>
+                </div>
+            </div>
+
+            <div class="fr-table fr-table--no-caption">
+                <table style="min-width: 100%; display: table; width: 100%;">
+                    <caption>Liste des types de relations</caption>
+                    <thead>
+                        <tr>
+                            <th style="width: 10%;">ID</th>
+                            <th style="width: 70%;">Type de relation</th>
+                            <th style="width: 20%; text-align: right;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="cat : ${listRelations}">
+                            <td th:text="${cat.id}"></td>
+                            <td th:text="${cat.name}"></td>
+                            <td style="text-align: right;">
+                                <a th:href="@{/admin/relations/edit/{id}(id=${cat.id})}" class="fr-btn fr-btn--tertiary-no-outline fr-icon-edit-line" title="Modifier"></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div th:if="${#lists.isEmpty(listRelations)}" class="fr-alert fr-alert--info fr-mt-2w">
+                    <p>Aucun type de relation trouvé.</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>
