@@ -13,12 +13,12 @@ import java.util.List;
 @Repository
 public interface RessourceRepository extends CrudRepository<Ressource, Integer> {
 
-    @Override
-    List<Ressource> findAll();
+       @Override
+       List<Ressource> findAll();
 
-    List<Ressource> findByUser_Id(Integer userId);
+       List<Ressource> findByUser_Id(Integer userId);
 
-    List<Ressource> findTop10ByStatusOrderByCreatedAtDesc(RessourceStatus status);
+       List<Ressource> findTop10ByStatusOrderByCreatedAtDesc(RessourceStatus status);
 
 
        @Query("SELECT r.category.name, COUNT(r) FROM Ressource r GROUP BY r.category.name")
@@ -29,4 +29,19 @@ public interface RessourceRepository extends CrudRepository<Ressource, Integer> 
 
        @Query("SELECT r.visibility, COUNT(r) FROM Ressource r GROUP BY r.visibility")
        List<Object[]> countRessourcesByVisibility();
+
+       @Query("SELECT r FROM Ressource r WHERE " +
+                     "(:title IS NULL OR LOWER(r.title) LIKE LOWER(CONCAT('%', :title, '%'))) AND " +
+                     "(:categoryId IS NULL OR r.category.id = :categoryId) AND " +
+                     "(:relationId IS NULL OR r.relation.id = :relationId) AND " + // NOUVEAU
+                     "(:typeId IS NULL OR r.type.id = :typeId) AND " + // NOUVEAU
+                     "(:visibility IS NULL OR r.visibility = :visibility) AND " +
+                     "(:status IS NULL OR r.status = :status) " +
+                     "ORDER BY r.createdAt DESC")
+       List<Ressource> searchAdmin(@Param("title") String title,
+                     @Param("categoryId") Integer categoryId,
+                     @Param("relationId") Integer relationId,
+                     @Param("typeId") Integer typeId,
+                     @Param("visibility") Visibility visibility,
+                     @Param("status") RessourceStatus status);
 }

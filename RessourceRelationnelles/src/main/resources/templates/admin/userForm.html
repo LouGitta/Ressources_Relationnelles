@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      th:replace="~{layouts/layoutAdmin :: layout(~{::main})}">
+<body>
+    <main role="main" id="content">
+        <div class="fr-container fr-mt-4w fr-mb-4w">
+            
+            <div class="fr-grid-row fr-mb-3w">
+                <div class="fr-col-12">
+                    <h1 th:text="${user.id == null ? 'Ajouter un utilisateur' : 'Modifier l''utilisateur'}"></h1>
+                </div>
+            </div>
+
+            <div class="fr-grid-row">
+                <div class="fr-col-12 fr-col-md-8 fr-col-lg-6">
+                    
+                    <form th:action="@{/admin/users/save}" th:object="${user}" method="post">
+                        
+                        <input type="hidden" th:field="*{id}" />
+
+                        <div class="fr-input-group">
+                            <label class="fr-label" for="username">
+                                Nom d'utilisateur
+                                <span class="fr-hint-text">Requis. Uniquement des lettres et chiffres.</span>
+                            </label>
+                            <input class="fr-input" type="text" id="username" th:field="*{username}" required>
+                        </div>
+
+                        <div class="fr-input-group">
+                            <label class="fr-label" for="email">Adresse email</label>
+                            <input class="fr-input" type="email" id="email" th:field="*{email}" required>
+                        </div>
+
+                        <div class="fr-input-group">
+                            <label class="fr-label" for="password">
+                                Mot de passe
+                                <span th:if="${user.id != null}" class="fr-hint-text">Laissez vide pour conserver l'ancien mot de passe.</span>
+                            </label>
+                            <input class="fr-input" type="password" id="password" th:field="*{password}" th:required="${user.id == null}">
+                        </div>
+
+                        <div class="fr-select-group">
+                            <label class="fr-label" for="role">Rôle de l'utilisateur</label>
+                            <select class="fr-select" id="role" th:field="*{role}" required>
+                                <option value="" disabled selected>Sélectionnez un rôle</option>
+                                
+                                <th:block th:each="r : ${roles}">
+                                    <option th:if="${currentUserRole == 'super_admin' or r.name() != 'super_admin'}" 
+                                            th:value="${r}" 
+                                            th:text="${r.name()}">
+                                    </option>
+                                </th:block>
+                            </select>
+                        </div>
+
+                        <div class="fr-toggle fr-mt-2w fr-mb-4w" th:if="${user.id != null}">
+                            <input type="checkbox" class="fr-toggle__input" id="isActive" th:field="*{active}">
+                            <label class="fr-toggle__label" for="isActive" data-fr-checked-label="Activé" data-fr-unchecked-label="Désactivé">
+                                Compte actif
+                            </label>
+                        </div>
+
+                        <ul class="fr-btns-group fr-btns-group--inline-md">
+                            <li>
+                                <button type="submit" class="fr-btn">
+                                    <span class="fr-icon-checkbox-circle-line fr-mr-1w" aria-hidden="true"></span>
+                                    Enregistrer
+                                </button>
+                            </li>
+                            <li>
+                                <a th:href="@{/admin/users}" class="fr-btn fr-btn--secondary">Annuler</a>
+                            </li>
+                        </ul>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+</body>
+</html>
