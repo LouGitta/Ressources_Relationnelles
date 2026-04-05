@@ -20,6 +20,16 @@ public interface RessourceRepository extends CrudRepository<Ressource, Integer> 
 
        List<Ressource> findTop10ByStatusOrderByCreatedAtDesc(RessourceStatus status);
 
+       @Query("SELECT r FROM Ressource r WHERE " +
+                     "(:title IS NULL OR LOWER(r.title) LIKE LOWER(CONCAT('%', :title, '%'))) AND " +
+                     "(:categoryId IS NULL OR r.category.id = :categoryId) AND " +
+                     "(:visibility IS NULL OR r.visibility = :visibility) AND " +
+                     "(:status IS NULL OR r.status = :status) " +
+                     "ORDER BY r.createdAt DESC")
+       List<Ressource> findWithFilters(@Param("title") String title,
+                     @Param("categoryId") Integer categoryId,
+                     @Param("visibility") Visibility visibility,
+                     @Param("status") RessourceStatus status);
 
        @Query("SELECT r.category.name, COUNT(r) FROM Ressource r GROUP BY r.category.name")
        List<Object[]> countRessourcesByCategory();
