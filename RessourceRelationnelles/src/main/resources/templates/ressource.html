@@ -59,6 +59,12 @@
                                         Supprimer
                                     </button>
                                 </form>
+                                <form th:if="${isConnected and comment.user.id != currentUser.id}" th:action="@{/app/friends/add/{id}(id=${comment.user.id})}" method="post">
+                                    <input type="hidden" name="ressourceId" th:value="${ressource.id}">
+                                    <button type="submit" class="fr-btn fr-btn--tertiary-no-outline fr-btn--sm fr-icon-user-add-line" title="Envoyer une demande d'ami">
+                                        Ajouter
+                                    </button>
+                                </form>
                             </th:block>
                         </div>
                     </div>

@@ -45,4 +45,17 @@ public class RessourceService {
     public List<Ressource> getByUser(Integer userId) {
     return ressourceRepository.findByUser_Id(userId);
     }
+
+    public List<Ressource> getPendingRessources() {
+        return ressourceRepository.findByStatusOrderByCreatedAtDesc(RessourceStatus.pending);
+    }
+
+    public void updateStatus(Integer id, RessourceStatus status) {
+        Optional<Ressource> opt = ressourceRepository.findById(id);
+        if (opt.isPresent()) {
+            Ressource r = opt.get();
+            r.setStatus(status);
+            ressourceRepository.save(r);
+        }
+    }
 }
