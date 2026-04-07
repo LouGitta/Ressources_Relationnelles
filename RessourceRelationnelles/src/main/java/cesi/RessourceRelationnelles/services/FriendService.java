@@ -37,4 +37,8 @@ public class FriendService {
     public void delete(Integer id) {
         friendRepository.deleteById(id);
     }
+
+    public long countAll() {
+        return friendRepository.count();
+    }
 }

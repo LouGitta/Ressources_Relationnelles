@@ -24,7 +24,7 @@ public class ParticipationFrontController {
     @PostMapping("/app/ressources/{id}/join")
     public String joinActivity(@PathVariable Integer id, Model model) {
         User currentUser = (User) model.getAttribute("currentUser");
-        if (currentUser == null) return "redirect:/app/auth";
+        if (currentUser == null) return "redirect:/app/login";
 
         Optional<Ressource> ressourceOpt = ressourceService.getById(id);
         if (ressourceOpt.isPresent()) {
@@ -45,7 +45,7 @@ public class ParticipationFrontController {
     @PostMapping("/app/ressources/{id}/leave")
     public String leaveActivity(@PathVariable Integer id, Model model) {
         User currentUser = (User) model.getAttribute("currentUser");
-        if (currentUser == null) return "redirect:/app/auth";
+        if (currentUser == null) return "redirect:/app/login";
 
         Optional<ActivityParticipant> participation = participantRepository.findByRessource_IdAndUser_Id(id, currentUser.getId());
         participation.ifPresent(p -> participantRepository.delete(p));

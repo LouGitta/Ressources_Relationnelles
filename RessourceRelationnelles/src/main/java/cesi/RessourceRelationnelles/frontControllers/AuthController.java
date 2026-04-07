@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class AuthController {
-    @GetMapping("/app/auth")
+    @GetMapping("/app/login")
     public String afficherAuth() {
         return "auth";
     }
