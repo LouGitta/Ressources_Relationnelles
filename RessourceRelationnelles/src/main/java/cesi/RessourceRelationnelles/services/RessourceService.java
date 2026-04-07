@@ -35,7 +35,8 @@ public class RessourceService {
         return ressourceRepository.findTop10ByStatusOrderByCreatedAtDesc(RessourceStatus.published);
     }
 
-    public List<Ressource> searchAndFilter(String title, Integer categoryId, Visibility visibility, RessourceStatus status) {
+    public List<Ressource> searchAndFilter(String title, Integer categoryId, Visibility visibility,
+            RessourceStatus status) {
         if (title != null && title.trim().isEmpty()) {
             title = null;
         }
@@ -43,7 +44,31 @@ public class RessourceService {
     }
 
     public List<Ressource> getByUser(Integer userId) {
-    return ressourceRepository.findByUser_Id(userId);
+        return ressourceRepository.findByUser_Id(userId);
+    }
+
+    public long countAll() {
+        return ressourceRepository.count();
+    }
+
+    public List<Object[]> countRessourcesByCategory() {
+        return ressourceRepository.countRessourcesByCategory();
+    }
+
+    public List<Object[]> countByStatus() {
+        return ressourceRepository.countRessourcesByStatus();
+    }
+
+    public List<Object[]> countByVisibility() {
+        return ressourceRepository.countRessourcesByVisibility();
+    }
+
+    public List<Ressource> searchAdmin(String title, Integer categoryId, Integer relationId, Integer typeId,
+            Visibility visibility, RessourceStatus status) {
+        if (title != null && title.trim().isEmpty()) {
+            title = null;
+        }
+        return ressourceRepository.searchAdmin(title, categoryId, relationId, typeId, visibility, status);
     }
 
     public List<Ressource> getPendingRessources() {

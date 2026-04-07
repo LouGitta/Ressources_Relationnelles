@@ -40,4 +40,8 @@ public class CommentService {
     public void delete(Integer id) {
         commentRepository.deleteById(id);
     }
+
+    public long countAll() {
+        return commentRepository.count();
+    }
 }

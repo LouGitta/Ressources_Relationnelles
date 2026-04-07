@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr" data-fr-theme="light" xmlns:th="http://www.thymeleaf.org" th:fragment="layout(content)">
+<head>
+    <meta charset="utf-8">
+    <title>Administration - (Re)Sources Relationnelles</title>
+    
+    <link rel="stylesheet" th:href="@{/dsfr/dsfr.min.css}">
+    <link rel="stylesheet" th:href="@{/dsfr/utility/icons/icons.min.css}">
+</head>
+<body>
+
+    <header role="banner" class="fr-header">
+        <div class="fr-header__body">
+            <div class="fr-container">
+                <div class="fr-header__body-row">
+                    <div class="fr-header__brand">
+                        <div class="fr-header__service">
+                            <p class="fr-header__service-title text-danger">ZONE ADMINISTRATION</p>
+                        </div>
+                    </div>
+                    <div class="fr-header__tools">
+                        <div class="fr-header__tools-links">
+                            <ul class="fr-btns-group">
+                                <li>
+                                    <a class="fr-btn fr-btn--tertiary fr-icon-home-4-line" th:href="@{/app/home}">Retour au site</a>
+                                </li>
+                                <li>
+                                    <a class="fr-btn fr-btn--tertiary fr-icon-logout-box-r-line" th:href="@{/logout}">Déconnexion</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fr-header__menu fr-modal" id="modal-menu">
+            <div class="fr-container">
+                <nav class="fr-nav" id="navigation" role="navigation" aria-label="Menu principal">
+                    <ul class="fr-nav__list">
+                        <li class="fr-nav__item">
+                            <a class="fr-nav__link" th:href="@{/admin/home}">Tableau de bord</a>
+                        </li>
+                        <li class="fr-nav__item">
+                            <a class="fr-nav__link" th:href="@{/admin/ressources}">Ressources</a>
+                        </li>
+                        <li class="fr-nav__item">
+                            <a class="fr-nav__link" th:href="@{/admin/users}">Utilisateurs</a>
+                        </li>
+                        <li class="fr-nav__item">
+                            <a class="fr-nav__link" th:href="@{/admin/categories}">Catégories</a>
+                        </li>
+                        <li class="fr-nav__item">
+                            <a class="fr-nav__link" th:href="@{/admin/types}">Types</a>
+                        </li>
+                        <li class="fr-nav__item">
+                            <a class="fr-nav__link" th:href="@{/admin/relations}">Relations</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    </header>
+
+    <div th:replace="${content}"></div>
+
+    <script type="module" th:src="@{/dsfr/dsfr.module.min.js}"></script>
+    <script type="text/javascript" nomodule th:src="@{/dsfr/dsfr.nomodule.min.js}"></script>
+</body>
+</html>
