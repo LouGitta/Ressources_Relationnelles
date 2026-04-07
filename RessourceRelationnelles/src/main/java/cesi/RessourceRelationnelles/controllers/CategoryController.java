@@ -43,10 +43,13 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Category> save(@PathVariable Integer id, @RequestBody Category category) {
+    public ResponseEntity<Category> update(@PathVariable Integer id, @RequestBody Category category) {
+        if (categoryService.getById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         category.setId(id);
-        Category savedCategory = categoryService.save(category);
-        return ResponseEntity.ok(savedCategory);
+        Category updatedCategory = categoryService.save(category);
+        return ResponseEntity.ok(updatedCategory);
     }
 
     @DeleteMapping("/{id}")

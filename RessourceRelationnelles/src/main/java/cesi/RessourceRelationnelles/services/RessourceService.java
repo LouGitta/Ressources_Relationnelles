@@ -1,6 +1,8 @@
 package cesi.RessourceRelationnelles.services;
 
 import cesi.RessourceRelationnelles.models.Ressource;
+import cesi.RessourceRelationnelles.models.RessourceStatus;
+import cesi.RessourceRelationnelles.models.Visibility;
 import cesi.RessourceRelationnelles.repositories.RessourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,5 +29,33 @@ public class RessourceService {
 
     public void delete(Integer id) {
         ressourceRepository.deleteById(id);
+    }
+
+    public List<Ressource> getRecentRessources() {
+        return ressourceRepository.findTop10ByStatusOrderByCreatedAtDesc(RessourceStatus.published);
+    }
+
+    public List<Ressource> searchAndFilter(String title, Integer categoryId, Visibility visibility, RessourceStatus status) {
+        if (title != null && title.trim().isEmpty()) {
+            title = null;
+        }
+        return ressourceRepository.findWithFilters(title, categoryId, visibility, status);
+    }
+
+    public List<Ressource> getByUser(Integer userId) {
+    return ressourceRepository.findByUser_Id(userId);
+    }
+
+    public List<Ressource> getPendingRessources() {
+        return ressourceRepository.findByStatusOrderByCreatedAtDesc(RessourceStatus.pending);
+    }
+
+    public void updateStatus(Integer id, RessourceStatus status) {
+        Optional<Ressource> opt = ressourceRepository.findById(id);
+        if (opt.isPresent()) {
+            Ressource r = opt.get();
+            r.setStatus(status);
+            ressourceRepository.save(r);
+        }
     }
 }

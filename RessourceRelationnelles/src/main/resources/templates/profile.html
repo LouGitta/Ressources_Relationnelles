@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr" data-fr-theme="light" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Mon Profil - (Re)Sources Relationnelles</title>
+    <link rel="stylesheet" th:href="@{/dsfr/dsfr.min.css}">
+    <link rel="stylesheet" th:href="@{/dsfr/utility/icons/icons.min.css}">
+</head>
+<body>
+    <header th:replace="fragments/header :: header"></header>
+
+    <main role="main" id="content" class="fr-container fr-mt-4w fr-mb-4w">
+        <h1 th:text="'Profil de ' + ${user.username}">Mon Profil</h1>
+
+        <div class="fr-tabs">
+            <ul class="fr-tabs__list" role="tablist">
+                <li role="presentation"><button id="tabpanel-404" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tabpanel-404-panel">Mes Ressources</button></li>
+                <li role="presentation"><button id="tabpanel-405" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-405-panel">Mes Favoris</button></li>
+                <li role="presentation"><button id="tabpanel-406" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-406-panel">Mes Amis</button></li>
+            </ul>
+
+            <div id="tabpanel-404-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabpanel-404" tabindex="0">
+                <div class="fr-table fr-table--layout-fixed">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Titre</th>
+                                <th>Statut</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="res : ${myRessources}">
+                                <td><a th:href="@{/app/ressources/{id}(id=${res.id})}" th:text="${res.title}">Titre</a></td>
+                                <td>
+                                    <span th:classappend="${res.status.name() == 'published' ? 'fr-badge--success' : (res.status.name() == 'pending' ? 'fr-badge--new' : 'fr-badge--error')}" 
+                                          class="fr-badge" th:text="${res.status}">Statut</span>
+                                </td>
+                                <td th:text="${#temporals.format(res.createdAt, 'dd/MM/yyyy')}">Date</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="tabpanel-405-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-405" tabindex="0">
+                <div class="fr-grid-row fr-grid-row--gutters">
+                    <div class="fr-col-12 fr-col-md-6" th:each="fav : ${myFavorites}">
+                        <div class="fr-card fr-card--sm fr-enlarge-link">
+                            <div class="fr-card__body">
+                                <h4 class="fr-card__title">
+                                    <a th:href="@{/app/ressources/{id}(id=${fav.ressource.id})}" th:text="${fav.ressource.title}">Titre favori</a>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tabpanel-406-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-406" tabindex="0">
+                <div th:if="${!#lists.isEmpty(incomingRequests)}" class="fr-mb-5w">
+                    <h3 class="fr-h5">Demandes reçues en attente</h3>
+                    <ul class="fr-raw-list">
+                        <li th:each="req : ${incomingRequests}" class="fr-p-2w fr-mb-2w" style="border: 1px solid var(--border-default-grey); border-radius: 4px; display: flex; justify-content: space-between; align-items: center;">
+                            
+                            <span class="fr-text--bold" th:text="${req.user1.username}">Nom Utilisateur</span>
+                            
+                            <div style="display: flex; gap: 10px;">
+                                <form th:action="@{/app/friends/{id}/accept(id=${req.id})}" method="post">
+                                    <button type="submit" class="fr-btn fr-btn--sm fr-btn--secondary fr-icon-check-line" title="Accepter"></button>
+                                </form>
+                                <form th:action="@{/app/friends/{id}/reject(id=${req.id})}" method="post">
+                                    <button type="submit" class="fr-btn fr-btn--sm fr-btn--tertiary fr-icon-close-line" title="Refuser"></button>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <h3 class="fr-h5">Ma liste d'amis</h3>
+                <div th:if="${#lists.isEmpty(myFriends)}" class="fr-alert fr-alert--info">
+                    <p>Vous n'avez pas encore d'amis dans votre liste.</p>
+                </div>
+                <ul class="fr-raw-list">
+                    <li th:each="friend : ${myFriends}" class="fr-mb-1w">
+                        <span th:text="${friend.user1.id == currentUser.id ? friend.user2.username : friend.user1.username}"></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer th:insert="~{fragments/footer :: footer}"></footer>
+
+    <script type="module" th:src="@{/dsfr/dsfr.module.min.js}"></script>
+</body>
+</html>

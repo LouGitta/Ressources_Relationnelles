@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr" data-fr-theme="light" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Mentions Légales - (Re)Sources Relationnelles</title>
+    <link rel="stylesheet" th:href="@{/dsfr/dsfr.min.css}">
+    <link rel="stylesheet" th:href="@{/dsfr/utility/icons/icons.min.css}">
+</head>
+<body>
+
+    <header th:insert="~{fragments/header :: header}"></header>
+
+    <main role="main" id="content">
+        <div class="fr-container fr-my-4w">
+            <div class="fr-grid-row fr-grid-row--center">
+                <div class="fr-col-12 fr-col-md-10 fr-col-lg-8">
+                    <h1 class="fr-h1">Mentions Légales</h1>
+
+                    <section class="fr-mb-5w">
+                        <h2 class="fr-h3">1. Édition du site</h2>
+                        <p>Le site <strong>(Re)Sources Relationnelles</strong> est édité par :</p>
+                        <ul class="fr-raw-list fr-ml-3w">
+                            <li class="fr-mb-1w"><strong>Éditeur :</strong> Projet Étudiant CESI</li>
+                            <li class="fr-mb-1w"><strong>Adresse :</strong> Rue Augustin-Louis Cauchy, 44000 Nantes, Pays de la Loire, France</li>
+                            <li><strong>Directeur de la publication :</strong> E. A. L. CESI</li>
+                        </ul>
+                    </section>
+
+                    <section class="fr-mb-5w">
+                        <h2 class="fr-h3">2. Hébergement</h2>
+                        <p>Le site est hébergé par :</p>
+                        
+                        <div class="fr-highlight fr-ml-0 fr-mt-2w">
+                            <p class="fr-text--lg fr-text--bold fr-mb-1v">Scalingo SAS</p>
+                            <ul class="fr-raw-list">
+                                <li><strong>Adresse :</strong> 13 rue Jacques Peirotes, 67000 Strasbourg, France</li>
+                                <li><strong>Email :</strong> <a href="mailto:support@scalingo.com">support@scalingo.com</a></li>
+                                <li><strong>Téléphone :</strong> +33 (0)1 84 88 40 79</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <section class="fr-mb-5w">
+                        <h2 class="fr-h3">3. Propriété intellectuelle</h2>
+                        <p>
+                            L'ensemble des contenus (textes, images, graphismes, logo) est la propriété de l'éditeur du site, 
+                            sauf mention contraire. Toute reproduction, distribution, modification ou adaptation de ces 
+                            éléments est strictement interdite sans l'accord préalable écrit de l'éditeur.
+                        </p>
+                    </section>
+
+                    <section class="fr-mb-5w">
+                        <h2 class="fr-h3">4. Données personnelles</h2>
+                        
+                        <div class="fr-alert fr-alert--info fr-mt-2w">
+                            <h3 class="fr-alert__title">Vos droits RGPD</h3>
+                            <p>
+                                Conformément au Règlement Général sur la Protection des Données (RGPD), vous disposez d'un droit d'accès, de rectification et de suppression des 
+                                données vous concernant. Vous pouvez exercer ce droit à tout moment en nous contactant via la page 
+                                <a href="/app/contact">Contact</a>.
+                            </p>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer th:insert="~{fragments/footer :: footer}"></footer>
+
+    <script th:src="@{/dsfr/dsfr.module.min.js}"></script>
+</body>
+</html>

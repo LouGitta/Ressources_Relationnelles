@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr" data-fr-theme="light" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Activités - (Re)Sources Relationnelles</title>
+    <link rel="stylesheet" th:href="@{/dsfr/dsfr.min.css}">
+    <link rel="stylesheet" th:href="@{/dsfr/utility/icons/icons.min.css}">
+</head>
+<body>
+
+    <header th:insert="~{fragments/header :: header}"></header>
+
+    <main role="main" id="content">
+        <div class="fr-container fr-my-4w">
+            <div class="fr-grid-row fr-grid-row--middle fr-mb-4w">
+                <div class="fr-col-12 fr-col-md-8">
+                    <h1 class="fr-h1 fr-mb-0">Les Activités</h1>
+                    <p class="fr-text--lead">Rencontrez la communauté lors d'événements en ligne ou en présentiel.</p>
+                </div>
+                <div class="fr-col-12 fr-col-md-4" style="text-align: right;">
+                    <a href="/app/activities/create" class="fr-btn fr-icon-add-line fr-btn--icon-left" th:if="${isConnected}">
+                        Proposer une activité
+                    </a>
+                </div>
+            </div>
+
+            <div th:if="${#lists.isEmpty(activities)}" class="fr-alert fr-alert--info">
+                <p>Aucune activité n'est programmée pour le moment. Soyez le premier à en proposer une !</p>
+            </div>
+
+            <div class="fr-grid-row fr-grid-row--gutters">
+                <div class="fr-col-12 fr-col-md-6 fr-col-lg-4" th:each="activity : ${activities}">
+                    <div class="fr-card fr-enlarge-link">
+                        <div class="fr-card__body">
+                            <div class="fr-card__content">
+                                <h3 class="fr-card__title">
+                                    <a href="#" th:text="${activity.title}">Titre de l'activité</a>
+                                </h3>
+                                <p class="fr-card__desc" th:text="${activity.description}">Description courte</p>
+                                
+                                <div class="fr-card__start">
+                                    <p class="fr-card__detail fr-icon-calendar-line">
+                                        <span th:text="${#temporals.format(activity.eventDate, 'dd/MM/yyyy HH:mm')}">Date</span>
+                                    </p>
+                                    <p class="fr-card__detail fr-icon-map-pin-2-line">
+                                        <span th:text="${activity.location}">Lieu ou Lien Visio</span>
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="fr-card__footer" th:if="${isConnected}">
+                                <form th:if="${joinedActivityIds == null or !joinedActivityIds.contains(activity.id)}" 
+                                      th:action="@{/app/activities/{id}/join(id=${activity.id})}" method="post">
+                                    <button type="submit" class="fr-btn fr-btn--secondary fr-icon-check-line fr-btn--icon-left">
+                                        Rejoindre
+                                    </button>
+                                </form>
+
+                                <form th:if="${joinedActivityIds != null and joinedActivityIds.contains(activity.id)}" 
+                                      th:action="@{/app/activities/{id}/leave(id=${activity.id})}" method="post">
+                                    <button type="submit" class="fr-btn fr-btn--tertiary-no-outline fr-icon-close-line fr-btn--icon-left" style="color: var(--text-action-high-error);">
+                                        Se désister
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer th:insert="~{fragments/footer :: footer}"></footer>
+
+    <script th:src="@{/dsfr/dsfr.module.min.js}"></script>
+</body>
+</html>

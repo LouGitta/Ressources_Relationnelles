@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr" data-fr-theme="light" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Créer une ressource - (Re)Sources Relationnelles</title>
+    <link rel="stylesheet" th:href="@{/dsfr/dsfr.min.css}">
+</head>
+<body>
+    <header th:replace="fragments/header :: header"></header> <main role="main" id="content">
+        <div class="fr-container fr-mt-4w fr-mb-4w">
+            <h1>Proposer une nouvelle ressource</h1>
+            <p class="fr-text--sm">Toute ressource proposée sera soumise à validation par un modérateur avant publication.</p>
+
+            <form th:action="@{/app/ressources/create}" method="post" class="fr-mt-4w">
+                <div class="fr-input-group">
+                    <label class="fr-label" for="title">Titre de la ressource</label>
+                    <input class="fr-input" type="text" id="title" name="title" required>
+                </div>
+
+                <div class="fr-grid-row fr-grid-row--gutters">
+                    <div class="fr-col-12 fr-col-md-4">
+                        <div class="fr-select-group">
+                            <label class="fr-label" for="categoryId">Catégorie</label>
+                            <select class="fr-select" id="categoryId" name="categoryId" required>
+                                <option value="" disabled selected>Choisir une catégorie</option>
+                                <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="fr-col-12 fr-col-md-4">
+                        <div class="fr-select-group">
+                            <label class="fr-label" for="typeId">Type de ressource</label>
+                            <select class="fr-select" id="typeId" name="typeId" required>
+                                <option value="" disabled selected>Choisir un type</option>
+                                <option th:each="t : ${types}" th:value="${t.id}" th:text="${t.name}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="fr-col-12 fr-col-md-4">
+                        <div class="fr-select-group">
+                            <label class="fr-label" for="relationId">Type de relation</label>
+                            <select class="fr-select" id="relationId" name="relationId" required>
+                                <option value="" disabled selected>Choisir une relation</option>
+                                <option th:each="rel : ${relations}" th:value="${rel.id}" th:text="${rel.name}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fr-select-group fr-mt-2w">
+                    <label class="fr-label" for="visibility">Visibilité</label>
+                    <select class="fr-select" id="visibility" name="visibility" required>
+                        <option th:each="vis : ${visibilities}" th:value="${vis}" th:text="${vis}"></option>
+                    </select>
+                </div>
+
+                <div class="fr-input-group fr-mt-2w">
+                    <label class="fr-label" for="content">Contenu ou description</label>
+                    <textarea class="fr-input" id="content" name="content" rows="10" required></textarea>
+                </div>
+
+                <div class="fr-mt-4w">
+                    <button type="submit" class="fr-btn">Envoyer pour validation</button>
+                    <a href="/app/ressources" class="fr-btn fr-btn--secondary fr-ml-2w">Annuler</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer th:insert="~{fragments/footer :: footer}"></footer>
+
+    <script type="module" th:src="@{/dsfr/dsfr.module.min.js}"></script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr" data-fr-theme="light" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Modération - (Re)Sources Relationnelles</title>
+    <link rel="stylesheet" th:href="@{/dsfr/dsfr.min.css}">
+    <link rel="stylesheet" th:href="@{/dsfr/utility/icons/icons.min.css}">
+</head>
+<body>
+
+    <header th:insert="~{fragments/header :: header}"></header>
+
+    <main role="main" id="content">
+        <div class="fr-container fr-my-4w">
+            <h1 class="fr-h1">Panneau de modération</h1>
+            <p class="fr-text--lead">Ressources en attente de validation de la part de la communauté.</p>
+
+            <div th:if="${#lists.isEmpty(pendingRessources)}" class="fr-alert fr-alert--success fr-mt-2w">
+                <h3 class="fr-alert__title">Tout est à jour !</h3>
+                <p>Il n'y a actuellement aucune ressource en attente de modération.</p>
+            </div>
+
+            <div th:if="${!#lists.isEmpty(pendingRessources)}" class="fr-table fr-table--no-caption fr-mt-4w">
+                <table>
+                    <caption>Ressources en attente</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Titre</th>
+                            <th scope="col">Auteur</th>
+                            <th scope="col">Date de création</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="res : ${pendingRessources}">
+                            <td>
+                                <a th:href="@{/app/ressources/{id}(id=${res.id})}" th:text="${res.title}" target="_blank">Titre</a>
+                            </td>
+                            <td th:text="${res.user.username}">Auteur</td>
+                            <td th:text="${#temporals.format(res.createdAt, 'dd/MM/yyyy HH:mm')}">Date</td>
+                            <td>
+                                <div style="display: flex; gap: 10px;">
+                                    <form th:action="@{/app/ressources/moderation/{id}/accept(id=${res.id})}" method="post">
+                                        <button type="submit" class="fr-btn fr-btn--sm fr-icon-check-line fr-btn--icon-left" style="background-color: var(--background-action-high-success); color: white;">
+                                            Accepter
+                                        </button>
+                                    </form>
+                                    
+                                    <form th:action="@{/app/ressources/moderation/{id}/reject(id=${res.id})}" method="post">
+                                        <button type="submit" class="fr-btn fr-btn--sm fr-icon-close-line fr-btn--icon-left" style="background-color: var(--background-action-high-error); color: white;">
+                                            Refuser
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </main>
+
+    <footer th:insert="~{fragments/footer :: footer}"></footer>
+
+    <script th:src="@{/dsfr/dsfr.module.min.js}"></script>
+</body>
+</html>

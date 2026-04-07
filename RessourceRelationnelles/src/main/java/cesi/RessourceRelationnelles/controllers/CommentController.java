@@ -50,6 +50,9 @@ public class CommentController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Comment> update(@PathVariable Integer id, @RequestBody Comment comment) {
+        if (commentService.getById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         comment.setId(id);
         return ResponseEntity.ok(commentService.save(comment));
     }
