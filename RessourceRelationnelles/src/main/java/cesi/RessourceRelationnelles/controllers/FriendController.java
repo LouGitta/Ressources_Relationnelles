@@ -29,6 +29,10 @@ public class FriendController {
         return ResponseEntity.ok(friendService.getByUser2(id));
     }
 
+        @GetMapping("/friends/{id}")
+    public ResponseEntity<List<Friend>> getAllFriendAndRequests(@PathVariable Integer id) {
+        return ResponseEntity.ok( friendService.getAllByUser1(id));
+    }
     @PostMapping
     public ResponseEntity<Friend> create(@RequestBody Friend friend) {
         friend.setId(null);
