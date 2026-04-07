@@ -49,25 +49,18 @@ public class SecurityConfig {
                                 "/login",
                                 "/webjars/**"
                         ).permitAll()
-
-                        // ADMIN (admin)
-                        .requestMatchers("/admin/**",
-                                "/app/profile"
-                        ).hasRole("ADMIN")
-
-                        // SUPER ADMIN (admin)
-                        .requestMatchers("/admin/**",
-                                "/app/profile"
-                        ).hasRole("SUPER_ADMIN")
-
-                        // MODERATOR
-                        .requestMatchers("/app/ressources/moderation/**",
-                                "/app/profile").hasRole("MODERATOR")
+                        .requestMatchers("/app/profile)").hasAnyRole("CITIZEN", "MODERATOR", "ADMINISTRATOR", "SUPERADMIN")
 
                         // CONNECTÉ citizen
-                        .requestMatchers("/app/profile",
-                                "/app/ressources/create", // !
-                                "/app/").hasRole("CITIZEN") //!
+                        .requestMatchers(
+                                "/app/ressources/create").hasRole("CITIZEN") //!
+                        // ADMIN (admin)
+                        .requestMatchers("/admin/**"
+                        ).hasAnyRole("ADMIN", "SUPERADMIN")
+
+                        // MODERATOR
+                        .requestMatchers("/app/ressources/moderation/**").hasRole("MODERATOR")
+
 
                         // le reste: connecté (au début, c’est plus simple askip)
                         .anyRequest().authenticated()
