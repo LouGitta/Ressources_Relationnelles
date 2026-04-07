@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class ProfileFrontController {
@@ -43,8 +44,11 @@ public class ProfileFrontController {
         List<Friend> myFriends = friendService.getAllAcceptedFriends(user.getId());
         model.addAttribute("myFriends", myFriends);
 
-        // 4. Ses demandes d'amis reçues (en attente)
-        List<Friend> incomingRequests = friendService.getByUser2(user.getId());
+        // 4. Ses demandes d'amis reçues (FILTRÉES en attente)
+        List<Friend> incomingRequests = friendService.getByUser2(user.getId())
+                .stream()
+                .filter(f -> f.getStatus() == FriendStatus.pending)
+                .collect(Collectors.toList());
         model.addAttribute("incomingRequests", incomingRequests);
 
         return "profile";
