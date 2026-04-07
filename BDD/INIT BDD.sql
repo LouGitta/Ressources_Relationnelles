@@ -1,5 +1,6 @@
-CREATE DATABASE ressources_relationnelles;
+CREATE DATABASE ressources_relationnelles DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE ressources_relationnelles;
+SET NAMES utf8mb4;
 
 CREATE TABLE `User` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
@@ -9,7 +10,7 @@ CREATE TABLE `User` (
   `role` ENUM ('citizen', 'moderator', 'administrator', 'super_admin'),
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `is_active` bool DEFAULT true
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `Friend` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
@@ -17,7 +18,7 @@ CREATE TABLE `Friend` (
   `user_2` integer NOT NULL,
   `status` ENUM ('pending', 'accepted', 'rejected') DEFAULT 'pending',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `Ressource` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
@@ -31,7 +32,7 @@ CREATE TABLE `Ressource` (
   `visibility` ENUM ('private_visibility', 'shared', 'public_visibility') DEFAULT 'private_visibility',
   `status` ENUM ('pending', 'published', 'rejected') DEFAULT 'pending',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `Comment` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
@@ -40,7 +41,7 @@ CREATE TABLE `Comment` (
   `content` text,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `user_id` integer NOT NULL
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `Progression` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
@@ -50,7 +51,7 @@ CREATE TABLE `Progression` (
   `is_saved` bool DEFAULT false,
   `is_viewed` bool DEFAULT false,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `Activity` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
@@ -60,29 +61,29 @@ CREATE TABLE `Activity` (
   `event_date` datetime,
   `location` varchar(255),
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `ActivityParticipant` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `ressource_id` integer NOT NULL,
   `user_id` integer NOT NULL,
   `joined_at` datetime DEFAULT CURRENT_TIMESTAMP
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `Relation` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(255)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `Type` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(255)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `Category` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(255)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 ALTER TABLE `Friend` ADD FOREIGN KEY (`user_1`) REFERENCES `User` (`id`);
 

@@ -1,0 +1,38 @@
+<ion-content [fullscreen]="true">
+  <dsfr-button
+    [label]="'Retourner aux ressources'"
+    [type]="'button'"
+    [variant]="'tertiary-no-outline'"
+    [buttonSize]="'MD'"
+    [icon]="'fr-icon-arrow-left-fill'"
+    [disabled]="false"
+    [ariaLabel]="''"
+    [invertedOutlineContrast]="false"
+    [buttonId]="'my-button'"
+    [ariaControls]="''"
+    [customClass]="''"
+    [buttonRole]="'button'"
+    (click)="goToRessourcePage()"
+  ></dsfr-button>
+
+  <ion-img src="assets/imgs/books.webp" />
+  <h1 class="title">{{ ressourceData.title }}</h1>
+  <div class="ml-5">
+    <dsfr-badge [label]="ressourceData.category.name" [noIcon]="false" [badgeSize]="'MD'" [customClass]="'fr-badge--blue-ecume'" [severity]="undefined"></dsfr-badge>
+    &nbsp;<dsfr-badge [label]="ressourceData.type.name" [noIcon]="false" [badgeSize]="'MD'" [customClass]="'fr-badge--yellow-tournesol'" [severity]="undefined"></dsfr-badge>
+    &nbsp;<dsfr-badge [label]="ressourceData.relation.name" [noIcon]="false" [badgeSize]="'MD'" [customClass]="'fr-badge--green-bourgeon'" [severity]="undefined"></dsfr-badge>
+    <p class="text-gray-300">Publié le {{ getFormattedDate(ressourceData.createdAt)}} par {{ressourceData.user.username}}</p>
+    <p class="text-marianne">{{ressourceData.content}}</p>
+  </div>
+
+  <ion-toast
+    [isOpen]="isToastOpen"
+    [trigger]="isToastOpen"
+    [message]="toastMessage"
+    [color]="'danger'"
+    [icon]="'bug-outline'"
+    [duration]="5000"
+    (didDismiss)="setToastOpen(false)"
+  >
+  </ion-toast>
+</ion-content>

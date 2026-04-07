@@ -1,0 +1,22 @@
+<ion-content [fullscreen]="true">
+  <h1 class="title">Mon Compte</h1>
+  <div class="pl-2 pr-10">
+    <dsfr-form-input [disabled]="false" [label]="'Nom d\'utilisateur'" [(ngModel)]="userData.username" [required]="true" [type]="'text'" [buttonVariant]="'primary'"></dsfr-form-input>
+    <dsfr-form-input [disabled]="false" [label]="'Email'" [(ngModel)]="userData.email" [required]="true" [type]="'text'" [buttonVariant]="'primary'"></dsfr-form-input>
+    <ion-grid>
+      <ion-row>
+        <dsfr-button class="btn" (click)="saveUserData()" label="Sauvegarder les modification" icon="fr-icon-save-3-line"></dsfr-button>
+        <dsfr-button class="btn" (click)="deleteUserData()" label="Supprimer le compte" icon="fr-icon-wheelchair-line"></dsfr-button>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <ion-toast
+  [isOpen]="isToastOpen"
+  [trigger]="isToastOpen"
+  [message]="tostMessage"
+  [color]="toastColor"
+  [icon]="toastIcon"
+  [duration]="5000"
+  (didDismiss)="setToastOpen(false)">
+  </ion-toast>
+</ion-content>
