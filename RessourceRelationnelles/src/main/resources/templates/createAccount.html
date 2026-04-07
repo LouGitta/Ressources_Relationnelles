@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Créer un compte</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr/dist/dsfr.min.css">
+    <script type="module" th:src="@{/dsfr/dsfr.module.min.js}"></script>
+    <script type="text/javascript" nomodule th:src="@{/dsfr/dsfr.nomodule.min.js}"></script>
 </head>
 <body>
     <div class="fr-container">
@@ -38,6 +39,7 @@
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr/dist/dsfr.module.min.js"></script>
+    <script type="module" th:src="@{/dsfr/dsfr.module.min.js}"></script>
+    <script type="text/javascript" nomodule th:src="@{/dsfr/dsfr.nomodule.min.js}"></script>
 </body>
 </html>

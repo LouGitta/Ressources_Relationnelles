@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr/dist/dsfr.min.css">
+    <link rel="stylesheet" th:href="@{/dsfr/dsfr.min.css}">
+    <link rel="stylesheet" th:href="@{/dsfr/utility/icons/icons.min.css}">
 </head>
 <body>
     <div class="fr-container">
@@ -42,6 +43,7 @@
     
     <footer th:insert="~{fragments/footer :: footer}"></footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr/dist/dsfr.noModule.min.js"></script>
+    <script type="module" th:src="@{/dsfr/dsfr.module.min.js}"></script>
+    <script type="text/javascript" nomodule th:src="@{/dsfr/dsfr.nomodule.min.js}"></script>
 </body>
 </html>
