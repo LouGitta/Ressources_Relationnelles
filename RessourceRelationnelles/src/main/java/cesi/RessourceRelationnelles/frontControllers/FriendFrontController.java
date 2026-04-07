@@ -31,7 +31,7 @@ public class FriendFrontController {
         
         // On récupère l'utilisateur directement depuis le Model préparé par le GlobalControllerAdvice
         User currentUser = (User) model.getAttribute("currentUser");
-        if (currentUser == null) return "redirect:/app/auth";
+        if (currentUser == null) return "redirect:/app/login";
         
         Optional<User> targetOpt = userService.getById(targetUserId);
 
@@ -53,7 +53,7 @@ public class FriendFrontController {
     public String acceptFriend(@PathVariable Integer id, Model model) {
         
         User currentUser = (User) model.getAttribute("currentUser");
-        if (currentUser == null) return "redirect:/app/auth";
+        if (currentUser == null) return "redirect:/app/login";
 
         Optional<Friend> friendOpt = friendService.getById(id);
         if (friendOpt.isPresent()) {
@@ -71,7 +71,7 @@ public class FriendFrontController {
     public String rejectFriend(@PathVariable Integer id, Model model) {
         
         User currentUser = (User) model.getAttribute("currentUser");
-        if (currentUser == null) return "redirect:/app/auth";
+        if (currentUser == null) return "redirect:/app/login";
 
         Optional<Friend> friendOpt = friendService.getById(id);
         if (friendOpt.isPresent()) {
