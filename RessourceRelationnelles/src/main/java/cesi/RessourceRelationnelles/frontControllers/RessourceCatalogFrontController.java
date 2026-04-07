@@ -5,7 +5,6 @@ import cesi.RessourceRelationnelles.models.Visibility;
 import cesi.RessourceRelationnelles.models.RessourceStatus;
 import cesi.RessourceRelationnelles.services.CategoryService;
 import cesi.RessourceRelationnelles.services.RessourceService;
-import cesi.RessourceRelationnelles.utils.DeviceDetector;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,9 +23,6 @@ public class RessourceCatalogFrontController {
     @Autowired
     private CategoryService categoryService;
 
-    @Autowired
-    private DeviceDetector deviceDetector;
-
     @GetMapping("/app/ressources")
     public String afficherCatalogue(
             @RequestParam(required = false) String title,
@@ -34,16 +30,7 @@ public class RessourceCatalogFrontController {
             @RequestParam(required = false) Visibility visibility,
             Model model, HttpServletRequest request) {
 
-        // --- MODE DEV : On simule la connexion ---
-        boolean isConnected = true;
-        model.addAttribute("isConnected", isConnected);
-        model.addAttribute("isMobile", deviceDetector.isMobile(request));
-        
-        /* PROD - Vérification réelle de sécurité (quand Spring Security sera implémenté)
-        boolean isConnected = request.getUserPrincipal() != null;
-        model.addAttribute("isConnected", isConnected);
-        model.addAttribute("isMobile", deviceDetector.isMobile(request));
-        */
+        // GlobalControllerAdvice gère automatiquement : isConnected, isMobile
         
         model.addAttribute("categories", categoryService.getAll());
         model.addAttribute("visibilities", Visibility.values());

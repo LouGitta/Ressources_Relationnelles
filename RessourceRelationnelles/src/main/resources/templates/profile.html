@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Mon Profil - (Re)Sources Relationnelles</title>
     <link rel="stylesheet" th:href="@{/dsfr/dsfr.min.css}">
+    <link rel="stylesheet" th:href="@{/dsfr/utility/icons/icons.min.css}">
 </head>
 <body>
     <header th:replace="fragments/header :: header"></header>
@@ -58,13 +59,34 @@
             </div>
 
             <div id="tabpanel-406-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-406" tabindex="0">
-                <ul class="fr-btns-group">
-                    <li th:each="friendship : ${myFriends}">
-                        <span class="fr-btn fr-btn--secondary fr-icon-user-line fr-btn--icon-left" 
-                              th:text="${friendship.user1.id == user.id ? friendship.user2.username : friendship.user1.username}">Nom de l'ami</span>
+                <div th:if="${!#lists.isEmpty(incomingRequests)}" class="fr-mb-5w">
+                    <h3 class="fr-h5">Demandes reçues en attente</h3>
+                    <ul class="fr-raw-list">
+                        <li th:each="req : ${incomingRequests}" class="fr-p-2w fr-mb-2w" style="border: 1px solid var(--border-default-grey); border-radius: 4px; display: flex; justify-content: space-between; align-items: center;">
+                            
+                            <span class="fr-text--bold" th:text="${req.user1.username}">Nom Utilisateur</span>
+                            
+                            <div style="display: flex; gap: 10px;">
+                                <form th:action="@{/app/friends/{id}/accept(id=${req.id})}" method="post">
+                                    <button type="submit" class="fr-btn fr-btn--sm fr-btn--secondary fr-icon-check-line" title="Accepter"></button>
+                                </form>
+                                <form th:action="@{/app/friends/{id}/reject(id=${req.id})}" method="post">
+                                    <button type="submit" class="fr-btn fr-btn--sm fr-btn--tertiary fr-icon-close-line" title="Refuser"></button>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <h3 class="fr-h5">Ma liste d'amis</h3>
+                <div th:if="${#lists.isEmpty(myFriends)}" class="fr-alert fr-alert--info">
+                    <p>Vous n'avez pas encore d'amis dans votre liste.</p>
+                </div>
+                <ul class="fr-raw-list">
+                    <li th:each="friend : ${myFriends}" class="fr-mb-1w">
+                        <span th:text="${friend.user1.id == currentUser.id ? friend.user2.username : friend.user1.username}"></span>
                     </li>
                 </ul>
-                <p th:if="${#lists.isEmpty(myFriends)}" class="fr-text--sm">Vous n'avez pas encore d'amis ajoutés.</p>
             </div>
         </div>
     </main>

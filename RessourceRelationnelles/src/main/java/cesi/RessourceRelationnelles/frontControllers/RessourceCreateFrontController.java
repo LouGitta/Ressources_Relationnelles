@@ -2,7 +2,6 @@ package cesi.RessourceRelationnelles.frontControllers;
 
 import cesi.RessourceRelationnelles.models.*;
 import cesi.RessourceRelationnelles.services.*;
-import cesi.RessourceRelationnelles.utils.DeviceDetector;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 
 @Controller
@@ -25,22 +23,10 @@ public class RessourceCreateFrontController {
     private TypeService typeService;
     @Autowired
     private RelationService relationService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private DeviceDetector deviceDetector;
 
     @GetMapping("/app/ressources/create")
     public String showCreateForm(Model model, HttpServletRequest request) {
-        
-        /* MODE DEV : On désactive la redirection de sécurité
-        if (request.getUserPrincipal() == null) {
-            return "redirect:/app/auth";
-        }
-        */
-
-        model.addAttribute("isConnected", true);
-        model.addAttribute("isMobile", deviceDetector.isMobile(request));
+        // GlobalControllerAdvice gère automatiquement : isConnected, isMobile
         
         model.addAttribute("categories", categoryService.getAll());
         model.addAttribute("types", typeService.getAll());
@@ -58,16 +44,15 @@ public class RessourceCreateFrontController {
             @RequestParam Integer typeId,
             @RequestParam Integer relationId,
             @RequestParam Visibility visibility,
-            HttpServletRequest request) {
+            HttpServletRequest request,
+            Model model) {
 
-        // --- MODE DEV : On force l'utilisation de l'utilisateur avec l'ID 1 ---
-        User currentUser = userService.getById(1).orElseThrow();
-        
-        /* PROD - Vérification réelle de sécurité (quand Spring Security sera implémenté)
-        Principal principal = request.getUserPrincipal();
-        if (principal == null) return "redirect:/app/auth";
-        User currentUser = userService.getByUsername(principal.getName()).orElseThrow();
-        */
+        // GlobalControllerAdvice gère automatiquement : currentUser
+
+        User currentUser = (User) model.asMap().get("currentUser");
+        if (currentUser == null) {
+            return "redirect:/app/home";
+        }
         
         Ressource ressource = new Ressource();
         ressource.setTitle(title);

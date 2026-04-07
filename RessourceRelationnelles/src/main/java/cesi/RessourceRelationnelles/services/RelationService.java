@@ -29,4 +29,8 @@ public class RelationService {
     public void delete(Integer id) {
         relationRepository.deleteById(id);
     }
+
+    public long countAll() {
+        return relationRepository.count();
+    }
 }

@@ -37,10 +37,10 @@
                                 <th:block th:unless="${isConnected}">
                                     <ul class="fr-links-group">
                                         <li>
-                                            <a class="fr-link fr-icon-lock-line fr-link--icon-left" href="/login">Se connecter</a>
+                                            <a class="fr-link fr-icon-lock-line fr-link--icon-left" href="/app/login">Se connecter</a>
                                         </li>
                                         <li>
-                                            <a class="fr-link fr-icon-account-fill fr-link--icon-left" href="/create-account">Créer un compte</a>
+                                            <a class="fr-link fr-icon-account-fill fr-link--icon-left" href="/app/create-account">Créer un compte</a>
                                         </li>
                                     </ul>
                                 </th:block>
@@ -76,6 +76,9 @@
                             </li>
                             <li class="fr-nav__item">
                                 <a type="link" href="/app/ressources" class="fr-nav__link">Ressources</a>
+                            </li>
+                            <li class="fr-nav__item" th:if="${isModo}">
+                                <a type="link" href="/app/ressources/moderation" class="fr-nav__link">Modération</a>
                             </li>
                             <li class="fr-nav__item" th:if="${isConnected}">
                                 <a type="link" href="/app/profile" class="fr-nav__link">Profil</a>

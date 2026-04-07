@@ -1,5 +1,6 @@
 package cesi.RessourceRelationnelles.services;
 
+import cesi.RessourceRelationnelles.models.Role;
 import cesi.RessourceRelationnelles.models.User;
 import cesi.RessourceRelationnelles.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +36,16 @@ public class UserService {
 
     public void delete(Integer id) {
         userRepository.deleteById(id);
+    }
+
+    public long countAll() {
+        return userRepository.count();
+    }
+
+    public List<User> searchAndFilter(String keyword, Role role, Boolean isActive) {
+        if (keyword != null && keyword.trim().isEmpty()) {
+            keyword = null;
+        }
+        return userRepository.findWithFilters(keyword, role, isActive);
     }
 }

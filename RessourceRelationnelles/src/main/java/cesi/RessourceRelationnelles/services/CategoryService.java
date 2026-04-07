@@ -17,7 +17,7 @@ public class CategoryService {
     public List<Category> getAll() {
         return categoryRepository.findAll();
     }
-    
+
     public Optional<Category> getById(Integer id) {
         return categoryRepository.findById(id);
     }
@@ -25,8 +25,12 @@ public class CategoryService {
     public Category save(Category category) {
         return categoryRepository.save(category);
     }
-    
+
     public void delete(Integer id) {
         categoryRepository.deleteById(id);
+    }
+
+    public long countAll() {
+        return categoryRepository.count();
     }
 }

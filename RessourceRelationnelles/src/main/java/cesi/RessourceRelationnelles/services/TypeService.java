@@ -17,7 +17,7 @@ public class TypeService {
     public List<Type> getAll() {
         return typeRepository.findAll();
     }
-    
+
     public Optional<Type> getById(Integer id) {
         return typeRepository.findById(id);
     }
@@ -25,8 +25,12 @@ public class TypeService {
     public Type save(Type type) {
         return typeRepository.save(type);
     }
-    
+
     public void delete(Integer id) {
         typeRepository.deleteById(id);
+    }
+
+    public long countAll() {
+        return typeRepository.count();
     }
 }
