@@ -13,7 +13,19 @@
             <div class="fr-col-12 fr-col-md-6">
                 <div class="fr-card fr-p-5w">
                     <h1 class="fr-h3 fr-mb-3w">Connexion</h1>
-                    
+
+                    <!-- Message d'erreur -->
+                    <div th:if="${param.error}" class="fr-alert fr-alert--error fr-mb-3w">
+                        <p class="fr-alert__title">Erreur de connexion</p>
+                        <p>Nom d'utilisateur ou mot de passe incorrect.</p>
+                    </div>
+
+                    <!-- Message de déconnexion -->
+                    <div th:if="${param.logout}" class="fr-alert fr-alert--success fr-mb-3w">
+                        <p>Vous avez été déconnecté avec succès.</p>
+                    </div>
+
+                    <!-- Formulaire de connexion -->
                     <form th:action="@{/app/login}" method="post">
                         <div class="fr-form-group">
                             <label class="fr-label" for="username">
@@ -33,7 +45,7 @@
                             Se connecter
                         </button>
                         <li class="fr-label">
-                            <a class="fr-label-link" href="/app/create-account">Vous n'avez pas encore de compte? Créez vous en un ici</a>
+                            <a class="fr-label-link" th:href="@{/app/create-account}">Vous n'avez pas encore de compte? Créez vous en un ici</a>
                         </li>
                     </form>
                 </div>

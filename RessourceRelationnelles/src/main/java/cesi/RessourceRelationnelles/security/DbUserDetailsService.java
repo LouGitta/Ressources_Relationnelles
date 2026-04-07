@@ -27,7 +27,7 @@ public class DbUserDetailsService implements UserDetailsService {
                 u.getPassword(),
                 u.isActive(),
                 true, true, true,
-                List.of(new SimpleGrantedAuthority("ROLE_" + u.getRole().name()))
+                List.of(new SimpleGrantedAuthority(u.getRole().name()))
         );
     }
 }

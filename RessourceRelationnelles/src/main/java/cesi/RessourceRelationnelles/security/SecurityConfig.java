@@ -35,31 +35,51 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // PUBLIC (non connecté)
                         .requestMatchers(
-                                "/static.dsfr/**", "/JS/**", "/images/**",
+                                "/static/dsfr/**", "/dsfr/**", "/dsfr/dsfr.module.min.js",
+                                "/favicon.ico",
                                 "/",
-                                "/app/**",
+                                "/app/home",
+                                "/app/ressources",
+                                "/app/contact",
+                                "/app/cgu",
+                                "/app/legalMention",
+                                "/app/create-account",
+                                "/app/login", // ?
+                                "/app/home",
                                 "/login",
-                                "/webjars/**",
-                                "/favicon.ico"
+                                "/webjars/**"
                         ).permitAll()
 
                         // ADMIN (admin)
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/admin/**",
+                                "/app/profile"
+                        ).hasRole("ADMIN")
 
-                        // CONNECTÉ (citizen, admin)
-                        //.requestMatchers("/app/**").authenticated()
+                        // SUPER ADMIN (admin)
+                        .requestMatchers("/admin/**",
+                                "/app/profile"
+                        ).hasRole("SUPER_ADMIN")
+
+                        // MODERATOR
+                        .requestMatchers("/app/ressources/moderation/**",
+                                "/app/profile").hasRole("MODERATOR")
+
+                        // CONNECTÉ citizen
+                        .requestMatchers("/app/profile",
+                                "/app/ressources/create", // !
+                                "/app/").hasRole("CITIZEN") //!
 
                         // le reste: connecté (au début, c’est plus simple askip)
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login")
+                        .loginPage("/app/login")
                         .defaultSuccessUrl("/home", true)
                         .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/home"))
+                        .logoutSuccessUrl("/app/home"))
 
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers("/api/**") // Les API REST n'utilisent pas de session/CSRF

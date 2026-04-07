@@ -9,4 +9,10 @@ public class AuthController {
     public String afficherAuth() {
         return "auth";
     }
+
+    @GetMapping("/login")
+    public String redirectLogin() {
+        return "redirect:/app/login";
+    }
+
 }
