@@ -14,8 +14,8 @@ public class ActivityParticipant {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "activity_id", nullable = false)
-    private Activity activity;
+    @JoinColumn(name = "ressource_id", nullable = false)
+    private Ressource ressource;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

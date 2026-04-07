@@ -10,9 +10,7 @@ import java.util.Optional;
 @Repository
 public interface ActivityParticipantRepository extends CrudRepository<ActivityParticipant, Integer> {
     
-    List<ActivityParticipant> findByActivity_Id(Integer activityId);
+    Optional<ActivityParticipant> findByRessource_IdAndUser_Id(Integer ressourceId, Integer userId);
     
-    List<ActivityParticipant> findByUser_Id(Integer userId);
-    
-    Optional<ActivityParticipant> findByActivity_IdAndUser_Id(Integer activityId, Integer userId);
+    List<ActivityParticipant> findByRessource_Id(Integer ressourceId);
 }
