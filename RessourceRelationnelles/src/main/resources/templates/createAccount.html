@@ -13,14 +13,10 @@
                 <div class="fr-card">
                     <div class="fr-card__body">
                         <h1 class="fr-h1">Créer un compte</h1>
-                        <form method="post" th:action="@{/createAccount}">
+                        <form method="post" th:action="@{/create-account}">
                             <div class="fr-form-group">
-                                <label class="fr-label" for="firstname">Prénom</label>
+                                <label class="fr-label" for="firstname">Nom d'utilisateur</label>
                                 <input class="fr-input" type="text" id="firstname" name="firstname" required>
-                            </div>
-                            <div class="fr-form-group">
-                                <label class="fr-label" for="lastname">Nom</label>
-                                <input class="fr-input" type="text" id="lastname" name="lastname" required>
                             </div>
                             <div class="fr-form-group">
                                 <label class="fr-label" for="email">Email</label>
@@ -36,7 +32,7 @@
                             </div>
                             <button class="fr-btn" type="submit">Créer un compte</button>
                         </form>
-                        <p class="fr-mt-2w">Vous avez déjà un compte? <a href="/login">Se connecter</a></p>
+                        <p class="fr-mt-2w">Vous avez déjà un compte? <a href="/app/login">Se connecter</a></p>
                     </div>
                 </div>
             </div>
