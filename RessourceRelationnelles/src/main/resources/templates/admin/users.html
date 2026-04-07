@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org" 
       th:replace="~{layouts/layoutAdmin :: layout(~{::main})}">
 <body>
-
     <main role="main" id="content">
         <div class="fr-container fr-mt-4w fr-mb-4w">
             
@@ -14,9 +13,50 @@
                     <a href="/admin/users/new" class="fr-btn fr-icon-add-line fr-btn--icon-left">Ajouter un utilisateur</a>
                 </div>
             </div>
+
             <div class="fr-grid-row">
                 <div class="fr-col-12">
-                    
+                    <form action="/admin/users" method="get" class="fr-mb-4w fr-p-3w" style="background-color: var(--background-alt-grey);">
+                        <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--bottom">
+                            
+                            <div class="fr-col-12 fr-col-md-4">
+                                <div class="fr-input-group">
+                                    <label class="fr-label" for="keyword">Recherche (Pseudo / Email)</label>
+                                    <input class="fr-input" type="text" id="keyword" name="keyword" th:value="${selectedKeyword}">
+                                </div>
+                            </div>
+                            
+                            <div class="fr-col-12 fr-col-md-3">
+                                <div class="fr-select-group">
+                                    <label class="fr-label" for="role">Rôle</label>
+                                    <select class="fr-select" id="role" name="role">
+                                        <option value="">Tous les rôles</option>
+                                        <option th:each="r : ${roles}" 
+                                                th:value="${r}" 
+                                                th:text="${r.name()}" 
+                                                th:selected="${r == selectedRole}"></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="fr-col-12 fr-col-md-3">
+                                <div class="fr-select-group">
+                                    <label class="fr-label" for="isActive">Statut du compte</label>
+                                    <select class="fr-select" id="isActive" name="isActive">
+                                        <option value="">Tous</option>
+                                        <option value="true" th:selected="${selectedIsActive == true}">Actif</option>
+                                        <option value="false" th:selected="${selectedIsActive == false}">Inactif</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="fr-col-12 fr-col-md-2">
+                                <button class="fr-btn fr-icon-search-line fr-btn--icon-left" type="submit" style="width: 100%;">
+                                    Filtrer
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                     <div class="fr-table fr-table--no-caption">
                         <table style="min-width: 100%; display: table; width: 100%;">
                             <caption>Liste des utilisateurs</caption>
@@ -25,8 +65,7 @@
                                     <th>ID</th>
                                     <th>Nom d'utilisateur</th>
                                     <th>Mail</th>
-                                    <th>Role</th>
-                                    <th>Date de création</th>
+                                    <th>Rôle actuel</th>
                                     <th>Actif</th>
                                     <th style="text-align: right;">Actions</th>
                                 </tr>
@@ -36,31 +75,26 @@
                                     <td th:text="${user.id}"></td>
                                     <td th:text="${user.username}"></td>
                                     <td th:text="${user.email}"></td>
+                                    
                                     <td>
-                                        <span class="fr-badge fr-badge--info" th:text="${user.role}"></span>
+                                        <span th:classappend="${user.role.name() == 'super_admin' ? 'fr-badge--error' : (user.role.name() == 'administrator' ? 'fr-badge--warning' : (user.role.name() == 'moderator' ? 'fr-badge--success' : 'fr-badge--info'))}" class="fr-badge" th:text="${user.role.name()}"></span>
                                     </td>
-                                    <td th:text="${#temporals.format(user.createdAt, 'dd/MM/yyyy')}"></td>
+                                    
                                     <td>
-                                        <span th:if="${user.isActive}" class="fr-badge fr-badge--success">OUI</span>
-                                        <span th:unless="${user.isActive}" class="fr-badge fr-badge--error">NON</span>
+                                        <span th:if="${user.isActive}" class="fr-badge fr-badge--success fr-badge--no-icon">OUI</span>
+                                        <span th:unless="${user.isActive}" class="fr-badge fr-badge--error fr-badge--no-icon">NON</span>
                                     </td>
+                                    
                                     <td style="text-align: right;">
                                         <a th:href="@{/admin/users/edit/{id}(id=${user.id})}" class="fr-btn fr-btn--tertiary-no-outline fr-icon-edit-line" title="Modifier"></a>
-                                        <a th:href="@{/admin/users/show/{id}(id=${user.id})}" class="fr-btn fr-btn--tertiary-no-outline fr-icon-eye-line" title="Voir"></a>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                        
-                        <div th:if="${#lists.isEmpty(listUsers)}" class="fr-alert fr-alert--info fr-mt-2w">
-                            <p>Aucun utilisateur à afficher.</p>
-                        </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </main>
-
 </body>
 </html>

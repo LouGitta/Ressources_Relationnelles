@@ -22,7 +22,7 @@
                         <div class="fr-header__tools-links">
                             <ul class="fr-btns-group">
                                 <li>
-                                    <a class="fr-btn fr-btn--tertiary fr-icon-home-line" th:href="@{/ressources}">Retour au site</a>
+                                    <a class="fr-btn fr-btn--tertiary fr-icon-home-4-line" th:href="@{/app/home}">Retour au site</a>
                                 </li>
                                 <li>
                                     <a class="fr-btn fr-btn--tertiary fr-icon-logout-box-r-line" th:href="@{/logout}">Déconnexion</a>
@@ -38,7 +38,7 @@
                 <nav class="fr-nav" id="navigation" role="navigation" aria-label="Menu principal">
                     <ul class="fr-nav__list">
                         <li class="fr-nav__item">
-                            <a class="fr-nav__link" th:href="@{/admin/dashboard}">Tableau de bord</a>
+                            <a class="fr-nav__link" th:href="@{/admin/home}">Tableau de bord</a>
                         </li>
                         <li class="fr-nav__item">
                             <a class="fr-nav__link" th:href="@{/admin/ressources}">Ressources</a>
@@ -49,7 +49,12 @@
                         <li class="fr-nav__item">
                             <a class="fr-nav__link" th:href="@{/admin/categories}">Catégories</a>
                         </li>
-                        
+                        <li class="fr-nav__item">
+                            <a class="fr-nav__link" th:href="@{/admin/types}">Types</a>
+                        </li>
+                        <li class="fr-nav__item">
+                            <a class="fr-nav__link" th:href="@{/admin/relations}">Relations</a>
+                        </li>
                     </ul>
                 </nav>
             </div>
