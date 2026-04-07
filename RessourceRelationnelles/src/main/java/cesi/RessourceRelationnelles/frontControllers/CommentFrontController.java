@@ -6,15 +6,14 @@ import cesi.RessourceRelationnelles.models.Role;
 import cesi.RessourceRelationnelles.models.User;
 import cesi.RessourceRelationnelles.services.CommentService;
 import cesi.RessourceRelationnelles.services.RessourceService;
-import cesi.RessourceRelationnelles.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -25,26 +24,20 @@ public class CommentFrontController {
     private CommentService commentService;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private RessourceService ressourceService;
 
     // --- AJOUTER UN COMMENTAIRE ---
     @PostMapping("/app/ressources/{id}/comments")
     public String addComment(@PathVariable("id") Integer ressourceId,
                              @RequestParam("content") String content,
-                             HttpServletRequest request) {
-        // --- MODE DEV : On force l'utilisateur avec l'ID 1 ---
-        Optional<User> userOpt = userService.getById(1);
-        
-        /* PROD - Vérification réelle de sécurité (quand Spring Security sera implémenté)
-        Principal principal = request.getUserPrincipal();
-        if (principal == null) {
-            return "redirect:/app/auth"; 
+                             HttpServletRequest request,
+                             Model model) {
+        // GlobalControllerAdvice gère automatiquement : currentUser
+        User user = (User) model.asMap().get("currentUser");
+        if (user == null) {
+            return "redirect:/app/home";
         }
-        Optional<User> userOpt = userService.getByUsername(principal.getName());
-        */
+        Optional<User> userOpt = Optional.of(user);
         
         Optional<Ressource> ressourceOpt = ressourceService.getById(ressourceId);
 
@@ -65,17 +58,14 @@ public class CommentFrontController {
     @PostMapping("/app/comments/{id}/delete")
     public String deleteComment(@PathVariable("id") Integer commentId,
                                 @RequestParam("ressourceId") Integer ressourceId,
-                                HttpServletRequest request) {
-        // --- MODE DEV : On force l'utilisateur avec l'ID 1 ---
-        Optional<User> userOpt = userService.getById(1);
-        
-        /* PROD - Vérification réelle de sécurité (quand Spring Security sera implémenté)
-        Principal principal = request.getUserPrincipal();
-        if (principal == null) {
-            return "redirect:/app/auth";
+                                HttpServletRequest request,
+                                Model model) {
+        // GlobalControllerAdvice gère automatiquement : currentUser
+        User user = (User) model.asMap().get("currentUser");
+        if (user == null) {
+            return "redirect:/app/home";
         }
-        Optional<User> userOpt = userService.getByUsername(principal.getName());
-        */
+        Optional<User> userOpt = Optional.of(user);
         Optional<Comment> commentOpt = commentService.getById(commentId);
 
         if (userOpt.isPresent() && commentOpt.isPresent()) {

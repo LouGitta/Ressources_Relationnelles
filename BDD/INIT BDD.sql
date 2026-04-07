@@ -64,7 +64,7 @@ CREATE TABLE `Activity` (
 
 CREATE TABLE `ActivityParticipant` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
-  `activity_id` integer NOT NULL,
+  `ressource_id` integer NOT NULL,
   `user_id` integer NOT NULL,
   `joined_at` datetime DEFAULT CURRENT_TIMESTAMP
 );
@@ -108,7 +108,7 @@ ALTER TABLE `Progression` ADD FOREIGN KEY (`ressource_id`) REFERENCES `Ressource
 
 ALTER TABLE `Activity` ADD FOREIGN KEY (`creator_id`) REFERENCES `User` (`id`);
 
-ALTER TABLE `ActivityParticipant` ADD FOREIGN KEY (`activity_id`) REFERENCES `Activity` (`id`);
+ALTER TABLE `ActivityParticipant` ADD FOREIGN KEY (`activity_id`) REFERENCES `Ressource` (`id`);
 
 ALTER TABLE `ActivityParticipant` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
 

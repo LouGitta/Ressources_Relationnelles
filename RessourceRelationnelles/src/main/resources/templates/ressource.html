@@ -6,7 +6,6 @@
     <title>Les Ressources - (Re)Sources Relationnelles</title>
 
     <link rel="stylesheet" th:href="@{/dsfr/dsfr.min.css}">
-    
     <link rel="stylesheet" th:href="@{/dsfr/utility/icons/icons.min.css}">
 </head>
 <body>
@@ -17,6 +16,7 @@
         <div class="fr-container fr-mt-4w fr-mb-4w">
             
             <h1 th:text="${ressource.title}">Titre de la ressource</h1>
+            
             <div th:if="${isConnected}" class="fr-mb-3w">
                 <form th:action="@{/app/ressources/{id}/favorite(id=${ressource.id})}" method="post">
                     <button type="submit" class="fr-btn fr-btn--sm fr-btn--secondary fr-btn--icon-left"
@@ -25,6 +25,7 @@
                     </button>
                 </form>
             </div>
+            
             <div class="fr-text--sm fr-mb-3w">
                 <span th:text="'Publié le ' + ${#temporals.format(ressource.createdAt, 'dd/MM/yyyy')}">Date</span>
                 <span th:text="' par ' + ${ressource.user.username}">Auteur</span>
@@ -34,6 +35,37 @@
                 <p th:text="${ressource.content}">Contenu complet de la ressource...</p>
             </div>
 
+            <div th:if="${ressource.type != null and ressource.type.name == 'Activité / Jeu à réaliser'}" class="fr-callout fr-mb-4w fr-mt-4w">
+                <h3 class="fr-callout__title">Événement communautaire</h3>
+                <p class="fr-callout__text">Cette ressource est une activité interactive. Rejoignez les autres membres !</p>
+
+                <div th:if="${isConnected and isDateValid}" class="fr-mt-2w">
+                    
+                    <form th:if="${!isParticipating}" th:action="@{/app/ressources/{id}/join(id=${ressource.id})}" method="post">
+                        <button type="submit" class="fr-btn fr-icon-checkbox-circle-line fr-btn--icon-left">
+                            Participer à l'activité / le jeu
+                        </button>
+                    </form>
+
+                    <form th:if="${isParticipating}" th:action="@{/app/ressources/{id}/leave(id=${ressource.id})}" method="post">
+                        <button type="submit" class="fr-btn fr-btn--secondary fr-icon-close-circle-line fr-btn--icon-left" style="color: var(--text-action-high-error);">
+                            Partir de l'activité / le jeu
+                        </button>
+                    </form>
+                </div>
+
+                <div th:if="${isParticipating}" class="fr-mt-4w" style="border-top: 1px solid var(--border-default-grey); padding-top: 1rem;">
+                    <h4 class="fr-text--lead">Liste des participants (<span th:text="${#lists.size(participants)}"></span>)</h4>
+                    
+                    <ul class="fr-tags-group">
+                        <li th:each="p : ${participants}">
+                            <p class="fr-tag fr-icon-user-line fr-tag--icon-left" th:text="${p.user.username}"></p>
+                        </li>
+                    </ul>
+                    
+                    <p th:if="${#lists.isEmpty(participants)}" class="fr-text--sm">Vous êtes le premier participant !</p>
+                </div>
+            </div>
             <hr>
 
             <h2 class="fr-mt-5w">Commentaires</h2>
@@ -51,12 +83,20 @@
                         
                         <div class="fr-col-auto" th:if="${isConnected}">
                             <th:block th:with="isAuthor=${comment.user.id == currentUser?.id}, 
-                                                isAdmin=${userRole == 'moderator' or userRole == 'administrator' or userRole == 'super_admin'}">
+                                            isAdmin=${userRole == 'moderator' or userRole == 'administrator' or userRole == 'super_admin'}">
+                                
                                 <form th:if="${isAuthor or isAdmin}" 
-                                    th:action="@{/app/comments/{id}/delete(id=${comment.id})}" method="post">
+                                    th:action="@{/app/comments/{id}/delete(id=${comment.id})}" method="post" style="display:inline-block; margin-right: 5px;">
                                     <input type="hidden" name="ressourceId" th:value="${ressource.id}" />
                                     <button type="submit" class="fr-btn fr-btn--sm fr-btn--secondary fr-icon-delete-line">
                                         Supprimer
+                                    </button>
+                                </form>
+                                
+                                <form th:if="${isConnected and comment.user.id != currentUser.id}" th:action="@{/app/friends/add/{id}(id=${comment.user.id})}" method="post" style="display:inline-block;">
+                                    <input type="hidden" name="ressourceId" th:value="${ressource.id}">
+                                    <button type="submit" class="fr-btn fr-btn--tertiary-no-outline fr-btn--sm fr-icon-user-add-line" title="Envoyer une demande d'ami">
+                                        Ajouter
                                     </button>
                                 </form>
                             </th:block>

@@ -70,4 +70,17 @@ public class RessourceService {
         }
         return ressourceRepository.searchAdmin(title, categoryId, relationId, typeId, visibility, status);
     }
+
+    public List<Ressource> getPendingRessources() {
+        return ressourceRepository.findByStatusOrderByCreatedAtDesc(RessourceStatus.pending);
+    }
+
+    public void updateStatus(Integer id, RessourceStatus status) {
+        Optional<Ressource> opt = ressourceRepository.findById(id);
+        if (opt.isPresent()) {
+            Ressource r = opt.get();
+            r.setStatus(status);
+            ressourceRepository.save(r);
+        }
+    }
 }

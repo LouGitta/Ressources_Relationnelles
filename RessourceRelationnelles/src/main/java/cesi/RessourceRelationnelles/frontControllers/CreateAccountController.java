@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class CreateAccountController {
-    @GetMapping("/app/createAccount")
+    @GetMapping("/app/create-account")
     public String afficherCreateAccount() {
         return "createAccount";
     }

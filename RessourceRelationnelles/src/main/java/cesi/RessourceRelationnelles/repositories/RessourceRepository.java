@@ -19,6 +19,8 @@ public interface RessourceRepository extends CrudRepository<Ressource, Integer> 
        List<Ressource> findByUser_Id(Integer userId);
 
        List<Ressource> findTop10ByStatusOrderByCreatedAtDesc(RessourceStatus status);
+  
+       List<Ressource> findByStatusOrderByCreatedAtDesc(RessourceStatus status);
 
        @Query("SELECT r FROM Ressource r WHERE " +
                      "(:title IS NULL OR LOWER(r.title) LIKE LOWER(CONCAT('%', :title, '%'))) AND " +

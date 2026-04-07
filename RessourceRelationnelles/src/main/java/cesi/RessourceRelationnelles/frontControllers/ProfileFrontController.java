@@ -8,14 +8,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.security.Principal;
 import java.util.List;
 
 @Controller
 public class ProfileFrontController {
 
-    @Autowired
-    private UserService userService;
     @Autowired
     private RessourceService ressourceService;
     @Autowired
@@ -25,20 +22,14 @@ public class ProfileFrontController {
 
     @GetMapping("/app/profile")
     public String afficherProfil(Model model, HttpServletRequest request) {
-        // --- MODE DEV : On force l'utilisateur ID 1 ---
-        User user = userService.getById(1).orElseThrow();
-        model.addAttribute("user", user);
-        model.addAttribute("isConnected", true);
-        
-        /* PROD - Vérification réelle de sécurité (quand Spring Security sera implémenté)
-        Principal principal = request.getUserPrincipal();
-        if (principal == null) {
-            return "redirect:/app/auth";
+        // GlobalControllerAdvice gère automatiquement : isConnected, currentUser
+        User user = (User) model.asMap().get("currentUser");
+        if (user == null) {
+            return "redirect:/app/home";
         }
-        User user = userService.getByUsername(principal.getName()).orElseThrow();
+
+        // Ajouter aussi 'user' pour les templates
         model.addAttribute("user", user);
-        model.addAttribute("isConnected", true);
-        */
 
         // 1. Ses ressources créées
         List<Ressource> myRessources = ressourceService.getByUser(user.getId());
@@ -51,6 +42,10 @@ public class ProfileFrontController {
         // 3. Sa liste d'amis (méthode déjà existante dans ton FriendService)
         List<Friend> myFriends = friendService.getAllAcceptedFriends(user.getId());
         model.addAttribute("myFriends", myFriends);
+
+        // 4. Ses demandes d'amis reçues (en attente)
+        List<Friend> incomingRequests = friendService.getByUser2(user.getId());
+        model.addAttribute("incomingRequests", incomingRequests);
 
         return "profile";
     }
