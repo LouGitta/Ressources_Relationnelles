@@ -269,61 +269,75 @@ class RessourceRelationnellesApplicationTests {
 	}
 
 	@Test
-	@Order(6)
+	@Order(5)
 	void RefuseFriendRequest(){
 		var users = userControl.getAll().getBody();
+		User user1 = null;
 		User user2 = null;
 		for (User user : users) {
-			if(user.getUsername().equals("Johanes 2eme du nom")) user2 = user;
-		}
-		var friends = friendControl.getAllFriend(user2.getId()).getBody();
-		Friend friend1 = null;
-		for (Friend fr : friends) {
-			if (fr.getStatus() == FriendStatus.pending) {
-				friend1 = fr;
+			if (users.indexOf(user) == 0) {
+				user1 = user;
+			}
+			if (users.indexOf(user) == 1) {
+				user2 = user;
 			}
 		}
-		friend1.setStatus(FriendStatus.accepted);
-		var AddAsFriend = friendControl.update(friend1.getId(),friend1).getBody().getStatus() == FriendStatus.accepted;
-		Assert.isTrue(AddAsFriend, "Echec de l'acceptation d'amis");
+
+		var friend1 = new Friend(0,user1,user2,FriendStatus.pending,LocalDateTime.now());
+		var friendFound = friendControl.create(friend1).getBody();
+
+		friendFound.setStatus(FriendStatus.rejected);
+		var body = friendControl.update(friend1.getId(),friend1).getBody().getStatus();
+		var AddAsFriend =  body == FriendStatus.rejected;
+		Assert.isTrue(AddAsFriend, "Echec du refus d'amis");
+		friendControl.delete(friendFound.getId());
+
 	}
 	
 
 	@Test
-	@Order(5)
+	@Order(6)
 	void AcceptFriendRequest(){
 		var users = userControl.getAll().getBody();
+		User user1 = null;
 		User user2 = null;
 		for (User user : users) {
-			if(user.getUsername().equals("Johanes 2eme du nom")) user2 = user;
-		}
-		var friends = friendControl.getAllFriend(user2.getId()).getBody();
-		Friend friend1 = null;
-		for (Friend fr : friends) {
-			if (fr.getStatus() == FriendStatus.pending) {
-				friend1 = fr;
+			if (users.indexOf(user) == 0) {
+				user1 = user;
+			}
+			if (users.indexOf(user) == 1) {
+				user2 = user;
 			}
 		}
-		friend1.setStatus(FriendStatus.accepted);
-		var AddAsFriend = friendControl.update(friend1.getId(),friend1).getBody().getStatus() == FriendStatus.accepted;
+
+		var friend1 = new Friend(0,user1,user2,FriendStatus.pending,LocalDateTime.now());
+		var friendFound = friendControl.create(friend1).getBody();
+
+		friendFound.setStatus(FriendStatus.accepted);
+		var body = friendControl.update(friend1.getId(),friend1).getBody().getStatus();
+		var AddAsFriend = body == FriendStatus.accepted;
 		Assert.isTrue(AddAsFriend, "Echec de l'acceptation d'amis");
+		friendControl.delete(friendFound.getId());
+
 	}
 
 	@Test
 	@Order(4)
 	void AddAsFriend(){
 		var users = userControl.getAll().getBody();
-		User user1 = null;
-		User user2 = null;
-		for (User user : users) {
-			if(user.getUsername().equals("Johanes 1er du nom")) user1 = user;
-			if(user.getUsername().equals("Johanes 2eme du nom")) user2 = user;
-
-		}
+		User user1 = users.get(0);
+		User user2 = users.get(1);
+		//for (User user : users) {
+		//	if(user.getUsername().equals("Johanes 1er du nom")) user1 = user;
+		//	if(user.getUsername().equals("Johanes 2eme du nom")) user2 = user;
+//
+		//}
 
 		var friend = new Friend(0, user1, user2, FriendStatus.pending, LocalDateTime.now());
-		var AddAsFriend = friendControl.create(friend).getBody() == friend;
+		var friendFound = friendControl.create(friend).getBody();
+		var AddAsFriend = friendFound.getUser1().getId()== friend.getUser1().getId() && friendFound.getUser2().getId()== friendFound.getUser2().getId() ;
 		Assert.isTrue(AddAsFriend, "Echec de la demande d'amis");
+		friendControl.delete(friendFound.getId());
 	}
 
 	@Test void CreateTooLateRessource(){
@@ -387,19 +401,17 @@ class RessourceRelationnellesApplicationTests {
 			userControl.delete(user1.getId());
 			userControl.delete(user2.getId());
 		} catch (Exception e) {
-			// TODO: handle exception
 		}
-		//créer utilisateur Simple
 		var user1 = new User(0, "Johanes 1er du nom", "Johanespremierdunom@gmail.com", "ASafePassword@1235813", Role.citizen, LocalDateTime.now(),
             true);
 		var user2 = new User(0, "Johanes 2eme du nom", "Johanesdeuxiemedunom@gmail.com", "ASafePassword@1235813", Role.citizen, LocalDateTime.now(),
             true);
 
 		
-		//var user1WasCreated = userControl.create(user1).getBody() == user1;
-		//var user2WasCreated = userControl.create(user2).getBody() == user2;
+		var user1WasCreated = userControl.create(user1).getBody() == user1;
+		var user2WasCreated = userControl.create(user2).getBody() == user2;
 
-		//Assert.isTrue(user1WasCreated && user2WasCreated,"At least one of the two users has not been created");
+		Assert.isTrue(user1WasCreated && user2WasCreated,"At least one of the two users has not been created");
 	}
 
 	}
