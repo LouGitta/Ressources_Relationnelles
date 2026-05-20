@@ -9,7 +9,7 @@ on:
     types: [opened, synchronize, reopened]
 jobs:
   build:
-    name: Build JAR (skip tests)
+    name: Build JAR
     runs-on: ubuntu-latest
     steps:
       #Récupère le code source du repo dans le runner pour build à partir de l'action checkout pour docker build
@@ -48,7 +48,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Build Docker image
-        run: docker build ./RessourceRelationnelles --file Dockerfile --tag ressourcerelationnelles:latest
+        run: docker build ./RessourceRelationnelles --file RessourceRelationnelles/Dockerfile --tag ressourcerelationnelles:latest
 
       # - name: Build an image from Dockerfile
       # run: docker build -t docker.io/my-organization/my-app:${{ github.sha }} .  ça sert à push dans docker hub, on peut le faire dans github je crois
