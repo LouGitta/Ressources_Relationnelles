@@ -14,10 +14,12 @@
                 <div class="fr-card">
                     <div class="fr-card__body">
                         <h1 class="fr-h1">Créer un compte</h1>
-                        <form method="post" th:action="@{/create-account}">
+                        <form method="post" th:action="@{/app/create-account}">
+                            <!-- CSRF (sinon 403) -->
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                             <div class="fr-form-group">
-                                <label class="fr-label" for="firstname">Nom d'utilisateur</label>
-                                <input class="fr-input" type="text" id="firstname" name="firstname" required>
+                                <label class="fr-label" for="username">Nom d'utilisateur</label>
+                                <input class="fr-input" type="text" id="username" name="username" required>
                             </div>
                             <div class="fr-form-group">
                                 <label class="fr-label" for="email">Email</label>

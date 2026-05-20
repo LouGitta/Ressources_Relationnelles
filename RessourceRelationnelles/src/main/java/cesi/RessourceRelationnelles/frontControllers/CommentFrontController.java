@@ -4,10 +4,12 @@ import cesi.RessourceRelationnelles.models.Comment;
 import cesi.RessourceRelationnelles.models.Ressource;
 import cesi.RessourceRelationnelles.models.Role;
 import cesi.RessourceRelationnelles.models.User;
+import cesi.RessourceRelationnelles.security.CurrentUserService;
 import cesi.RessourceRelationnelles.services.CommentService;
 import cesi.RessourceRelationnelles.services.RessourceService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,22 +28,22 @@ public class CommentFrontController {
     @Autowired
     private RessourceService ressourceService;
 
+    @Autowired
+    private CurrentUserService currentUserService;
+
     // --- AJOUTER UN COMMENTAIRE ---
     @PostMapping("/app/ressources/{id}/comments")
     public String addComment(@PathVariable("id") Integer ressourceId,
                              @RequestParam("content") String content,
-                             HttpServletRequest request,
-                             Model model) {
-        // GlobalControllerAdvice gère automatiquement : currentUser
-        User user = (User) model.asMap().get("currentUser");
-        if (user == null) {
-            return "redirect:/app/home";
-        }
+                             Authentication authentification) {
+        User user = currentUserService.get(authentification)
+                .orElse(null);
+        if (user == null) return "redirect:/app/login";
         Optional<User> userOpt = Optional.of(user);
         
         Optional<Ressource> ressourceOpt = ressourceService.getById(ressourceId);
 
-        if (userOpt.isPresent() && ressourceOpt.isPresent()) {
+        if (userOpt.isPresent() && ressourceOpt.isPresent()) { //TODO userOpt.isPresent() est toujours true, à modifier
             Comment comment = new Comment();
             comment.setContent(content);
             comment.setCreatedAt(LocalDateTime.now());
@@ -74,9 +76,9 @@ public class CommentFrontController {
 
             boolean isAuthor = comment.getUser().getId().equals(currentUser.getId());
             
-            boolean isModeratorOrHigher = currentUser.getRole() == Role.moderator ||
-                                          currentUser.getRole() == Role.administrator ||
-                                          currentUser.getRole() == Role.super_admin;
+            boolean isModeratorOrHigher = currentUser.getRole() == Role.MODERATOR ||
+                                          currentUser.getRole() == Role.ADMINISTRATOR ||
+                                          currentUser.getRole() == Role.SUPERADMIN;
 
             if (isAuthor || isModeratorOrHigher) {
                 commentService.delete(commentId);

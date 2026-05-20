@@ -1,11 +1,13 @@
 package cesi.RessourceRelationnelles.frontControllers;
 
+import cesi.RessourceRelationnelles.security.CurrentUserService;
 import cesi.RessourceRelationnelles.models.Friend;
 import cesi.RessourceRelationnelles.models.FriendStatus;
 import cesi.RessourceRelationnelles.models.User;
 import cesi.RessourceRelationnelles.services.FriendService;
 import cesi.RessourceRelationnelles.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,15 +25,17 @@ public class FriendFrontController {
     // On garde userService uniquement pour aller chercher l'utilisateur cible (celui qu'on veut ajouter)
     @Autowired private UserService userService; 
 
+    @Autowired private CurrentUserService currentUserService;
     // --- ENVOYER UNE DEMANDE D'AMI ---
     @PostMapping("/app/friends/add/{targetUserId}")
     public String sendFriendRequest(@PathVariable Integer targetUserId, 
                                     @RequestParam Integer ressourceId, 
-                                    Model model) { // <-- On injecte le Model ici
-        
-        // On récupère l'utilisateur directement depuis le Model préparé par le GlobalControllerAdvice
-        User currentUser = (User) model.getAttribute("currentUser");
-        if (currentUser == null) return "redirect:/app/login";
+                                    Model model, Authentication authentication) { // <-- On injecte le Model ici
+
+        User currentUser = currentUserService.get(authentication).orElse(null);
+        if (currentUser == null) {
+            return "redirect:/app/home";
+        }
         
         Optional<User> targetOpt = userService.getById(targetUserId);
 
@@ -50,10 +54,12 @@ public class FriendFrontController {
 
     // --- ACCEPTER UNE DEMANDE ---
     @PostMapping("/app/friends/{id}/accept")
-    public String acceptFriend(@PathVariable Integer id, Model model) {
-        
-        User currentUser = (User) model.getAttribute("currentUser");
-        if (currentUser == null) return "redirect:/app/login";
+    public String acceptFriend(@PathVariable Integer id, Model model, Authentication authentication) {
+
+        User currentUser = currentUserService.get(authentication).orElse(null);
+        if (currentUser == null) {
+            return "redirect:/app/login";
+        }
 
         Optional<Friend> friendOpt = friendService.getById(id);
         if (friendOpt.isPresent()) {
@@ -68,10 +74,12 @@ public class FriendFrontController {
 
     // --- REFUSER UNE DEMANDE ---
     @PostMapping("/app/friends/{id}/reject")
-    public String rejectFriend(@PathVariable Integer id, Model model) {
-        
-        User currentUser = (User) model.getAttribute("currentUser");
-        if (currentUser == null) return "redirect:/app/login";
+    public String rejectFriend(@PathVariable Integer id, Model model, Authentication authentication) {
+
+        User currentUser = currentUserService.get(authentication).orElse(null);
+        if (currentUser == null) {
+            return "redirect:/app/login";
+        }
 
         Optional<Friend> friendOpt = friendService.getById(id);
         if (friendOpt.isPresent()) {

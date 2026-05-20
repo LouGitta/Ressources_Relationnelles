@@ -1,9 +1,11 @@
 package cesi.RessourceRelationnelles.frontControllers;
 
-import cesi.RessourceRelationnelles.models.*;
-import cesi.RessourceRelationnelles.services.*;
+import cesi.RessourceRelationnelles.security.CurrentUserService;
+import cesi.RessourceRelationnelles.models.*; //TODO imports globaux mauvaises pratiques, préférer les imports individuels
+import cesi.RessourceRelationnelles.services.*; //TODO imports globaux mauvaises pratiques, préférer les imports individuels
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,11 +25,12 @@ public class RessourceCreateFrontController {
     private TypeService typeService;
     @Autowired
     private RelationService relationService;
+    @Autowired
+    private CurrentUserService currentUserService;
 
     @GetMapping("/app/ressources/create")
-    public String showCreateForm(Model model, HttpServletRequest request) {
-        // GlobalControllerAdvice gère automatiquement : isConnected, isMobile
-        
+    public String showCreateForm(Model model, HttpServletRequest request) { //TODO paramètre inutilisé ?
+
         model.addAttribute("categories", categoryService.getAll());
         model.addAttribute("types", typeService.getAll());
         model.addAttribute("relations", relationService.getAll());
@@ -44,14 +47,12 @@ public class RessourceCreateFrontController {
             @RequestParam Integer typeId,
             @RequestParam Integer relationId,
             @RequestParam Visibility visibility,
-            HttpServletRequest request,
-            Model model) {
+            HttpServletRequest request, //TODO variable inutilisé ??
+            Authentication authentication) {
 
-        // GlobalControllerAdvice gère automatiquement : currentUser
-
-        User currentUser = (User) model.asMap().get("currentUser");
+        User currentUser = currentUserService.get(authentication).orElse(null);
         if (currentUser == null) {
-            return "redirect:/app/home";
+            return "redirect:/app/login";
         }
         
         Ressource ressource = new Ressource();

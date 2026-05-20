@@ -1,13 +1,14 @@
 package cesi.RessourceRelationnelles.frontControllers;
 
+import cesi.RessourceRelationnelles.security.CurrentUserService;
 import cesi.RessourceRelationnelles.models.ActivityParticipant;
 import cesi.RessourceRelationnelles.models.Ressource;
 import cesi.RessourceRelationnelles.models.User;
 import cesi.RessourceRelationnelles.repositories.ActivityParticipantRepository;
 import cesi.RessourceRelationnelles.services.RessourceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -19,12 +20,16 @@ public class ParticipationFrontController {
 
     @Autowired private ActivityParticipantRepository participantRepository;
     @Autowired private RessourceService ressourceService;
+    @Autowired
+    private CurrentUserService currentUserService;
 
     // --- REJOINDRE L'ACTIVITÉ ---
     @PostMapping("/app/ressources/{id}/join")
-    public String joinActivity(@PathVariable Integer id, Model model) {
-        User currentUser = (User) model.getAttribute("currentUser");
-        if (currentUser == null) return "redirect:/app/login";
+    public String joinActivity(@PathVariable Integer id, Authentication authentication) {
+        User currentUser = currentUserService.get(authentication).orElse(null);
+        if (currentUser == null) {
+            return "redirect:/app/home";
+        }
 
         Optional<Ressource> ressourceOpt = ressourceService.getById(id);
         if (ressourceOpt.isPresent()) {
@@ -43,9 +48,11 @@ public class ParticipationFrontController {
 
     // --- PARTIR DE L'ACTIVITÉ ---
     @PostMapping("/app/ressources/{id}/leave")
-    public String leaveActivity(@PathVariable Integer id, Model model) {
-        User currentUser = (User) model.getAttribute("currentUser");
-        if (currentUser == null) return "redirect:/app/login";
+    public String leaveActivity(@PathVariable Integer id, Authentication authentication) {
+        User currentUser = currentUserService.get(authentication).orElse(null);
+        if (currentUser == null) {
+            return "redirect:/app/login";
+        }
 
         Optional<ActivityParticipant> participation = participantRepository.findByRessource_IdAndUser_Id(id, currentUser.getId());
         participation.ifPresent(p -> participantRepository.delete(p));
