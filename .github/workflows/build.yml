@@ -49,14 +49,14 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Build Docker image
-        run: docker build ./RessourceRelationnelles --file Dockerfile --tag RessourceRelationnelles:latest
+        run: docker build ./RessourceRelationnelles --file Dockerfile --tag ressourcerelationnelles:latest
 
       # - name: Build an image from Dockerfile
       # run: docker build -t docker.io/my-organization/my-app:${{ github.sha }} .  ça sert à push dans docker hub, on peut le faire dans github je crois
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@v0.36.0
         with:
-          image-ref: 'RessourceRelationnelles:latest' #image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
+          image-ref: 'ressourcerelationnelles:latest' #image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
           format: 'table'
           exit-code: '1' #Le workflow échouera si des vulnérabilités CRITICAL ou HIGH sont trouvées
           ignore-unfixed: true
