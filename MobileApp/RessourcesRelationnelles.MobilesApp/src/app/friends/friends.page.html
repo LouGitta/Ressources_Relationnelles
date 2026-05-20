@@ -1,0 +1,30 @@
+<ion-content [fullscreen]="true">
+  <h1 class="title">Amis</h1>
+
+  <div class="grid grid-cols-2 gap-2 mb-10">
+    <div class="w-full pl-20">
+      <dsfr-button
+        [icon]="'fr-icon-add-circle-fill'"
+        label="Ajouter un ami"
+        class="h-10 w-full"
+      ></dsfr-button>
+    </div>
+  </div>
+
+  <ion-list>
+    @for (friend of friends; track friend) {
+    <ion-item>
+      <ion-avatar aria-hidden="true" slot="start">
+        <ion-img
+          [alt]="`Avatar de ${friend.username}`"
+          src="{{ getAvatarUrl(friend.username) }}"
+        />
+      </ion-avatar>
+      <ion-label>&nbsp;{{ friend.username }}</ion-label>
+      <ion-button color="danger" (click)="removeFwiend(friend.username)" slot="end" shape="round">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+    } @empty { Vous n'avez pas d'amis. }
+  </ion-list>
+</ion-content>

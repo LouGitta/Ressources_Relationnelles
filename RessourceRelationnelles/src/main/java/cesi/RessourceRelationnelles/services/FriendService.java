@@ -30,6 +30,10 @@ public class FriendService {
         return friendRepository.findByUser2_Id(user2, FriendStatus.pending);
     }
 
+    public List<Friend> getAllByUser1(Integer user1) {
+        return friendRepository.findAllByUser1_Id(user1);
+    }
+
     public Friend save(Friend friend) {
         return friendRepository.save(friend);
     }

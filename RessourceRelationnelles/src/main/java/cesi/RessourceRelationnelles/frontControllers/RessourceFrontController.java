@@ -53,8 +53,11 @@ public class RessourceFrontController {
 
             boolean isPublished = ressource.getStatus() == cesi.RessourceRelationnelles.models.RessourceStatus.published;
             boolean isAuthor = ressource.getUser().getId().equals(currentUser.getId());
+            
+            // On vérifie si l'utilisateur fait partie de l'équipe de modération/administration
+            boolean isModo = currentUser.getRole() == cesi.RessourceRelationnelles.models.Role.moderator;
 
-            if (!isPublished && !isAuthor) {
+            if (!isPublished && !isAuthor && !isModo) {
                 return "redirect:/app/ressources"; 
             }
 

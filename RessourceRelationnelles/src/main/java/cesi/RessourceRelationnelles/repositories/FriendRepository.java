@@ -16,6 +16,9 @@ public interface FriendRepository extends CrudRepository<Friend, Integer> {
 
     List<Friend> findByUser2_Id(Integer user2Id, FriendStatus status);
 
+    @Query("SELECT f FROM Friend f WHERE f.user1.id = :uId OR f.user2.id = :uId")
+    List<Friend> findAllByUser1_Id(@Param("uId") Integer uId);
+    
     @Query("SELECT f FROM Friend f WHERE (f.user1.id = :userId OR f.user2.id = :userId) AND f.status = :status")
     List<Friend> findAllAcceptedByUserId(@Param("userId") Integer userId, @Param("status") FriendStatus status);
 }
