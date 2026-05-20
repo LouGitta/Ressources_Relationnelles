@@ -3,6 +3,7 @@ name: CI - Build / Sonar (minimal) / Docker
 on:
   push:
     branches:
+      - github_workflow_creation
       - main
   pull_request:
     types: [opened, synchronize, reopened]
