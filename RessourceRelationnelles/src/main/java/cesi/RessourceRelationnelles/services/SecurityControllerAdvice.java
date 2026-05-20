@@ -36,8 +36,8 @@ public class SecurityControllerAdvice {
                 
                 // Idéalement, cette vérification de rôle pourrait aussi aller dans le UserContextService ou le modèle User
                 Role role = user.getRole();
-                model.addAttribute("isAdmin", role == Role.administrator || role == Role.super_admin);
-                model.addAttribute("isModo", role == Role.moderator);
+                model.addAttribute("isAdmin", role == Role.ADMINISTRATOR || role == Role.SUPERADMIN);
+                model.addAttribute("isModo", role == Role.MODERATOR);
             });
         } else {
             model.addAttribute("isAdmin", false);

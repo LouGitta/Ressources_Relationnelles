@@ -74,9 +74,9 @@ public class CommentFrontController {
 
             boolean isAuthor = comment.getUser().getId().equals(currentUser.getId());
             
-            boolean isModeratorOrHigher = currentUser.getRole() == Role.moderator ||
-                                          currentUser.getRole() == Role.administrator ||
-                                          currentUser.getRole() == Role.super_admin;
+            boolean isModeratorOrHigher = currentUser.getRole() == Role.MODERATOR ||
+                                          currentUser.getRole() == Role.ADMINISTRATOR ||
+                                          currentUser.getRole() == Role.SUPERADMIN;
 
             if (isAuthor || isModeratorOrHigher) {
                 commentService.delete(commentId);

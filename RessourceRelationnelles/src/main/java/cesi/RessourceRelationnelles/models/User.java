@@ -31,7 +31,7 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role = Role.citizen;
+    private Role role = Role.CITIZEN;
 
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;

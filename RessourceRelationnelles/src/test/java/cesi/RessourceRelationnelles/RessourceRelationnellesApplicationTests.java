@@ -101,7 +101,7 @@ class RessourceRelationnellesApplicationTests {
 	@Order(2)
 	void CreerUtilisateurMauvais(){
 		//créer utilisateurs trop court
-		var user1 = new User(0, "PasSafe", "pasSafe@gmail.com", "PasSafe", Role.citizen, LocalDateTime.now(),
+		var user1 = new User(0, "PasSafe", "pasSafe@gmail.com", "PasSafe", Role.CITIZEN, LocalDateTime.now(),
             true);
 		Boolean isAdded = false;
 
@@ -194,7 +194,7 @@ class RessourceRelationnellesApplicationTests {
 		var users = userControl.getAll().getBody();
 		User user1 = null;
 		for (User user : users) {
-			if (user.getRole() == Role.moderator) {
+			if (user.getRole() == Role.MODERATOR) {
 				user1 = user;
 			}
 		}
@@ -217,7 +217,7 @@ class RessourceRelationnellesApplicationTests {
 		var users = userControl.getAll().getBody();
 		User user1 = null;
 		for (User user : users) {
-			if (user.getRole() == Role.citizen) {
+			if (user.getRole() == Role.CITIZEN) {
 				user1 = user;
 			}
 		}
@@ -240,7 +240,7 @@ class RessourceRelationnellesApplicationTests {
 		var users = userControl.getAll().getBody();
 		User user1 = null;
 		for (User user : users) {
-			if (user.getRole() == Role.citizen) {
+			if (user.getRole() == Role.CITIZEN) {
 				user1 = user;
 			}
 		}
@@ -402,9 +402,9 @@ class RessourceRelationnellesApplicationTests {
 			userControl.delete(user2.getId());
 		} catch (Exception e) {
 		}
-		var user1 = new User(0, "Johanes 1er du nom", "Johanespremierdunom@gmail.com", "ASafePassword@1235813", Role.citizen, LocalDateTime.now(),
+		var user1 = new User(0, "Johanes 1er du nom", "Johanespremierdunom@gmail.com", "ASafePassword@1235813", Role.CITIZEN, LocalDateTime.now(),
             true);
-		var user2 = new User(0, "Johanes 2eme du nom", "Johanesdeuxiemedunom@gmail.com", "ASafePassword@1235813", Role.citizen, LocalDateTime.now(),
+		var user2 = new User(0, "Johanes 2eme du nom", "Johanesdeuxiemedunom@gmail.com", "ASafePassword@1235813", Role.CITIZEN, LocalDateTime.now(),
             true);
 
 		

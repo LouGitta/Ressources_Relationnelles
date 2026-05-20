@@ -27,7 +27,7 @@ public class ModerationFrontController {
         if (user == null) {
             return "redirect:/app/home";
         }
-        if (user.getRole() == Role.citizen) {
+        if (user.getRole() == Role.CITIZEN) {
             return "redirect:/home"; 
         }
 
@@ -44,7 +44,7 @@ public class ModerationFrontController {
         if (user == null) {
             return "redirect:/app/home";
         }
-        if (user.getRole() == Role.moderator) {
+        if (user.getRole() == Role.MODERATOR) {
             ressourceService.updateStatus(id, RessourceStatus.published);
         }
         return "redirect:/app/ressources/moderation";
@@ -58,7 +58,7 @@ public class ModerationFrontController {
         if (user == null) {
             return "redirect:/app/home";
         }
-        if (user.getRole() == Role.moderator) {
+        if (user.getRole() == Role.MODERATOR) {
             ressourceService.updateStatus(id, RessourceStatus.rejected);
         }
         return "redirect:/app/ressources/moderation";
