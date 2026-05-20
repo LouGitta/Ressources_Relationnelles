@@ -51,7 +51,7 @@ public class ProfileFrontController {
         model.addAttribute("myFriends", myFriends);
 
         // 4. Ses demandes d'amis reçues (FILTRÉES en attente)
-        List<Friend> incomingRequests = friendService.getByUser2(user.getId())
+        List<Friend> incomingRequests = friendService.getByUser2(currentUser.getId())
                 .stream()
                 .filter(f -> f.getStatus() == FriendStatus.pending)
                 .collect(Collectors.toList());
