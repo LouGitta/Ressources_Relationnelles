@@ -7,7 +7,6 @@ on:
       - DEV
   pull_request:
     types: [opened, synchronize, reopened]
-  workflow_dispatch:
 jobs:
   build:
     name: Build JAR (skip tests)
@@ -32,7 +31,7 @@ jobs:
             ${{ runner.os }}-m2-
 
       - name: Build (skip tests)
-        run: mvn -B clean package -DskipTests --file RessourceRelationnelles/pom.xml
+        run: mvn -B clean package --file RessourceRelationnelles/pom.xml
 
       - name: Upload artifact (jar)
         uses: actions/upload-artifact@v4
