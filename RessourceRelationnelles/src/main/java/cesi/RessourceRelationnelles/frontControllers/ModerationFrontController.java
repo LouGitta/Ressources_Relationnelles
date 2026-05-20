@@ -1,5 +1,6 @@
 package cesi.RessourceRelationnelles.frontControllers;
 
+import cesi.RessourceRelationnelles.security.CurrentUserService;
 import cesi.RessourceRelationnelles.models.Ressource;
 import cesi.RessourceRelationnelles.models.RessourceStatus;
 import cesi.RessourceRelationnelles.models.Role;
@@ -7,6 +8,7 @@ import cesi.RessourceRelationnelles.models.User;
 import cesi.RessourceRelationnelles.services.RessourceService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,15 +21,15 @@ import java.util.List;
 public class ModerationFrontController {
 
     @Autowired private RessourceService ressourceService;
+    @Autowired private CurrentUserService currentUserService;
 
     @GetMapping("/app/ressources/moderation")
-    public String afficherModeration(Model model, HttpServletRequest request) {
-        // GlobalControllerAdvice gère automatiquement : isConnected, currentUser, isAdmin
-        User user = (User) model.asMap().get("currentUser");
-        if (user == null) {
-            return "redirect:/app/home";
+    public String afficherModeration(Model model, HttpServletRequest request, Authentication authentication) { //TODO paramètre inutilisé ?
+        User currentUser = currentUserService.get(authentication).orElse(null);
+        if (currentUser == null) {
+            return "redirect:/app/login";
         }
-        if (user.getRole() == Role.citizen) {
+        if (currentUser.getRole() == Role.CITIZEN) {
             return "redirect:/home"; 
         }
 
@@ -38,13 +40,13 @@ public class ModerationFrontController {
     }
 
     @PostMapping("/app/ressources/moderation/{id}/accept")
-    public String acceptRessource(@PathVariable Integer id, HttpServletRequest request, Model model) {
-        // GlobalControllerAdvice gère automatiquement : currentUser
-        User user = (User) model.asMap().get("currentUser");
-        if (user == null) {
-            return "redirect:/app/home";
+    public String acceptRessource(@PathVariable Integer id, HttpServletRequest request, Authentication authentication) { //TODO paramètre inutilisé ?
+
+        User currentUser = currentUserService.get(authentication).orElse(null);
+        if (currentUser == null) {
+            return "redirect:/app/login";
         }
-        if (user.getRole() == Role.moderator) {
+        if (currentUser.getRole() == Role.MODERATOR) {
             ressourceService.updateStatus(id, RessourceStatus.published);
         }
         return "redirect:/app/ressources/moderation";
@@ -52,13 +54,13 @@ public class ModerationFrontController {
 
     // --- REFUSER UNE RESSOURCE ---
     @PostMapping("/app/ressources/moderation/{id}/reject")
-    public String rejectRessource(@PathVariable Integer id, HttpServletRequest request, Model model) {
-        // GlobalControllerAdvice gère automatiquement : currentUser
-        User user = (User) model.asMap().get("currentUser");
-        if (user == null) {
-            return "redirect:/app/home";
+    public String rejectRessource(@PathVariable Integer id, HttpServletRequest request, Authentication authentication) { //TODO paramètre inutilisé ?
+
+        User currentUser = currentUserService.get(authentication).orElse(null);
+        if (currentUser == null) {
+            return "redirect:/app/login";
         }
-        if (user.getRole() == Role.moderator) {
+        if (currentUser.getRole() == Role.MODERATOR) {
             ressourceService.updateStatus(id, RessourceStatus.rejected);
         }
         return "redirect:/app/ressources/moderation";

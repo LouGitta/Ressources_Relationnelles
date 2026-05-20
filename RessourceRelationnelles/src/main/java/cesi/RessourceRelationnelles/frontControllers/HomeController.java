@@ -16,9 +16,8 @@ public class HomeController {
     private RessourceService ressourceService;
 
     @GetMapping("/app/home")
-    public String afficherHome(Model model, HttpServletRequest request) {
-        // GlobalControllerAdvice gère automatiquement : isConnected, isMobile, currentUser, isAdmin, isModo
-        
+    public String afficherHome(Model model, HttpServletRequest request) { //TODO paramètre inutilisé ?
+
         List<Ressource> recentRessources = ressourceService.getRecentRessources();
         model.addAttribute("recentRessources", recentRessources);
         return "home";

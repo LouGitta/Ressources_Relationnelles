@@ -1,5 +1,6 @@
 package cesi.RessourceRelationnelles.frontControllers;
 
+import cesi.RessourceRelationnelles.security.CurrentUserService;
 import cesi.RessourceRelationnelles.models.ActivityParticipant;
 import cesi.RessourceRelationnelles.models.Progression;
 import cesi.RessourceRelationnelles.models.Ressource;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,12 +37,14 @@ public class RessourceFrontController {
     @Autowired
     private ProgressionService progressionService;
 
+    @Autowired
+    private CurrentUserService currentUserService;
+
     @GetMapping("/app/ressources/{id}")
-    public String afficherRessource(@PathVariable Integer id, Model model, HttpServletRequest request) {
-        // GlobalControllerAdvice gère automatiquement : isConnected, isMobile, currentUser
-        User currentUser = (User) model.asMap().get("currentUser");
+    public String afficherRessource(@PathVariable Integer id, Model model, Authentication authentication, HttpServletRequest request) {
+        User currentUser = currentUserService.get(authentication).orElse(null);
         if (currentUser == null) {
-            return "redirect:/app/home";
+            return "redirect:/app/login";
         }
         Optional<Ressource> ressourceOpt = ressourceService.getById(id);
         

@@ -44,19 +44,17 @@ public class SecurityConfig {
                                 "/app/cgu",
                                 "/app/legalMention",
                                 "/app/create-account",
-                                "/app/login", // ?
+                                "/app/login",
                                 "/app/home",
                                 "/login",
                                 "/webjars/**"
                         ).permitAll()
-                        .requestMatchers("/app/profile)").hasAnyRole("CITIZEN", "MODERATOR", "ADMINISTRATOR", "SUPERADMIN")
+                        .requestMatchers("/app/profile").hasAnyRole("CITIZEN", "MODERATOR", "ADMINISTRATOR", "SUPERADMIN")
 
                         // CONNECTÉ citizen
-                        .requestMatchers(
-                                "/app/ressources/create").hasRole("CITIZEN") //!
+                        .requestMatchers("/app/ressources/create").hasRole("CITIZEN") //!
                         // ADMIN (admin)
-                        .requestMatchers("/admin/**"
-                        ).hasAnyRole("ADMIN", "SUPERADMIN")
+                        .requestMatchers("/admin/**").hasAnyRole("ADMIN", "SUPERADMIN")
 
                         // MODERATOR
                         .requestMatchers("/app/ressources/moderation/**").hasRole("MODERATOR")

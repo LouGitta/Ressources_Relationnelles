@@ -5,27 +5,73 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1eb0ddda-df0e-404d-83a6-34ae4930423b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/a68fc82b-f7ba-4b7c-a9aa-a524917af9a4.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/a68fc82b-f7ba-4b7c-a9aa-a524917af9a4/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/a68fc82b-f7ba-4b7c-a9aa-a524917af9a4/storage_v2/_src_/schema/mysql.osA4Bg.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/a68fc82b-f7ba-4b7c-a9aa-a524917af9a4/storage_v2/_src_/schema/performance_schema.kIw0nw.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/a68fc82b-f7ba-4b7c-a9aa-a524917af9a4/storage_v2/_src_/schema/sys.zb4BAA.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/data_source_mapping.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jpa.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RessourceRelationnelles/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/RessourceRelationnelles/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a68fc82b-f7ba-4b7c-a9aa-a524917af9a4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/a68fc82b-f7ba-4b7c-a9aa-a524917af9a4.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/data_source_mapping.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/data_source_mapping.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RessourceRelationnelles/src/main/java/cesi/RessourceRelationnelles/frontControllers/CommentFrontController.java" beforeDir="false" afterPath="$PROJECT_DIR$/RessourceRelationnelles/src/main/java/cesi/RessourceRelationnelles/frontControllers/CommentFrontController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RessourceRelationnelles/src/main/java/cesi/RessourceRelationnelles/frontControllers/CreateAccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/RessourceRelationnelles/src/main/java/cesi/RessourceRelationnelles/frontControllers/CreateAccountController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RessourceRelationnelles/src/main/java/cesi/RessourceRelationnelles/frontControllers/FriendFrontController.java" beforeDir="false" afterPath="$PROJECT_DIR$/RessourceRelationnelles/src/main/java/cesi/RessourceRelationnelles/frontControllers/FriendFrontController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RessourceRelationnelles/src/main/java/cesi/RessourceRelationnelles/frontControllers/GlobalControllerAdvice.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/RessourceRelationnelles/src/main/java/cesi/RessourceRelationnelles/frontControllers/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/RessourceRelationnelles/src/main/java/cesi/RessourceRelationnelles/frontControllers/HomeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RessourceRelationnelles/src/main/java/cesi/RessourceRelationnelles/frontControllers/ModerationFrontController.java" beforeDir="false" afterPath="$PROJECT_DIR$/RessourceRelationnelles/src/main/java/cesi/RessourceRelationnelles/frontControllers/ModerationFrontController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RessourceRelationnelles/src/main/java/cesi/RessourceRelationnelles/frontControllers/ParticipationFrontController.java" beforeDir="false" afterPath="$PROJECT_DIR$/RessourceRelationnelles/src/main/java/cesi/RessourceRelationnelles/frontControllers/ParticipationFrontController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RessourceRelationnelles/src/main/java/cesi/RessourceRelationnelles/frontControllers/ProfileFrontController.java" beforeDir="false" afterPath="$PROJECT_DIR$/RessourceRelationnelles/src/main/java/cesi/RessourceRelationnelles/frontControllers/ProfileFrontController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RessourceRelationnelles/src/main/java/cesi/RessourceRelationnelles/frontControllers/RessourceCreateFrontController.java" beforeDir="false" afterPath="$PROJECT_DIR$/RessourceRelationnelles/src/main/java/cesi/RessourceRelationnelles/frontControllers/RessourceCreateFrontController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RessourceRelationnelles/src/main/java/cesi/RessourceRelationnelles/frontControllers/RessourceFrontController.java" beforeDir="false" afterPath="$PROJECT_DIR$/RessourceRelationnelles/src/main/java/cesi/RessourceRelationnelles/frontControllers/RessourceFrontController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RessourceRelationnelles/src/main/java/cesi/RessourceRelationnelles/security/CurrentUserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/RessourceRelationnelles/src/main/java/cesi/RessourceRelationnelles/security/CurrentUserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RessourceRelationnelles/src/main/java/cesi/RessourceRelationnelles/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/RessourceRelationnelles/src/main/java/cesi/RessourceRelationnelles/security/SecurityConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotChats">
+    <option name="panelChat">
+      <chat>
+        <option name="activeSessionId" value="a44be3a3-9a5b-4746-8831-41d404a5844f" />
+        <option name="sessions">
+          <session>
+            <option name="chatType" value="PANEL" />
+            <option name="id" value="91cf013f-c73e-4cd8-96ed-40bca6657b91" />
+            <option name="modeId" value="Ask" />
+            <option name="modelType" value="builtin_family" />
+            <option name="modelValue" value="gpt-5-mini" />
+            <option name="status" value="Completed" />
+            <option name="targetType" value="LOCAL" />
+          </session>
+          <session>
+            <option name="chatType" value="PANEL" />
+            <option name="id" value="ca99ebd6-91e0-4b9d-a8a1-fa8eea656d0e" />
+            <option name="modeId" value="Agent" />
+            <option name="modelType" value="builtin_family" />
+            <option name="modelValue" value="auto" />
+            <option name="targetType" value="LOCAL" />
+          </session>
+          <session>
+            <option name="chatType" value="PANEL" />
+            <option name="id" value="a44be3a3-9a5b-4746-8831-41d404a5844f" />
+            <option name="modeId" value="Ask" />
+            <option name="modelType" value="builtin_family" />
+            <option name="modelValue" value="gpt-5-mini" />
+            <option name="targetType" value="LOCAL" />
+          </session>
+        </option>
+        <option name="type" value="PANEL" />
+      </chat>
+    </option>
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_C:/Users/Elodi/Documents/Ressources_Relationnelles/RessourceRelationnelles" value="3B1RAfsrTyjoI7zD9hghx0xZeCX" />
+    </persistenceIdMap>
+  </component>
+  <component name="CopilotUserSelectedModel">
+    <selectedModels>
+      <entry key="agent-panel" value="GPT-5 mini" />
+      <entry key="chat-panel" value="GPT-5 mini" />
+    </selectedModels>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -50,40 +96,60 @@
   &quot;associatedIndex&quot;: 1
 }</component>
   <component name="ProjectId" id="3B1RAfsrTyjoI7zD9hghx0xZeCX" />
+  <component name="ProjectSessionTemplates">
+    <option name="panelTemplate">
+      <template>
+        <option name="modeId" value="Ask" />
+        <option name="model">
+          <model>
+            <option name="modelType" value="builtin_family" />
+            <option name="modelValue" value="gpt-5-mini" />
+          </model>
+        </option>
+        <option name="targetType" value="LOCAL" />
+      </template>
+    </option>
+  </component>
   <component name="ProjectViewState">
     <option name="autoscrollFromSource" value="true" />
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Maven.RessourceRelationnelles [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.RessourceRelationnelles [compile].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.RessourceRelationnelles [validate].executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;Spring Boot.RessourceRelationnellesApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;WIP__SecuryityBranch&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Elodi/Documents/Ressources_Relationnelles&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Maven.RessourceRelationnelles [clean].executor": "Run",
+    "Maven.RessourceRelationnelles [compile].executor": "Run",
+    "Maven.RessourceRelationnelles [validate].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHELLCHECK.PATH": "C:\\Users\\Elodi\\AppData\\Roaming\\JetBrains\\IntelliJIdea2024.3\\plugins\\Shell Script\\shellcheck.exe",
+    "Spring Boot.RessourceRelationnellesApplication.executor": "Run",
+    "git-widget-placeholder": "WIP__SecuryityBranch",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Elodi/Documents/Ressources_Relationnelles",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="cesi.RessourceRelationnelles.security" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="RessourceRelationnellesApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="RessourceRelationnelles" />
@@ -113,6 +179,10 @@
       <workItem from="1773819850913" duration="17000" />
       <workItem from="1774894906549" duration="2276000" />
       <workItem from="1775547229179" duration="6457000" />
+      <workItem from="1775730608854" duration="70000" />
+      <workItem from="1779088220949" duration="482000" />
+      <workItem from="1779088744918" duration="3300000" />
+      <workItem from="1779190996800" duration="4941000" />
     </task>
     <servers />
   </component>
@@ -129,5 +199,13 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
   </component>
 </project>
