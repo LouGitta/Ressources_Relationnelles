@@ -50,15 +50,16 @@ jobs:
         # Upload du rapport Depcheck (vulnérabilités dépendances)
       - name: Upload Dependency Check report
         uses: actions/upload-artifact@v4
+        if: always()  # Important : uploade même si le job échoue
         with:
            name: Depcheck report
-           path: ${{github.workspace}}/reports
+           path: reports/dependency-check-report.html
       # Upload des résultats de tests
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
         with:
          name: dependency-check-report
-         path: reports/dependency-check-report.html 
+         path: RessourceRelationnelles/target/surefire-reports/
          
       - name: Upload artifact (jar)
         uses: actions/upload-artifact@v4
