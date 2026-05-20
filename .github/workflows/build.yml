@@ -7,10 +7,9 @@ on:
       - DEV
   pull_request:
     types: [opened, synchronize, reopened]
-  workflow_dispatch:
 jobs:
   build:
-    name: Build JAR (skip tests)
+    name: Build JAR
     runs-on: ubuntu-latest
     steps:
       #Récupère le code source du repo dans le runner pour build à partir de l'action checkout pour docker build
@@ -32,7 +31,7 @@ jobs:
             ${{ runner.os }}-m2-
 
       - name: Build (skip tests)
-        run: mvn -B clean package -DskipTests --file RessourceRelationnelles/pom.xml
+        run: mvn -B clean package --file RessourceRelationnelles/pom.xml
 
       - name: Upload artifact (jar)
         uses: actions/upload-artifact@v4
@@ -49,14 +48,14 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Build Docker image
-        run: docker build ./RessourceRelationnelles --file Dockerfile --tag RessourceRelationnelles:latest
+        run: docker build ./RessourceRelationnelles --file RessourceRelationnelles/Dockerfile --tag ressourcerelationnelles:latest
 
       # - name: Build an image from Dockerfile
       # run: docker build -t docker.io/my-organization/my-app:${{ github.sha }} .  ça sert à push dans docker hub, on peut le faire dans github je crois
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@v0.36.0
         with:
-          image-ref: 'RessourceRelationnelles:latest' #image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
+          image-ref: 'ressourcerelationnelles:latest' #image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
           format: 'table'
           exit-code: '1' #Le workflow échouera si des vulnérabilités CRITICAL ou HIGH sont trouvées
           ignore-unfixed: true
