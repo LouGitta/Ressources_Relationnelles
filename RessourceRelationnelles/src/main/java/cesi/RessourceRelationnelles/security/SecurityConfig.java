@@ -45,7 +45,6 @@ public class SecurityConfig {
                                 "/app/legalMention",
                                 "/app/create-account",
                                 "/app/login",
-                                "/app/home",
                                 "/login",
                                 "/webjars/**"
                         ).permitAll()
