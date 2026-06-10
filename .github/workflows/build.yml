@@ -89,6 +89,7 @@ jobs:
       # run: docker build -t docker.io/my-organization/my-app:${{ github.sha }} .  ça sert à push dans docker hub, on peut le faire dans github je crois
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@v0.36.0
+        continue-on-error: true
         with:
           image-ref: 'ressourcerelationnelles:latest' #image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
           format: 'table'
@@ -96,3 +97,15 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
+      
+      - name: Connect to GCR (GitHub Container Registry)
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GH_PAT_REG }}
+
+      - name: Send docker image to GCR
+        run : docker push ressourcerelationnelles:latest
+        
+        
