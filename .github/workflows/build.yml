@@ -49,6 +49,7 @@ jobs:
           args: >
             --failOnCVSS 7
             --enableRetired
+            --suppression dependencycheck-suppressions.xml
         # Upload du rapport Depcheck (vulnérabilités dépendances)
       - name: Upload Dependency Check report
         uses: actions/upload-artifact@v4

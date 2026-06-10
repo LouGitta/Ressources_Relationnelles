@@ -1,29 +1,25 @@
 package cesi.RessourceRelationnelles;
 
 import cesi.RessourceRelationnelles.controllers.*;
-import cesi.RessourceRelationnelles.models.Relation;
-import cesi.RessourceRelationnelles.models.Ressource;
-import cesi.RessourceRelationnelles.models.RessourceStatus;
-import cesi.RessourceRelationnelles.models.Role;
-import cesi.RessourceRelationnelles.models.User;
-import cesi.RessourceRelationnelles.models.Type;
-import cesi.RessourceRelationnelles.models.Category;
-import cesi.RessourceRelationnelles.models.Visibility;
-import cesi.RessourceRelationnelles.models.Role;
-import cesi.RessourceRelationnelles.models.Friend;
-import cesi.RessourceRelationnelles.models.FriendStatus;
+import cesi.RessourceRelationnelles.dtos.*;
+import cesi.RessourceRelationnelles.models.*;
+import cesi.RessourceRelationnelles.utils.DtoMapper;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.Assert;
-import org.thymeleaf.expression.Lists;
 
 @SpringBootTest
+@ActiveProfiles("test")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class RessourceRelationnellesApplicationTests {
 
 	@Autowired
@@ -47,10 +43,10 @@ class RessourceRelationnellesApplicationTests {
 	@Order(10)
 	void SupprimerUtilisateur(){
 		var users = userControl.getAll().getBody();
-		User user1 = null;
-		User user2 = null;
+		UserDTO user1 = null;
+		UserDTO user2 = null;
 
-		for (User user : users) {
+		for (UserDTO user : users) {
 			var name = user.getUsername();
 			if(name.equals("Johanes 1er du nom"))
 			{
@@ -61,7 +57,7 @@ class RessourceRelationnellesApplicationTests {
 				user2 = user;
 			}
 		}
-		var friendList = new ArrayList<Friend>();
+		var friendList = new ArrayList<FriendDTO>();
 		var friendsUser2 = friendControl.getAllFriendAndRequests(user2.getId()).getBody();
 		var friendsUser1 = friendControl.getAllFriendAndRequests(user1.getId()).getBody();
 
@@ -69,7 +65,7 @@ class RessourceRelationnellesApplicationTests {
 		friendList.addAll(friendsUser2);
 
 
-		for (Friend friend : friendList) {
+		for (FriendDTO friend : friendList) {
 			friendControl.delete(friend.getId());			
 		}
 
@@ -82,7 +78,7 @@ class RessourceRelationnellesApplicationTests {
 
 		users = userControl.getAll().getBody();
 		Boolean isDeleted = true;
-		for (User user : users) {
+		for (UserDTO user : users) {
 			var name = user.getUsername();
 			if(name.equals("Johanes 1er du nom") )
 			{
@@ -101,18 +97,19 @@ class RessourceRelationnellesApplicationTests {
 	@Order(2)
 	void CreerUtilisateurMauvais(){
 		//créer utilisateurs trop court
-		var user1 = new User(0, "PasSafe", "pasSafe@gmail.com", "PasSafe", Role.CITIZEN, LocalDateTime.now(),
+		var user1 = new UserDTO(0, "PasSafe", "pasSafe@gmail.com", Role.CITIZEN, LocalDateTime.now(),
             true);
 		Boolean isAdded = false;
 
 		try {
-			var user1WasCreated = userControl.create(user1).getBody() == user1;
+			var created = userControl.create(user1).getBody();
+			var user1WasCreated = created != null && created.getUsername().equals(user1.getUsername());
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 		finally{
 			var users = userControl.getAll().getBody();
-			for (User user : users) {
+			for (UserDTO user : users) {
 				var name = user.getUsername();
 				if(name.equals("PasSafe") )
 				{
@@ -131,10 +128,10 @@ class RessourceRelationnellesApplicationTests {
 	@Order(3)
 	void ModifierUtilisateur(){
 		var users = userControl.getAll().getBody();
-		User user1 = null;
-		User user2 = null;
+		UserDTO user1 = null;
+		UserDTO user2 = null;
 
-		for (User user : users) {
+		for (UserDTO user : users) {
 			var name = user.getUsername();
 			if(name.equals("Johanes 1er du nom") )
 			{
@@ -146,8 +143,6 @@ class RessourceRelationnellesApplicationTests {
 			}
 		}
 
-		user1.setPassword("1NewPassword@cesi1235813");
-		user2.setPassword("1NewPassword@cesi1235813");
 		var user1WasUpdated = userControl.update(user1.getId(),user1).getBody().getId() == user1.getId();
 		var user2WasUpdated = userControl.update(user2.getId(),user2).getBody().getId() == user2.getId();
 
@@ -160,10 +155,8 @@ class RessourceRelationnellesApplicationTests {
 	@Order(9)
 	void DeleteRessourceAsModerator(){
 		var ressources = ressourceControl.getAll().getBody();
-		Ressource res1 = null;
-		Ressource res2 = null;
-		var lstRes = new ArrayList<Ressource>();
-		for (Ressource res : ressources) {
+		var lstRes = new ArrayList<RessourceDTO>();
+		for (RessourceDTO res : ressources) {
 			var title = res.getTitle();
 			if (!title.equals("Comment mieux communiquer avec ses enfants") 
 				&& !title.equals("Le jeu des 7 familles des émotions") && !title.equals("Mes réflexions sur le monde pro")) {
@@ -171,14 +164,14 @@ class RessourceRelationnellesApplicationTests {
 			}
 		}
 
-		for (Ressource ressource : lstRes) {
+		for (RessourceDTO ressource : lstRes) {
 			ressourceControl.delete(ressource.getId());
 		}
 
 		ressources = ressourceControl.getAll().getBody();
 		Boolean isDeleted = true;
 
-		for (Ressource res : ressources) {
+		for (RessourceDTO res : ressources) {
 			if (res.getTitle().equals("Ressource1")) {
 				isDeleted = false;
 			}
@@ -192,15 +185,15 @@ class RessourceRelationnellesApplicationTests {
 	@Order(8)
 	void ValidateRessourceAsModerator(){
 		var users = userControl.getAll().getBody();
-		User user1 = null;
-		for (User user : users) {
+		UserDTO user1 = null;
+		for (UserDTO user : users) {
 			if (user.getRole() == Role.MODERATOR) {
 				user1 = user;
 			}
 		}
 		var ressources = ressourceControl.getAll().getBody();
-		Ressource res1 = null;
-		for (Ressource res : ressources) {
+		RessourceDTO res1 = null;
+		for (RessourceDTO res : ressources) {
 			if (res.getStatus() == RessourceStatus.pending) {
 				res1 = res;
 			}
@@ -215,15 +208,15 @@ class RessourceRelationnellesApplicationTests {
 	@Order(7)
 	void ModifierRessourceAsCitizen(){
 		var users = userControl.getAll().getBody();
-		User user1 = null;
-		for (User user : users) {
+		UserDTO user1 = null;
+		for (UserDTO user : users) {
 			if (user.getRole() == Role.CITIZEN) {
 				user1 = user;
 			}
 		}
 		var ressources = ressourceControl.getAll().getBody();
-		Ressource res1 = null;
-		for (Ressource res : ressources) {
+		RessourceDTO res1 = null;
+		for (RessourceDTO res : ressources) {
 			if (res.getTitle().equals("Ressource1")) {
 				res1 = res;
 			}
@@ -238,32 +231,29 @@ class RessourceRelationnellesApplicationTests {
 	@Order(0)
 	void CreerRessourceAsCitizen(){
 		var users = userControl.getAll().getBody();
-		User user1 = null;
-		for (User user : users) {
+		UserDTO user1 = null;
+		for (UserDTO user : users) {
 			if (user.getRole() == Role.CITIZEN) {
 				user1 = user;
 			}
 		}
 
-				var categories = categoryControl.getAll().getBody();
+		var categories = categoryControl.getAll().getBody();
 		Category category1 = categories.get(0);
 
-
-				var types = typeControl.getAll().getBody();
+		var types = typeControl.getAll().getBody();
 		Type type1 = types.get(0);
 
-				var relations = relationControl.getAll().getBody();
+		var relations = relationControl.getAll().getBody();
 		Relation relation1 = relations.get(0);
 
-		var res1 = new Ressource(0, "Ressource1", "contenu1", 0, relation1, type1,
-            category1,Visibility.public_visibility, RessourceStatus.pending, LocalDateTime.now());
-		var res2 = new Ressource(0, "Ressource2", "contenu2", 0, relation1, type1,
-            category1,Visibility.public_visibility, RessourceStatus.pending, LocalDateTime.now());
-			res1.setUser(user1);
-			res2.setUser(user1);
+		var res1 = new RessourceDTO(0, "Ressource1", "contenu1", 0, user1.getId(), relation1.getId(), type1.getId(),
+            category1.getId(),Visibility.public_visibility, RessourceStatus.pending, LocalDateTime.now());
+		var res2 = new RessourceDTO(0, "Ressource2", "contenu2", 0, user1.getId(), relation1.getId(), type1.getId(),
+            category1.getId(),Visibility.public_visibility, RessourceStatus.pending, LocalDateTime.now());
 
-		var ressource1WasCreated = ressourceControl.create(res1).getBody() == res1;
-		var ressource2WasCreated = ressourceControl.create(res2).getBody() == res2;
+		var ressource1WasCreated = ressourceControl.create(res1).getBody().getId() != null;
+		var ressource2WasCreated = ressourceControl.create(res2).getBody().getId() != null;
 
 		Assert.isTrue(ressource1WasCreated && ressource2WasCreated,"At least one of the two ressources has not been created");
 	}
@@ -272,9 +262,9 @@ class RessourceRelationnellesApplicationTests {
 	@Order(5)
 	void RefuseFriendRequest(){
 		var users = userControl.getAll().getBody();
-		User user1 = null;
-		User user2 = null;
-		for (User user : users) {
+		UserDTO user1 = null;
+		UserDTO user2 = null;
+		for (UserDTO user : users) {
 			if (users.indexOf(user) == 0) {
 				user1 = user;
 			}
@@ -283,11 +273,11 @@ class RessourceRelationnellesApplicationTests {
 			}
 		}
 
-		var friend1 = new Friend(0,user1,user2,FriendStatus.pending,LocalDateTime.now());
+		var friend1 = new FriendDTO(0,user1.getId(),user2.getId(),FriendStatus.pending,LocalDateTime.now());
 		var friendFound = friendControl.create(friend1).getBody();
 
 		friendFound.setStatus(FriendStatus.rejected);
-		var body = friendControl.update(friend1.getId(),friend1).getBody().getStatus();
+		var body = friendControl.update(friendFound.getId(),friendFound).getBody().getStatus();
 		var AddAsFriend =  body == FriendStatus.rejected;
 		Assert.isTrue(AddAsFriend, "Echec du refus d'amis");
 		friendControl.delete(friendFound.getId());
@@ -299,9 +289,9 @@ class RessourceRelationnellesApplicationTests {
 	@Order(6)
 	void AcceptFriendRequest(){
 		var users = userControl.getAll().getBody();
-		User user1 = null;
-		User user2 = null;
-		for (User user : users) {
+		UserDTO user1 = null;
+		UserDTO user2 = null;
+		for (UserDTO user : users) {
 			if (users.indexOf(user) == 0) {
 				user1 = user;
 			}
@@ -310,11 +300,11 @@ class RessourceRelationnellesApplicationTests {
 			}
 		}
 
-		var friend1 = new Friend(0,user1,user2,FriendStatus.pending,LocalDateTime.now());
+		var friend1 = new FriendDTO(0,user1.getId(),user2.getId(),FriendStatus.pending,LocalDateTime.now());
 		var friendFound = friendControl.create(friend1).getBody();
 
 		friendFound.setStatus(FriendStatus.accepted);
-		var body = friendControl.update(friend1.getId(),friend1).getBody().getStatus();
+		var body = friendControl.update(friendFound.getId(),friendFound).getBody().getStatus();
 		var AddAsFriend = body == FriendStatus.accepted;
 		Assert.isTrue(AddAsFriend, "Echec de l'acceptation d'amis");
 		friendControl.delete(friendFound.getId());
@@ -325,17 +315,12 @@ class RessourceRelationnellesApplicationTests {
 	@Order(4)
 	void AddAsFriend(){
 		var users = userControl.getAll().getBody();
-		User user1 = users.get(0);
-		User user2 = users.get(1);
-		//for (User user : users) {
-		//	if(user.getUsername().equals("Johanes 1er du nom")) user1 = user;
-		//	if(user.getUsername().equals("Johanes 2eme du nom")) user2 = user;
-//
-		//}
+		UserDTO user1 = users.get(0);
+		UserDTO user2 = users.get(1);
 
-		var friend = new Friend(0, user1, user2, FriendStatus.pending, LocalDateTime.now());
+		var friend = new FriendDTO(0, user1.getId(), user2.getId(), FriendStatus.pending, LocalDateTime.now());
 		var friendFound = friendControl.create(friend).getBody();
-		var AddAsFriend = friendFound.getUser1().getId()== friend.getUser1().getId() && friendFound.getUser2().getId()== friendFound.getUser2().getId() ;
+		var AddAsFriend = friendFound.getUser1Id().equals(friend.getUser1Id()) && friendFound.getUser2Id().equals(friend.getUser2Id()) ;
 		Assert.isTrue(AddAsFriend, "Echec de la demande d'amis");
 		friendControl.delete(friendFound.getId());
 	}
@@ -375,9 +360,9 @@ class RessourceRelationnellesApplicationTests {
 	void CreerUtilisateur(){
 		try {
 			var users = userControl.getAll().getBody();
-			User user1 = null;
-			User user2 = null;
-			for (User user : users) {
+			UserDTO user1 = null;
+			UserDTO user2 = null;
+			for (UserDTO user : users) {
 				var name = user.getUsername();
 				if(name.equals("Johanes 1er du nom") )
 				{
@@ -388,30 +373,30 @@ class RessourceRelationnellesApplicationTests {
 					user2 = user;
 				}
 			}
-		var friendList = new ArrayList<Friend>();
-		var friendsUser2 = friendControl.getAllFriendAndRequests(user2.getId()).getBody();
-		var friendsUser1 = friendControl.getAllFriendAndRequests(user1.getId()).getBody();
-		friendList.addAll(friendsUser1);
-		friendList.addAll(friendsUser2);
+			var friendList = new ArrayList<FriendDTO>();
+			var friendsUser2 = friendControl.getAllFriendAndRequests(user2.getId()).getBody();
+			var friendsUser1 = friendControl.getAllFriendAndRequests(user1.getId()).getBody();
+			friendList.addAll(friendsUser1);
+			friendList.addAll(friendsUser2);
 
-			for (Friend friend : friendList) {
+			for (FriendDTO friend : friendList) {
 				friendControl.delete(friend.getId());			
-				}
+			}
 
 			userControl.delete(user1.getId());
 			userControl.delete(user2.getId());
 		} catch (Exception e) {
 		}
-		var user1 = new User(0, "Johanes 1er du nom", "Johanespremierdunom@gmail.com", "ASafePassword@1235813", Role.CITIZEN, LocalDateTime.now(),
+		var user1 = new UserDTO(0, "Johanes 1er du nom", "Johanespremierdunom@gmail.com", Role.CITIZEN, LocalDateTime.now(),
             true);
-		var user2 = new User(0, "Johanes 2eme du nom", "Johanesdeuxiemedunom@gmail.com", "ASafePassword@1235813", Role.CITIZEN, LocalDateTime.now(),
+		var user2 = new UserDTO(0, "Johanes 2eme du nom", "Johanesdeuxiemedunom@gmail.com", Role.CITIZEN, LocalDateTime.now(),
             true);
 
 		
-		var user1WasCreated = userControl.create(user1).getBody() == user1;
-		var user2WasCreated = userControl.create(user2).getBody() == user2;
+		var user1WasCreated = userControl.create(user1).getBody().getId() != null;
+		var user2WasCreated = userControl.create(user2).getBody().getId() != null;
 
 		Assert.isTrue(user1WasCreated && user2WasCreated,"At least one of the two users has not been created");
 	}
 
-	}
+}

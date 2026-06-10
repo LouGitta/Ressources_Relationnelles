@@ -30,7 +30,6 @@ public class User {
     @Column(nullable = false, length = 255)
     private String password; // Bcrypt hashed password
 
-    @Enumerated(EnumType.STRING)
     private Role role = Role.CITIZEN;
 
     @Column(name = "created_at", insertable = false, updatable = false)

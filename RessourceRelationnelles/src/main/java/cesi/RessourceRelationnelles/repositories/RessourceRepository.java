@@ -33,14 +33,14 @@ public interface RessourceRepository extends CrudRepository<Ressource, Integer> 
                      @Param("visibility") Visibility visibility,
                      @Param("status") RessourceStatus status);
 
-       @Query("SELECT r.category.name, COUNT(r) FROM Ressource r GROUP BY r.category.name")
-       List<Object[]> countRessourcesByCategory();
+       @Query("SELECT new cesi.RessourceRelationnelles.dtos.StatItemDTO(r.category.name, COUNT(r)) FROM Ressource r GROUP BY r.category.name")
+       List<cesi.RessourceRelationnelles.dtos.StatItemDTO> countRessourcesByCategory();
 
-       @Query("SELECT r.status, COUNT(r) FROM Ressource r GROUP BY r.status")
-       List<Object[]> countRessourcesByStatus();
+       @Query("SELECT new cesi.RessourceRelationnelles.dtos.StatItemDTO(r.status, COUNT(r)) FROM Ressource r GROUP BY r.status")
+       List<cesi.RessourceRelationnelles.dtos.StatItemDTO> countRessourcesByStatus();
 
-       @Query("SELECT r.visibility, COUNT(r) FROM Ressource r GROUP BY r.visibility")
-       List<Object[]> countRessourcesByVisibility();
+       @Query("SELECT new cesi.RessourceRelationnelles.dtos.StatItemDTO(r.visibility, COUNT(r)) FROM Ressource r GROUP BY r.visibility")
+       List<cesi.RessourceRelationnelles.dtos.StatItemDTO> countRessourcesByVisibility();
 
        @Query("SELECT r FROM Ressource r WHERE " +
                      "(:title IS NULL OR LOWER(r.title) LIKE LOWER(CONCAT('%', :title, '%'))) AND " +

@@ -31,3 +31,20 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Fichiers sensibles (Sécurité) ###
+.env
+.env.local
+.env.*.local
+*.p12
+*.pfx
+*.jks
+*.key
+logs/
+*.log
+
+### IDE ###
+*.swp
+*.swo
+*~
+.DS_Store
