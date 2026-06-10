@@ -103,8 +103,34 @@ public class FriendService {
         friendRepository.deleteById(id);
     }
 
+    /**
+     * Compte le nombre total de relations d'amitié.
+     *
+     * @return nombre de relations
+     */
     public long countAll() {
         return friendRepository.count();
+    }
+
+    /**
+     * Envoie une demande d'ami d'un utilisateur vers un autre.
+     * Initialise le statut à {@link FriendStatus#pending} et la date de création.
+     *
+     * @param sender   L'utilisateur qui envoie la demande
+     * @param receiver L'utilisateur qui reçoit la demande
+     * @return La relation d'amitié créée
+     */
+    @Transactional
+    public Friend sendFriendRequest(
+            cesi.RessourceRelationnelles.models.User sender,
+            cesi.RessourceRelationnelles.models.User receiver) {
+        logger.info("Envoi d'une demande d'ami de {} vers {}", sender.getId(), receiver.getId());
+        Friend request = new Friend();
+        request.setUser1(sender);
+        request.setUser2(receiver);
+        request.setStatus(FriendStatus.pending);
+        request.setCreatedAt(java.time.LocalDateTime.now());
+        return save(request);
     }
 
     /**

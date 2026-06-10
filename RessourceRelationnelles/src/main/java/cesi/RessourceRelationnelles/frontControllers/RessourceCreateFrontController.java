@@ -4,8 +4,9 @@ import cesi.RessourceRelationnelles.config.AppConstants;
 import cesi.RessourceRelationnelles.config.Routes;
 import cesi.RessourceRelationnelles.exceptions.UnauthorizedException;
 import cesi.RessourceRelationnelles.exceptions.ValidationException;
-import cesi.RessourceRelationnelles.models.Ressource;
-import cesi.RessourceRelationnelles.models.RessourceStatus;
+import cesi.RessourceRelationnelles.models.Category;
+import cesi.RessourceRelationnelles.models.Relation;
+import cesi.RessourceRelationnelles.models.Type;
 import cesi.RessourceRelationnelles.models.User;
 import cesi.RessourceRelationnelles.models.Visibility;
 import cesi.RessourceRelationnelles.services.CategoryService;
@@ -13,7 +14,6 @@ import cesi.RessourceRelationnelles.services.RelationService;
 import cesi.RessourceRelationnelles.services.RessourceService;
 import cesi.RessourceRelationnelles.services.TypeService;
 import cesi.RessourceRelationnelles.utils.ValidationHelper;
-import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +23,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDateTime;
-
 /**
  * Contrôleur pour créer une nouvelle ressource.
  * Gère l'affichage du formulaire et la sauvegarde de la ressource.
+ * La logique métier d'initialisation (statut, date, vues) est déléguée à {@link RessourceService#create}.
  */
 @Controller
 public class RessourceCreateFrontController {
@@ -49,14 +48,13 @@ public class RessourceCreateFrontController {
     /**
      * Affiche le formulaire de création de ressource.
      *
-     * @param model   Le modèle pour la vue
-     * @param request La requête HTTP
+     * @param model Le modèle pour la vue
      * @return La vue "ressourceCreate"
      */
     @GetMapping(Routes.RESSOURCE_CREATE)
-    public String showCreateForm(Model model, HttpServletRequest request) {
+    public String showCreateForm(Model model) {
         logger.debug("Affichage du formulaire de création de ressource");
-        
+
         User currentUser = (User) model.asMap().get("currentUser");
         if (currentUser == null) {
             logger.warn("Utilisateur non authentifié - redirection");
@@ -74,7 +72,8 @@ public class RessourceCreateFrontController {
 
     /**
      * Sauvegarde une nouvelle ressource.
-     * Validation des paramètres, création et sauvegarde.
+     * La validation des longueurs est faite ici ; la logique métier d'initialisation
+     * (statut {@code pending}, date de création, vues à 0) est délégué au service.
      *
      * @param title      Titre de la ressource (requis)
      * @param content    Contenu de la ressource (requis)
@@ -82,7 +81,6 @@ public class RessourceCreateFrontController {
      * @param typeId     ID du type (requis)
      * @param relationId ID de la relation (requis)
      * @param visibility Visibilité de la ressource
-     * @param request    La requête HTTP
      * @param model      Le modèle pour la vue
      * @return Redirection vers le catalogue
      */
@@ -94,7 +92,6 @@ public class RessourceCreateFrontController {
             @RequestParam Integer typeId,
             @RequestParam Integer relationId,
             @RequestParam(defaultValue = "PUBLIC") Visibility visibility,
-            HttpServletRequest request,
             Model model) {
 
         logger.debug("Création d'une nouvelle ressource - titre: {}", title);
@@ -105,46 +102,24 @@ public class RessourceCreateFrontController {
             throw UnauthorizedException.notAuthenticated();
         }
 
-        // Validation des paramètres
+        // Validation des paramètres obligatoires
         ValidationHelper.validateNotBlank(title, "title");
         ValidationHelper.validateNotBlank(content, "content");
         ValidationHelper.validatePositiveId(categoryId, "categoryId");
         ValidationHelper.validatePositiveId(typeId, "typeId");
         ValidationHelper.validatePositiveId(relationId, "relationId");
+        ValidationHelper.validateLength(title.trim(), AppConstants.TITLE_MIN_LENGTH, AppConstants.TITLE_MAX_LENGTH, "title");
+        ValidationHelper.validateLength(content.trim(), AppConstants.CONTENT_MIN_LENGTH, AppConstants.CONTENT_MAX_LENGTH, "content");
 
-        title = title.trim();
-        content = content.trim();
+        // Résolution des associations
+        Category category = categoryService.getById(categoryId).orElse(null);
+        Type type = typeService.getById(typeId).orElse(null);
+        Relation relation = relationService.getById(relationId).orElse(null);
 
-        if (title.length() < AppConstants.TITLE_MIN_LENGTH) {
-            logger.warn("Titre trop court: {} caractères", title.length());
-            throw ValidationException.invalidField("title", 
-                "Le titre doit contenir au moins " + AppConstants.TITLE_MIN_LENGTH + " caractères");
-        }
+        // Délégation complète de la création métier au service
+        var saved = ressourceService.create(title, content, visibility, currentUser, category, type, relation);
 
-        if (content.length() < AppConstants.CONTENT_MIN_LENGTH) {
-            logger.warn("Contenu trop court: {} caractères", content.length());
-            throw ValidationException.invalidField("content",
-                "Le contenu doit contenir au moins " + AppConstants.CONTENT_MIN_LENGTH + " caractères");
-        }
-
-        // Créer la ressource
-        Ressource ressource = new Ressource();
-        ressource.setTitle(title);
-        ressource.setContent(content);
-        ressource.setVisibility(visibility);
-        ressource.setCreatedAt(LocalDateTime.now());
-        ressource.setStatus(RessourceStatus.pending);
-        ressource.setViews(0);
-        ressource.setUser(currentUser);
-
-        categoryService.getById(categoryId).ifPresent(ressource::setCategory);
-        typeService.getById(typeId).ifPresent(ressource::setType);
-        relationService.getById(relationId).ifPresent(ressource::setRelation);
-
-        // Sauvegarder
-        ressourceService.save(ressource);
-
-        logger.info("Ressource créée avec succès par l'utilisateur {}. ID: {}", currentUser.getId(), ressource.getId());
+        logger.info("Ressource créée avec succès par l'utilisateur {}. ID: {}", currentUser.getId(), saved.getId());
         return Routes.REDIRECT_RESSOURCES;
     }
 }

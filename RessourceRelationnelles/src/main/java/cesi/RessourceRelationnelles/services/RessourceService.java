@@ -1,9 +1,11 @@
 package cesi.RessourceRelationnelles.services;
 
+import cesi.RessourceRelationnelles.models.ActivityParticipant;
 import cesi.RessourceRelationnelles.models.Ressource;
 import cesi.RessourceRelationnelles.models.RessourceStatus;
 import cesi.RessourceRelationnelles.models.User;
 import cesi.RessourceRelationnelles.models.Visibility;
+import cesi.RessourceRelationnelles.repositories.ActivityParticipantRepository;
 import cesi.RessourceRelationnelles.repositories.RessourceRepository;
 import cesi.RessourceRelationnelles.utils.AuthorizationHelper;
 import org.slf4j.Logger;
@@ -34,7 +36,7 @@ public class RessourceService {
     private FriendService friendService;
 
     @Autowired
-    private cesi.RessourceRelationnelles.repositories.ActivityParticipantRepository activityParticipantRepository;
+    private ActivityParticipantRepository activityParticipantRepository;
 
     /**
      * Récupère toutes les ressources.
@@ -79,6 +81,40 @@ public class RessourceService {
     public void delete(Integer id) {
         logger.debug("Suppression de la ressource {}", id);
         ressourceRepository.deleteById(id);
+    }
+
+    /**
+     * Crée et persiste une nouvelle ressource avec les valeurs initiales métier.
+     * Centralise : statut initial à {@code pending}, date de création et compteur de vues.
+     *
+     * @param title      Titre de la ressource
+     * @param content    Contenu de la ressource
+     * @param visibility Visibilité choisie par l'utilisateur
+     * @param author     Auteur de la ressource
+     * @param category   Catégorie sélectionnée (peut être null)
+     * @param type       Type sélectionné (peut être null)
+     * @param relation   Relation sélectionnée (peut être null)
+     * @return La ressource persistée
+     */
+    @Transactional
+    public Ressource create(String title, String content, Visibility visibility,
+            User author,
+            cesi.RessourceRelationnelles.models.Category category,
+            cesi.RessourceRelationnelles.models.Type type,
+            cesi.RessourceRelationnelles.models.Relation relation) {
+        logger.info("Création d'une nouvelle ressource '{}' par l'utilisateur {}", title, author.getId());
+        Ressource ressource = new Ressource();
+        ressource.setTitle(title.trim());
+        ressource.setContent(content.trim());
+        ressource.setVisibility(visibility);
+        ressource.setStatus(RessourceStatus.pending);
+        ressource.setCreatedAt(java.time.LocalDateTime.now());
+        ressource.setViews(0);
+        ressource.setUser(author);
+        ressource.setCategory(category);
+        ressource.setType(type);
+        ressource.setRelation(relation);
+        return save(ressource);
     }
 
     /**
@@ -165,14 +201,65 @@ public class RessourceService {
         return ressourceRepository.countRessourcesByVisibility();
     }
 
-    public List<cesi.RessourceRelationnelles.models.ActivityParticipant> getParticipants(Integer ressourceId) {
+    /**
+     * Récupère la liste des participants à une activité.
+     *
+     * @param ressourceId ID de la ressource (activité)
+     * @return liste des participants
+     */
+    public List<ActivityParticipant> getParticipants(Integer ressourceId) {
         logger.debug("Récupération des participants pour la ressource {}", ressourceId);
         return activityParticipantRepository.findByRessource_Id(ressourceId);
     }
 
+    /**
+     * Vérifie si un utilisateur participe à une activité.
+     *
+     * @param ressourceId ID de la ressource (activité)
+     * @param userId      ID de l'utilisateur
+     * @return true si l'utilisateur participe
+     */
     public boolean isUserParticipating(Integer ressourceId, Integer userId) {
         logger.debug("Vérification si l'utilisateur {} participe à la ressource {}", userId, ressourceId);
         return activityParticipantRepository.findByRessource_IdAndUser_Id(ressourceId, userId).isPresent();
+    }
+
+    /**
+     * Inscrit un utilisateur à une activité s'il n'est pas déjà participant.
+     *
+     * @param ressource   La ressource (activité)
+     * @param user        L'utilisateur qui rejoint l'activité
+     */
+    @Transactional
+    public void joinActivity(Ressource ressource, User user) {
+        if (activityParticipantRepository.findByRessource_IdAndUser_Id(ressource.getId(), user.getId()).isEmpty()) {
+            ActivityParticipant participant = new ActivityParticipant();
+            participant.setRessource(ressource);
+            participant.setUser(user);
+            participant.setJoinedAt(java.time.LocalDateTime.now());
+            activityParticipantRepository.save(participant);
+            logger.info("L'utilisateur {} a rejoint l'activité {}", user.getId(), ressource.getId());
+        } else {
+            logger.debug("L'utilisateur {} participe déjà à l'activité {}", user.getId(), ressource.getId());
+        }
+    }
+
+    /**
+     * Désinscrit un utilisateur d'une activité.
+     *
+     * @param ressourceId ID de la ressource (activité)
+     * @param userId      ID de l'utilisateur qui quitte l'activité
+     */
+    @Transactional
+    public void leaveActivity(Integer ressourceId, Integer userId) {
+        activityParticipantRepository.findByRessource_IdAndUser_Id(ressourceId, userId)
+                .ifPresentOrElse(
+                        participation -> {
+                            activityParticipantRepository.delete(participation);
+                            logger.info("L'utilisateur {} a quitté l'activité {}", userId, ressourceId);
+                        },
+                        () -> logger.debug("L'utilisateur {} ne participe pas à l'activité {}", userId, ressourceId)
+                );
     }
 
     /**

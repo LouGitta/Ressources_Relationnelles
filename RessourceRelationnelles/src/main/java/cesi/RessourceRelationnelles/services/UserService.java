@@ -3,6 +3,7 @@ package cesi.RessourceRelationnelles.services;
 import cesi.RessourceRelationnelles.models.Role;
 import cesi.RessourceRelationnelles.models.User;
 import cesi.RessourceRelationnelles.repositories.UserRepository;
+import cesi.RessourceRelationnelles.utils.AuthorizationHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,6 +101,14 @@ public class UserService {
         return userRepository.count();
     }
 
+    /**
+     * Recherche et filtre les utilisateurs selon des critères optionnels.
+     *
+     * @param keyword  Mot-clé de recherche sur le nom d'utilisateur ou l'email
+     * @param role     Filtre par rôle (optionnel)
+     * @param isActive Filtre par statut d'activation (optionnel)
+     * @return Liste des utilisateurs correspondant aux critères
+     */
     public List<User> searchAndFilter(String keyword, Role role, Boolean isActive) {
         if (keyword != null && keyword.trim().isEmpty()) {
             keyword = null;
@@ -119,7 +128,7 @@ public class UserService {
             return false;
         }
         return getById(userId)
-                .map(user -> cesi.RessourceRelationnelles.utils.AuthorizationHelper.hasRole(user, requiredRole))
+                .map(user -> AuthorizationHelper.hasRole(user, requiredRole))
                 .orElse(false);
     }
 
@@ -134,7 +143,7 @@ public class UserService {
             return false;
         }
         return getById(userId)
-                .map(cesi.RessourceRelationnelles.utils.AuthorizationHelper::isModeratorOrAbove)
+                .map(AuthorizationHelper::isModeratorOrAbove)
                 .orElse(false);
     }
 }

@@ -4,7 +4,6 @@ import cesi.RessourceRelationnelles.config.Routes;
 import cesi.RessourceRelationnelles.exceptions.ResourceNotFoundException;
 import cesi.RessourceRelationnelles.exceptions.UnauthorizedException;
 import cesi.RessourceRelationnelles.models.Friend;
-import cesi.RessourceRelationnelles.models.FriendStatus;
 import cesi.RessourceRelationnelles.models.User;
 import cesi.RessourceRelationnelles.services.FriendService;
 import cesi.RessourceRelationnelles.services.UserService;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -38,6 +36,7 @@ public class FriendFrontController {
 
     /**
      * Envoie une demande d'ami à un utilisateur.
+     * La logique d'initialisation (statut pending, date) est déléguée à {@link FriendService#sendFriendRequest}.
      *
      * @param targetUserId ID de l'utilisateur cible
      * @param ressourceId  ID de la ressource (pour la redirection)
@@ -50,23 +49,10 @@ public class FriendFrontController {
                                     Model model) {
         logger.debug("Envoi d'une demande d'ami à l'utilisateur {}", targetUserId);
 
-        User currentUser = (User) model.getAttribute("currentUser");
-        if (currentUser == null) {
-            logger.warn("Utilisateur non authentifié - redirection");
-            throw UnauthorizedException.notAuthenticated();
-        }
+        User currentUser = requireAuthenticated(model);
 
-        // Validation
         ValidationHelper.validatePositiveId(targetUserId, "targetUserId");
         ValidationHelper.validatePositiveId(ressourceId, "ressourceId");
-
-        Optional<User> targetOpt = userService.getById(targetUserId);
-        if (!targetOpt.isPresent()) {
-            logger.warn("Utilisateur cible {} non trouvé", targetUserId);
-            throw ResourceNotFoundException.notFound("Utilisateur", targetUserId);
-        }
-
-        User targetUser = targetOpt.get();
 
         // Vérifier que l'utilisateur ne s'ajoute pas lui-même
         if (currentUser.getId().equals(targetUserId)) {
@@ -74,14 +60,14 @@ public class FriendFrontController {
             return "redirect:" + Routes.RESSOURCE_DETAIL.replace("{id}", ressourceId.toString());
         }
 
-        // Créer la demande
-        Friend requestFriend = new Friend();
-        requestFriend.setUser1(currentUser);
-        requestFriend.setUser2(targetUser);
-        requestFriend.setStatus(FriendStatus.pending);
-        requestFriend.setCreatedAt(LocalDateTime.now());
+        User targetUser = userService.getById(targetUserId)
+                .orElseThrow(() -> {
+                    logger.warn("Utilisateur cible {} non trouvé", targetUserId);
+                    return ResourceNotFoundException.notFound("Utilisateur", targetUserId);
+                });
 
-        friendService.save(requestFriend);
+        // Déléguer la création de la demande au service (statut + date gérés par le service)
+        friendService.sendFriendRequest(currentUser, targetUser);
 
         logger.info("Demande d'ami envoyée de {} à {}", currentUser.getId(), targetUserId);
         return "redirect:" + Routes.RESSOURCE_DETAIL.replace("{id}", ressourceId.toString());
@@ -98,29 +84,21 @@ public class FriendFrontController {
     public String acceptFriend(@PathVariable Integer id, Model model) {
         logger.debug("Acceptation de la demande d'ami {}", id);
 
-        User currentUser = (User) model.getAttribute("currentUser");
-        if (currentUser == null) {
-            logger.warn("Utilisateur non authentifié - redirection");
-            throw UnauthorizedException.notAuthenticated();
-        }
-
+        User currentUser = requireAuthenticated(model);
         ValidationHelper.validatePositiveId(id, "id");
 
-        Optional<Friend> friendOpt = friendService.getById(id);
-        if (!friendOpt.isPresent()) {
-            logger.warn("Relation d'amitié {} non trouvée", id);
-            throw ResourceNotFoundException.notFound("Demande d'ami", id);
-        }
+        Friend friend = friendService.getById(id)
+                .orElseThrow(() -> {
+                    logger.warn("Relation d'amitié {} non trouvée", id);
+                    return ResourceNotFoundException.notFound("Demande d'ami", id);
+                });
 
-        Friend friend = friendOpt.get();
-
-        // Vérifier que l'utilisateur est le destinataire de la demande
         if (!friend.getUser2().getId().equals(currentUser.getId())) {
-            logger.warn("L'utilisateur {} n'a pas le droit d'accepter cette demande", currentUser.getId());
+            logger.warn("L'utilisateur {} n'a pas le droit d'accepter la demande {}", currentUser.getId(), id);
             throw UnauthorizedException.forbidden("accepter cette demande d'ami");
         }
 
-        friend.setStatus(FriendStatus.accepted);
+        friend.setStatus(cesi.RessourceRelationnelles.models.FriendStatus.accepted);
         friendService.save(friend);
 
         logger.info("Demande d'ami {} acceptée par l'utilisateur {}", id, currentUser.getId());
@@ -138,25 +116,17 @@ public class FriendFrontController {
     public String rejectFriend(@PathVariable Integer id, Model model) {
         logger.debug("Refus de la demande d'ami {}", id);
 
-        User currentUser = (User) model.getAttribute("currentUser");
-        if (currentUser == null) {
-            logger.warn("Utilisateur non authentifié - redirection");
-            throw UnauthorizedException.notAuthenticated();
-        }
-
+        User currentUser = requireAuthenticated(model);
         ValidationHelper.validatePositiveId(id, "id");
 
-        Optional<Friend> friendOpt = friendService.getById(id);
-        if (!friendOpt.isPresent()) {
-            logger.warn("Relation d'amitié {} non trouvée", id);
-            throw ResourceNotFoundException.notFound("Demande d'ami", id);
-        }
+        Friend friend = friendService.getById(id)
+                .orElseThrow(() -> {
+                    logger.warn("Relation d'amitié {} non trouvée", id);
+                    return ResourceNotFoundException.notFound("Demande d'ami", id);
+                });
 
-        Friend friend = friendOpt.get();
-
-        // Vérifier que l'utilisateur est le destinataire de la demande
         if (!friend.getUser2().getId().equals(currentUser.getId())) {
-            logger.warn("L'utilisateur {} n'a pas le droit de refuser cette demande", currentUser.getId());
+            logger.warn("L'utilisateur {} n'a pas le droit de refuser la demande {}", currentUser.getId(), id);
             throw UnauthorizedException.forbidden("refuser cette demande d'ami");
         }
 
@@ -164,5 +134,21 @@ public class FriendFrontController {
 
         logger.info("Demande d'ami {} refusée par l'utilisateur {}", id, currentUser.getId());
         return Routes.REDIRECT_PROFILE;
+    }
+
+    /**
+     * Vérifie que l'utilisateur courant est authentifié.
+     *
+     * @param model Le modèle Spring MVC
+     * @return L'utilisateur courant
+     * @throws UnauthorizedException si l'utilisateur n'est pas connecté
+     */
+    private User requireAuthenticated(Model model) {
+        User user = (User) model.getAttribute("currentUser");
+        if (user == null) {
+            logger.warn("Opération amis tentée sans authentification");
+            throw UnauthorizedException.notAuthenticated();
+        }
+        return user;
     }
 }
