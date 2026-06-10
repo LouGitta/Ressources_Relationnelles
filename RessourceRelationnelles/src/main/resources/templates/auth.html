@@ -14,10 +14,16 @@
                 <div class="fr-card fr-p-5w">
                     <h1 class="fr-h3 fr-mb-3w">Connexion</h1>
 
+                    <!-- Message d'inscription réussie -->
+                    <div th:if="${param.registered}" class="fr-alert fr-alert--success fr-mb-3w">
+                        <p class="fr-alert__title">Compte créé avec succès !</p>
+                        <p>Votre compte a bien été créé. Connectez-vous avec votre adresse email.</p>
+                    </div>
+
                     <!-- Message d'erreur -->
                     <div th:if="${param.error}" class="fr-alert fr-alert--error fr-mb-3w">
                         <p class="fr-alert__title">Erreur de connexion</p>
-                        <p>Nom d'utilisateur ou mot de passe incorrect.</p>
+                        <p>Adresse email ou mot de passe incorrect.</p>
                     </div>
 
                     <!-- Message de déconnexion -->
@@ -29,17 +35,19 @@
                     <form th:action="@{/login}" method="post">
                         <div class="fr-form-group">
                             <label class="fr-label" for="username">
-                                Nom d'utilisateur
+                                Adresse email
                             </label>
                             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                            <input class="fr-input" type="text" id="username" name="username" required>
+                            <input class="fr-input" type="email" id="username" name="username"
+                                   autocomplete="email" placeholder="exemple@domaine.fr" required>
                         </div>
                         
                         <div class="fr-form-group">
                             <label class="fr-label" for="password">
                                 Mot de passe
                             </label>
-                            <input class="fr-input" type="password" id="password" name="password" required>
+                            <input class="fr-input" type="password" id="password" name="password"
+                                   autocomplete="current-password" required>
                         </div>
                         
                         <button class="fr-btn" type="submit">

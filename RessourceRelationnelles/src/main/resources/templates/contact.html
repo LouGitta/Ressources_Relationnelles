@@ -21,61 +21,20 @@
                     
                     <div class="fr-alert fr-alert--info fr-my-3w">
                         <h3 class="fr-alert__title">Nous sommes à votre écoute</h3>
-                        <p>Remplissez le formulaire ci-dessous pour nous envoyer votre message. Nous vous répondrons dans les plus brefs délais.</p>
+                        <p>Pour nous contacter, utilisez notre formulaire en ligne. Nous vous répondrons dans les plus brefs délais.</p>
                     </div>
 
-                    <div th:if="${success}" class="fr-alert fr-alert--success fr-my-3w">
-                        <h3 class="fr-alert__title">Message envoyé avec succès</h3>
-                        <p th:text="${success}"></p>
+                    <div class="fr-mt-4w">
+                        <p class="fr-text--lg fr-mb-3w">
+                            Cliquez sur le bouton ci-dessous pour accéder à notre formulaire de contact et soumettre votre demande.
+                        </p>
+                        <a class="fr-btn fr-btn--lg fr-icon-mail-send-line fr-btn--icon-left"
+                           href="http://glpi.ressourcesr.fr/Form/Render/1?token=iXjJvPjm3FYnUgShkdAL52ooWPXEAfFwbfJmTI9M9"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            Accéder au formulaire de contact
+                        </a>
                     </div>
-
-                    <form th:action="@{/contact}" method="post" class="fr-form-group">
-                        <fieldset class="fr-fieldset fr-fieldset--fullwidth">
-                            <legend class="fr-fieldset__legend--regular fr-fieldset__legend">
-                                <span class="fr-fieldset__legend-content">Vos informations</span>
-                            </legend>
-
-                            <div class="fr-input-group">
-                                <label class="fr-label" for="name">
-                                    Nom complet
-                                    <span class="fr-badge fr-badge--sm fr-badge--info">Obligatoire</span>
-                                </label>
-                                <input class="fr-input" type="text" id="name" name="name" placeholder="Votre nom" required>
-                            </div>
-                        </fieldset>
-                        <fieldset class="fr-fieldset fr-fieldset--fullwidth fr-mt-2w">
-                            <legend class="fr-fieldset__legend--regular fr-fieldset__legend">
-                                <span class="fr-fieldset__legend-content">Votre contact</span>
-                            </legend>
-
-                            <div class="fr-input-group">
-                                <label class="fr-label" for="email">
-                                    Adresse email
-                                    <span class="fr-badge fr-badge--sm fr-badge--info">Obligatoire</span>
-                                </label>
-                                <input class="fr-input" type="email" id="email" name="email" placeholder="votre.email@exemple.fr" required>
-                            </div>
-                        </fieldset>
-                        <fieldset class="fr-fieldset fr-fieldset--fullwidth fr-mt-2w">
-                            <legend class="fr-fieldset__legend--regular fr-fieldset__legend">
-                                <span class="fr-fieldset__legend-content">Votre message</span>
-                            </legend>
-
-                            <div class="fr-input-group">
-                                <label class="fr-label" for="message">
-                                    Message
-                                    <span class="fr-badge fr-badge--sm fr-badge--info">Obligatoire</span>
-                                </label>
-                                <textarea class="fr-input" id="message" name="message" placeholder="Décrivez votre demande..." rows="8" required></textarea>
-                            </div>
-                        </fieldset>
-
-                        <div class="fr-mt-4w">
-                            <button class="fr-btn fr-icon-mail-send-line fr-btn--icon-left" type="submit">
-                                Envoyer le message
-                            </button>
-                        </div>
-                    </form>
                 </div>
 
                 <aside class="fr-col-12 fr-col-lg-4">
