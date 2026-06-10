@@ -16,13 +16,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import cesi.RessourceRelationnelles.models.Ressource;
 import cesi.RessourceRelationnelles.models.RessourceStatus;
 import cesi.RessourceRelationnelles.models.User;
 import cesi.RessourceRelationnelles.models.Visibility;
+import cesi.RessourceRelationnelles.models.Ressource;
+import cesi.RessourceRelationnelles.dtos.RessourceFormDTO;
 import cesi.RessourceRelationnelles.services.RessourceService;
 import cesi.RessourceRelationnelles.services.TypeService;
 import cesi.RessourceRelationnelles.services.UserService;
+import cesi.RessourceRelationnelles.services.UserContextService;
+import java.security.Principal;
+import jakarta.validation.Valid;
+import org.springframework.validation.BindingResult;
 
 @Controller
 @RequestMapping("/admin/ressources")
@@ -42,6 +47,9 @@ public class RessourcesController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserContextService userContextService;
 
     @GetMapping
     public String listItems(
@@ -75,8 +83,7 @@ public class RessourcesController {
 
     @GetMapping("/new")
     public String showCreateForm(Model model) {
-        Ressource newRessource = new Ressource();
-
+        RessourceFormDTO newRessource = new RessourceFormDTO();
         newRessource.setStatus(RessourceStatus.pending);
 
         model.addAttribute("ressource", newRessource);
@@ -94,7 +101,7 @@ public class RessourcesController {
         Optional<Ressource> ressourceOpt = ressourceService.getById(id);
 
         if (ressourceOpt.isPresent()) {
-            model.addAttribute("ressource", ressourceOpt.get());
+            model.addAttribute("ressource", cesi.RessourceRelationnelles.utils.DtoMapper.toFormDTO(ressourceOpt.get()));
 
             // Il faut envoyer TOUTES les listes pour les menus déroulants
             model.addAttribute("categories", categoryService.getAll());
@@ -104,16 +111,32 @@ public class RessourcesController {
             model.addAttribute("statuses", RessourceStatus.values());
             return "admin/ressourceForm";
         }
-        return "redirect:/admin/items";
+        return "redirect:/admin/ressources";
     }
 
     @PostMapping("/save")
-    public String saveRessource(@ModelAttribute("ressource") Ressource ressource) {
-        if (ressource.getId() == null) {
-            // DEV
-            User defaultUser = userService.getById(1).orElse(null);
-            ressource.setUser(defaultUser);
+    public String saveRessource(
+            @Valid @ModelAttribute("ressource") RessourceFormDTO ressourceDTO, 
+            BindingResult bindingResult, 
+            Principal principal, 
+            Model model) {
+        
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("categories", categoryService.getAll());
+            model.addAttribute("types", typeService.getAll());
+            model.addAttribute("relations", relationService.getAll());
+            model.addAttribute("visibilities", Visibility.values());
+            model.addAttribute("statuses", RessourceStatus.values());
+            return "admin/ressourceForm";
+        }
 
+        Ressource ressource = cesi.RessourceRelationnelles.utils.DtoMapper.toEntity(ressourceDTO);
+
+        if (ressource.getId() == null) {
+            User creator = userContextService.getCurrentUser(principal).orElse(null);
+            ressource.setUser(creator);
+            ressource.setCreatedAt(java.time.LocalDateTime.now());
+            ressource.setViews(0);
         } else {
             Optional<Ressource> existingOpt = ressourceService.getById(ressource.getId());
 

@@ -29,7 +29,7 @@
                     <div class="fr-col-12 fr-col-md-4">
                         <div class="fr-select-group">
                             <label class="fr-label" for="category">Catégorie</label>
-                            <select class="fr-select" id="category" th:field="*{category}" required>
+                            <select class="fr-select" id="category" th:field="*{categoryId}" required>
                                 <option value="" disabled>Choisir une catégorie</option>
                                 <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>
                             </select>
@@ -38,7 +38,7 @@
                     <div class="fr-col-12 fr-col-md-4">
                         <div class="fr-select-group">
                             <label class="fr-label" for="type">Format / Type</label>
-                            <select class="fr-select" id="type" th:field="*{type}" required>
+                            <select class="fr-select" id="type" th:field="*{typeId}" required>
                                 <option value="" disabled>Choisir un type</option>
                                 <option th:each="t : ${types}" th:value="${t.id}" th:text="${t.name}"></option>
                             </select>
@@ -47,7 +47,7 @@
                     <div class="fr-col-12 fr-col-md-4">
                         <div class="fr-select-group">
                             <label class="fr-label" for="relation">Type de relation</label>
-                            <select class="fr-select" id="relation" th:field="*{relation}" required>
+                            <select class="fr-select" id="relation" th:field="*{relationId}" required>
                                 <option value="" disabled>Choisir une relation</option>
                                 <option th:each="rel : ${relations}" th:value="${rel.id}" th:text="${rel.name}"></option>
                             </select>

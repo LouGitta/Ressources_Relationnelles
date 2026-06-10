@@ -54,9 +54,9 @@
                             </thead>
                             <tbody>
                                 <tr th:each="stat : ${ressourcesByCategory}">
-                                    <td th:text="${stat[0]}"></td>
+                                    <td th:text="${stat.key}"></td>
                                     <td style="text-align: right;">
-                                        <span class="fr-badge fr-badge--info" th:text="${stat[1]}"></span>
+                                        <span class="fr-badge fr-badge--info" th:text="${stat.count}"></span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -76,9 +76,9 @@
                             </thead>
                             <tbody>
                                 <tr th:each="stat : ${ressourcesByStatus}">
-                                    <td th:text="${stat[0]}"></td>
+                                    <td th:text="${stat.key}"></td>
                                     <td style="text-align: right;">
-                                        <span class="fr-badge fr-badge--info" th:text="${stat[1]}"></span>
+                                        <span class="fr-badge fr-badge--info" th:text="${stat.count}"></span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -98,9 +98,9 @@
                             </thead>
                             <tbody>
                                 <tr th:each="stat : ${ressourcesByVisibility}">
-                                    <td th:text="${stat[0]}"></td>
+                                    <td th:text="${stat.key}"></td>
                                     <td style="text-align: right;">
-                                        <span class="fr-badge fr-badge--info" th:text="${stat[1]}"></span>
+                                        <span class="fr-badge fr-badge--info" th:text="${stat.count}"></span>
                                     </td>
                                 </tr>
                             </tbody>
