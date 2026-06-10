@@ -17,7 +17,7 @@ public final class Routes {
     // ==================== ROUTES PUBLIQUES ====================
     public static final String HOME = APP_PREFIX + "/home";
     public static final String LOGIN = APP_PREFIX + "/login";
-    public static final String CREATE_ACCOUNT = APP_PREFIX + "/register";
+    public static final String CREATE_ACCOUNT = APP_PREFIX + "/create-account";
     public static final String CGU = APP_PREFIX + "/cgu";
     public static final String LEGAL_MENTION = APP_PREFIX + "/legal";
     public static final String CONTACT = APP_PREFIX + "/contact";
