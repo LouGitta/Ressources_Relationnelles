@@ -47,6 +47,10 @@ public final class AppConstants {
     public static final Integer DEFAULT_PAGINATION_SIZE = 20;
     public static final Integer MAX_PAGINATION_SIZE = 100;
 
+    // ==================== TYPES DE RESSOURCES ====================
+    /** Nom du type "Activité / Jeu à réaliser" tel que défini en base de données. */
+    public static final String ACTIVITY_TYPE_NAME = "Activité / Jeu à réaliser";
+
     // ==================== DURÉES (en millisecondes) ====================
     public static final long SESSION_TIMEOUT = 3600000; // 1 heure
     public static final long TOKEN_EXPIRATION = 86400000; // 24 heures

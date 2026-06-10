@@ -1,5 +1,6 @@
 package cesi.RessourceRelationnelles.frontControllers;
 
+import cesi.RessourceRelationnelles.config.AppConstants;
 import cesi.RessourceRelationnelles.config.Routes;
 import cesi.RessourceRelationnelles.exceptions.ResourceNotFoundException;
 import cesi.RessourceRelationnelles.exceptions.UnauthorizedException;
@@ -102,7 +103,7 @@ public class RessourceFrontController {
         List<ActivityParticipant> participants = new ArrayList<>();
 
         // On vérifie si la ressource a bien un type et si c'est une activité
-        if (ressource.getType() != null && "Activité / Jeu à réaliser".equals(ressource.getType().getName())) {
+        if (ressource.getType() != null && AppConstants.ACTIVITY_TYPE_NAME.equals(ressource.getType().getName())) {
             logger.debug("Ressource {} est une activité/jeu", id);
             
             // 1. Récupérer tous les participants de cette ressource via le Service
