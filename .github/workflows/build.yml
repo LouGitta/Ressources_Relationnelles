@@ -107,6 +107,8 @@ jobs:
           password: ${{ secrets.GH_PAT_PACKAGE }}
 
       - name: Send docker image to GCR
-        run : docker push ressourcerelationnelles:latest
+        run : |
+          docker tag ressourcerelationnelles:latest ghcr.io/lougitta/ressourcerelationnelles:latest
+          docker push ghcr.io/lougitta/ressourcerelationnelles:latest
         
         
