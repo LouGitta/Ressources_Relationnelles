@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.Model;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Optional;
 
@@ -28,6 +29,9 @@ public class CreateAccountControllerTest {
     @Mock
     private Model model;
 
+    @Mock
+    private BCryptPasswordEncoder passwordEncoder;
+
     @InjectMocks
     private CreateAccountController createAccountController;
 
@@ -41,6 +45,7 @@ public class CreateAccountControllerTest {
     public void testRegisterUser_Success() {
         when(userService.getByUsername("newUser")).thenReturn(Optional.empty());
         when(userService.getByEmail("new@email.com")).thenReturn(Optional.empty());
+        when(passwordEncoder.encode(anyString())).thenReturn("hashedPassword");
         when(userService.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         String viewName = createAccountController.registerUser(

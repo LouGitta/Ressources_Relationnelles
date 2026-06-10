@@ -20,6 +20,9 @@
                         </div>
                         
                         <form method="post" th:action="@{/app/create-account}">
+                            <!-- CSRF (sinon 403) -->
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                            
                             <div class="fr-form-group">
                                 <label class="fr-label" for="username">Nom d'utilisateur</label>
                                 <input class="fr-input" type="text" id="username" name="username" th:value="${username}" required>

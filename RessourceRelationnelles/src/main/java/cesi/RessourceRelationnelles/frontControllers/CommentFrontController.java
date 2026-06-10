@@ -1,18 +1,13 @@
 package cesi.RessourceRelationnelles.frontControllers;
 
 import cesi.RessourceRelationnelles.config.Routes;
-import cesi.RessourceRelationnelles.dtos.CommentDTO;
 import cesi.RessourceRelationnelles.exceptions.ResourceNotFoundException;
 import cesi.RessourceRelationnelles.exceptions.UnauthorizedException;
-import cesi.RessourceRelationnelles.models.Comment;
-import cesi.RessourceRelationnelles.models.Ressource;
 import cesi.RessourceRelationnelles.models.User;
 import cesi.RessourceRelationnelles.services.CommentService;
 import cesi.RessourceRelationnelles.services.RessourceService;
-import cesi.RessourceRelationnelles.utils.AuthorizationHelper;
 import cesi.RessourceRelationnelles.utils.ValidationHelper;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.time.LocalDateTime;
 
 /**
  * Contrôleur pour gérer les opérations sur les commentaires.

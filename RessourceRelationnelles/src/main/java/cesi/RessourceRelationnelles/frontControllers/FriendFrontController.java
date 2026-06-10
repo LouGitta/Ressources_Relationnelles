@@ -8,7 +8,6 @@ import cesi.RessourceRelationnelles.models.FriendStatus;
 import cesi.RessourceRelationnelles.models.User;
 import cesi.RessourceRelationnelles.services.FriendService;
 import cesi.RessourceRelationnelles.services.UserService;
-import cesi.RessourceRelationnelles.utils.AuthorizationHelper;
 import cesi.RessourceRelationnelles.utils.ValidationHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

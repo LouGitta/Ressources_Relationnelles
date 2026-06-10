@@ -24,5 +24,11 @@ public class AuthController {
         logger.debug("Affichage de la page de login");
         return "auth";
     }
+
+    @GetMapping("/login")
+    public String redirectLogin() {
+        return "redirect:/app/login";
+    }
+
 }
 

@@ -7,6 +7,7 @@ import cesi.RessourceRelationnelles.models.FriendStatus;
 import cesi.RessourceRelationnelles.models.Progression;
 import cesi.RessourceRelationnelles.models.Ressource;
 import cesi.RessourceRelationnelles.models.User;
+import cesi.RessourceRelationnelles.repositories.UserRepository;
 import cesi.RessourceRelationnelles.services.FriendService;
 import cesi.RessourceRelationnelles.services.ProgressionService;
 import cesi.RessourceRelationnelles.services.RessourceService;
@@ -39,6 +40,9 @@ public class ProfileFrontController {
     @Autowired
     private FriendService friendService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     /**
      * Affiche le profil de l'utilisateur actuel.
      * GlobalControllerAdvice gère automatiquement: isConnected, currentUser
@@ -59,7 +63,7 @@ public class ProfileFrontController {
 
         logger.debug("Chargement des données du profil pour l'utilisateur {}", user.getId());
         
-        // Ajouter aussi 'user' pour les templates
+        // Ajouter aussi 'user' pour les templates Thymeleaf
         model.addAttribute("user", user);
 
         // 1. Ses ressources créées

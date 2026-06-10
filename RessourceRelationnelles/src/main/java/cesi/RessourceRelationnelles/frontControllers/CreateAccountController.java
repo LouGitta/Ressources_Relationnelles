@@ -9,6 +9,7 @@ import cesi.RessourceRelationnelles.utils.ValidationHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,9 @@ public class CreateAccountController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     /**
      * Affiche le formulaire de création de compte.
@@ -86,18 +90,19 @@ public class CreateAccountController {
                 throw new IllegalArgumentException("Cette adresse email est déjà enregistrée");
             }
 
-            // Création de l'utilisateur
+            // Création de l'utilisateur avec hashage du mot de passe
             User user = new User();
             user.setUsername(username);
             user.setEmail(email);
-            user.setPassword(password); // Stockage tel quel (sans encodage, conformément au reste du projet)
+            user.setPassword(passwordEncoder.encode(password)); // Encodage BCrypt
             user.setRole(Role.CITIZEN);
             user.setActive(true);
 
             userService.save(user);
             logger.info("Compte créé avec succès pour l'utilisateur: {}", username);
 
-            return Routes.REDIRECT_LOGIN;
+            // Redirection vers le login avec indicateur de succès
+            return "redirect:" + Routes.LOGIN + "?registered";
 
         } catch (IllegalArgumentException e) {
             logger.warn("Erreur lors de la création de compte pour {}: {}", username, e.getMessage());

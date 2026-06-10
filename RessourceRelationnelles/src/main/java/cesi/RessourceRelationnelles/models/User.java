@@ -28,7 +28,7 @@ public class User {
     private String email;
 
     @Column(nullable = false, length = 255)
-    private String password;
+    private String password; // Bcrypt hashed password
 
     private Role role = Role.CITIZEN;
 

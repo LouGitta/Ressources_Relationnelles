@@ -53,8 +53,12 @@ public class GlobalControllerAdvice {
                     currentUser = userOpt.get();
                 }
             } else if (principal != null) {
-                // En mode PROD, récupérer via le principal
-                Optional<User> userOpt = userService.getByUsername(principal.getName());
+                // En mode PROD, récupérer via le principal (qui contient l'email ou le nom d'utilisateur)
+                String login = principal.getName();
+                Optional<User> userOpt = userService.getByEmail(login);
+                if (userOpt.isEmpty()) {
+                    userOpt = userService.getByUsername(login);
+                }
                 if (userOpt.isPresent()) {
                     currentUser = userOpt.get();
                 }

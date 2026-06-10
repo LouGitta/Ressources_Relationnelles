@@ -4,7 +4,6 @@ import cesi.RessourceRelationnelles.config.Routes;
 import cesi.RessourceRelationnelles.exceptions.UnauthorizedException;
 import cesi.RessourceRelationnelles.models.Ressource;
 import cesi.RessourceRelationnelles.models.RessourceStatus;
-import cesi.RessourceRelationnelles.models.Role;
 import cesi.RessourceRelationnelles.models.User;
 import cesi.RessourceRelationnelles.services.RessourceService;
 import cesi.RessourceRelationnelles.utils.AuthorizationHelper;
