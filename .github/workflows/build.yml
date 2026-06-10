@@ -7,6 +7,10 @@ on:
       - DEV
   pull_request:
     types: [opened, synchronize, reopened]
+
+permissions: 
+  packages: write
+
 jobs:
   build:
     name: Build JAR
@@ -103,7 +107,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GH_PAT_REG }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Send docker image to GCR
         run : docker push ressourcerelationnelles:latest
