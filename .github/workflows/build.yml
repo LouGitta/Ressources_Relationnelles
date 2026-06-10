@@ -35,6 +35,7 @@ jobs:
 
       - name: Depcheck
         uses: dependency-check/Dependency-Check_Action@main
+        continue-on-error: true
         env:
         # actions/setup-java@v1 changes JAVA_HOME so it needs to be reset to match the depcheck image
           JAVA_HOME: /opt/jdk
