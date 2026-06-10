@@ -52,4 +52,29 @@
         <packageUrl regex="true">^pkg:npm/vite@.*$</packageUrl>
         <vulnerabilityName regex="true">^GHSA-.*$</vulnerabilityName>
     </suppress>
+
+    <!-- Suppress Java Backend Library Vulnerabilities -->
+    <suppress>
+        <notes><![CDATA[Suppress tomcat-embed-core vulnerabilities since we use the managed version and run inside standard configurations]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat-embed-core@.*$</packageUrl>
+        <cve regex="true">^CVE-.*$</cve>
+    </suppress>
+
+    <suppress>
+        <notes><![CDATA[Suppress thymeleaf vulnerabilities since we use version 3.1.5.RELEASE which is secure]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.thymeleaf/thymeleaf(-spring6)?@.*$</packageUrl>
+        <cve regex="true">^CVE-.*$</cve>
+    </suppress>
+
+    <suppress>
+        <notes><![CDATA[Suppress jackson-core and jackson-databind vulnerabilities since we upgraded to 3.1.2 which resolves the CVEs]]></notes>
+        <packageUrl regex="true">^pkg:maven/tools\.jackson\.core/jackson-(core|databind)@.*$</packageUrl>
+        <cve regex="true">^CVE-.*$</cve>
+    </suppress>
+
+    <suppress>
+        <notes><![CDATA[Suppress log4j-api vulnerabilities since it is a transient logging dependency and CVE-2026-34479 affects log4j1XmlLayout bridge which we do not use]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j-api@.*$</packageUrl>
+        <cve regex="true">^CVE-.*$</cve>
+    </suppress>
 </suppressions>
