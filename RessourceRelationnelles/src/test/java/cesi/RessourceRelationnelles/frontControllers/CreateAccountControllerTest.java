@@ -56,7 +56,7 @@ public class CreateAccountControllerTest {
                 model
         );
 
-        assertEquals(Routes.REDIRECT_LOGIN, viewName);
+        assertEquals("redirect:" + Routes.LOGIN + "?registered", viewName);
         verify(userService, times(1)).save(any(User.class));
     }
 
