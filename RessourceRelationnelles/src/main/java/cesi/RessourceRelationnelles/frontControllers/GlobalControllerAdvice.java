@@ -53,8 +53,9 @@ public class GlobalControllerAdvice {
                     currentUser = userOpt.get();
                 }
             } else if (principal != null) {
-                // En mode PROD, récupérer via le principal (qui contient l'email ou le nom d'utilisateur)
+                // En mode PROD, le principal Spring Security contient l'email (UserDetailsService configure par email)
                 String login = principal.getName();
+                // Tentative unique par email (cas standard), puis fallback username
                 Optional<User> userOpt = userService.getByEmail(login);
                 if (userOpt.isEmpty()) {
                     userOpt = userService.getByUsername(login);
