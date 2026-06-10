@@ -8,7 +8,6 @@ import cesi.RessourceRelationnelles.models.User;
 import cesi.RessourceRelationnelles.services.RessourceService;
 import cesi.RessourceRelationnelles.utils.AuthorizationHelper;
 import cesi.RessourceRelationnelles.utils.ValidationHelper;
-import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,124 +34,81 @@ public class ModerationFrontController {
     /**
      * Affiche le panneau de modération avec toutes les ressources en attente.
      *
-     * @param model   Le modèle pour la vue
-     * @param request La requête HTTP
+     * @param model Le modèle pour la vue
      * @return La vue "moderation"
      */
     @GetMapping(Routes.MODERATION)
-    public String afficherModeration(Model model, HttpServletRequest request) {
+    public String afficherModeration(Model model) {
         logger.debug("Accès au panneau de modération");
-        
-        // GlobalControllerAdvice gère automatiquement : isConnected, currentUser
-        User user = (User) model.asMap().get("currentUser");
-        if (user == null) {
-            logger.warn("Utilisateur non authentifié - redirection");
-            throw UnauthorizedException.notAuthenticated();
-        }
-        
-        // Vérifier que c'est un modérateur
-        if (!AuthorizationHelper.isModeratorOrAbove(user)) {
-            logger.warn("Utilisateur {} tente d'accéder au panneau de modération sans permissions", 
-                       user.getId());
-            throw UnauthorizedException.forbiddenRole("MODERATOR");
-        }
+
+        User user = requireModerator(model);
 
         List<Ressource> pendingRessources = ressourceService.getPendingRessources();
         model.addAttribute("pendingRessources", pendingRessources);
-        
-        logger.info("Affichage de {} ressources en attente pour le modérateur {}", 
-                   pendingRessources.size(), user.getId());
 
+        logger.info("Affichage de {} ressources en attente pour le modérateur {}",
+                   pendingRessources.size(), user.getId());
         return "moderation";
     }
 
     /**
      * Accepte une ressource (change son statut à "published").
      *
-     * @param id      L'ID de la ressource
-     * @param request La requête HTTP
-     * @param model   Le modèle pour la vue
+     * @param id    L'ID de la ressource
+     * @param model Le modèle pour la vue
      * @return Redirection vers le panneau de modération
      */
     @PostMapping(Routes.ACCEPT_RESSOURCE)
-    public String acceptRessource(
-            @PathVariable Integer id,
-            HttpServletRequest request,
-            Model model) {
-        
+    public String acceptRessource(@PathVariable Integer id, Model model) {
         logger.info("Tentative d'acceptation de la ressource ID: {}", id);
-        
-        // GlobalControllerAdvice gère automatiquement : currentUser
-        User user = (User) model.asMap().get("currentUser");
-        if (user == null) {
-            logger.warn("Utilisateur non authentifié");
-            throw UnauthorizedException.notAuthenticated();
-        }
-        
-        try {
-            // Vérifier les permissions
-            if (!AuthorizationHelper.isModeratorOrAbove(user)) {
-                logger.warn("Utilisateur {} tente d'accepter une ressource sans permissions", user.getId());
-                throw UnauthorizedException.forbiddenRole("MODERATOR");
-            }
-            
-            // Valider l'ID
-            ValidationHelper.validatePositiveId(id, "ressourceId");
-            
-            // Mettre à jour le statut
-            ressourceService.updateStatus(id, RessourceStatus.published);
-            logger.info("Ressource {} acceptée et publiée par le modérateur {}", id, user.getId());
-            
-        } catch (IllegalArgumentException | UnauthorizedException e) {
-            logger.error("Erreur lors de l'acceptation de la ressource: {}", e.getMessage());
-            throw e;
-        }
-        
+
+        User user = requireModerator(model);
+        ValidationHelper.validatePositiveId(id, "ressourceId");
+
+        ressourceService.updateStatus(id, RessourceStatus.published);
+        logger.info("Ressource {} acceptée et publiée par le modérateur {}", id, user.getId());
+
         return Routes.REDIRECT_MODERATION;
     }
 
     /**
      * Rejette une ressource (change son statut à "rejected").
      *
-     * @param id      L'ID de la ressource
-     * @param request La requête HTTP
-     * @param model   Le modèle pour la vue
+     * @param id    L'ID de la ressource
+     * @param model Le modèle pour la vue
      * @return Redirection vers le panneau de modération
      */
     @PostMapping(Routes.REJECT_RESSOURCE)
-    public String rejectRessource(
-            @PathVariable Integer id,
-            HttpServletRequest request,
-            Model model) {
-        
+    public String rejectRessource(@PathVariable Integer id, Model model) {
         logger.info("Tentative de rejet de la ressource ID: {}", id);
-        
-        // GlobalControllerAdvice gère automatiquement : currentUser
+
+        User user = requireModerator(model);
+        ValidationHelper.validatePositiveId(id, "ressourceId");
+
+        ressourceService.updateStatus(id, RessourceStatus.rejected);
+        logger.info("Ressource {} rejetée par le modérateur {}", id, user.getId());
+
+        return Routes.REDIRECT_MODERATION;
+    }
+
+    /**
+     * Vérifie que l'utilisateur courant est authentifié et possède le rôle Modérateur ou supérieur.
+     * Lève une exception si l'une des conditions n'est pas remplie.
+     *
+     * @param model Le modèle Spring MVC (contient currentUser injecté par GlobalControllerAdvice)
+     * @return L'utilisateur courant vérifié
+     * @throws UnauthorizedException si non authentifié ou sans permissions suffisantes
+     */
+    private User requireModerator(Model model) {
         User user = (User) model.asMap().get("currentUser");
         if (user == null) {
-            logger.warn("Utilisateur non authentifié");
+            logger.warn("Accès au panneau de modération sans authentification");
             throw UnauthorizedException.notAuthenticated();
         }
-        
-        try {
-            // Vérifier les permissions
-            if (!AuthorizationHelper.isModeratorOrAbove(user)) {
-                logger.warn("Utilisateur {} tente de rejeter une ressource sans permissions", user.getId());
-                throw UnauthorizedException.forbiddenRole("MODERATOR");
-            }
-            
-            // Valider l'ID
-            ValidationHelper.validatePositiveId(id, "ressourceId");
-            
-            // Mettre à jour le statut
-            ressourceService.updateStatus(id, RessourceStatus.rejected);
-            logger.info("Ressource {} rejetée par le modérateur {}", id, user.getId());
-            
-        } catch (IllegalArgumentException | UnauthorizedException e) {
-            logger.error("Erreur lors du rejet de la ressource: {}", e.getMessage());
-            throw e;
+        if (!AuthorizationHelper.isModeratorOrAbove(user)) {
+            logger.warn("Utilisateur {} tente d'accéder à la modération sans permissions", user.getId());
+            throw UnauthorizedException.forbiddenRole("MODERATOR");
         }
-        
-        return Routes.REDIRECT_MODERATION;
+        return user;
     }
 }

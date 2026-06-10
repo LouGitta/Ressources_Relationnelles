@@ -7,7 +7,6 @@ import cesi.RessourceRelationnelles.models.FriendStatus;
 import cesi.RessourceRelationnelles.models.Progression;
 import cesi.RessourceRelationnelles.models.Ressource;
 import cesi.RessourceRelationnelles.models.User;
-import cesi.RessourceRelationnelles.repositories.UserRepository;
 import cesi.RessourceRelationnelles.services.FriendService;
 import cesi.RessourceRelationnelles.services.ProgressionService;
 import cesi.RessourceRelationnelles.services.RessourceService;
@@ -39,9 +38,6 @@ public class ProfileFrontController {
     
     @Autowired
     private FriendService friendService;
-
-    @Autowired
-    private UserRepository userRepository;
 
     /**
      * Affiche le profil de l'utilisateur actuel.
