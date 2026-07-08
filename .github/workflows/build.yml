@@ -8,6 +8,10 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build:
     name: Build JAR
@@ -105,7 +109,12 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GH_PAT_PACKAGE }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/metadata-action@v5
+        id: meta
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/ressourcerelationnelles
 
       - name: Send docker image to GCR
         run : |
