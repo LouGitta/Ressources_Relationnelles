@@ -109,7 +109,7 @@ ALTER TABLE `Progression` ADD FOREIGN KEY (`ressource_id`) REFERENCES `Ressource
 
 ALTER TABLE `Activity` ADD FOREIGN KEY (`creator_id`) REFERENCES `User` (`id`);
 
-ALTER TABLE `ActivityParticipant` ADD FOREIGN KEY (`activity_id`) REFERENCES `Ressource` (`id`);
+ALTER TABLE `ActivityParticipant` ADD FOREIGN KEY (`ressource_id`) REFERENCES `Ressource` (`id`);
 
 ALTER TABLE `ActivityParticipant` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
 

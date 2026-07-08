@@ -12,7 +12,7 @@ services :
     ports:
       - "3306:3306"
     volumes:
-      - "./../BDD/INIT BDD.sql:/docker-entrypoint-initdb.d/initbdd.sql"
+      - "./../BDD/init_bdd.sql:/docker-entrypoint-initdb.d/initbdd.sql"
       ##- "mysql_data:/var/lib/mysql"
     healthcheck:
       test: ["CMD-SHELL","mysql --user=mysql_user --password=mysql_password --execute=\"SHOW DATABASES;\""]
