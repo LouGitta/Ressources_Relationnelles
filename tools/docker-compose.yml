@@ -1,0 +1,33 @@
+services:
+  mysql_db:
+    image: mysql:8.0.45
+    command: --default-authentication-plugin=caching_sha2_password
+    container_name: mysql_RessourcesRelationnelles
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${DB_HOST_PORT}:3306"
+    volumes:
+      - "./BDD/init_bdd.sql:/docker-entrypoint-initdb.d/initbdd.sql"
+    healthcheck:
+      test: ["CMD-SHELL", "mysql --user=${DB_USER} --password=${DB_PASSWORD} --execute=\"SHOW DATABASES;\""]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  backend-auth:
+    image: ghcr.io/lougitta/ressourcerelationnelles:latest
+    ports:
+      - "${APP_HOST_PORT}:8080"
+    depends_on:
+      mysql_db:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql_db:3306/${DB_NAME}?allowPublicKeyRetrieval=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=${DB_ROOT_PASSWORD}
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
