@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      th:replace="~{layouts/layoutAdmin :: layout(~{::main})}">
+<body>
+    <main role="main" id="content">
+        <div class="fr-container fr-mt-4w fr-mb-4w">
+            <div class="fr-grid-row fr-grid-row--middle fr-mb-3w">
+                <div class="fr-col-12 fr-col-md-8">
+                    <h1>Tableau de bord</h1>
+                </div>
+                <div class="fr-col-12 fr-col-md-4" style="display: flex; justify-content: flex-end;">
+                    <a href="/admin/home/export" class="fr-btn fr-btn--secondary fr-icon-download-line fr-btn--icon-left">
+                        Exporter les stats (CSV)
+                    </a>
+                </div>
+            </div>
+            
+            <div class="fr-grid-row fr-grid-row--gutters fr-mb-6w">
+                <div class="fr-col-12 fr-col-md-6 fr-col-lg-3">
+                    <div th:replace="~{fragments/statCard :: stat-card(${totalRessources}, 'Ressources totales', 'fr-icon-file-text-line')}"></div>
+                </div>
+                <div class="fr-col-12 fr-col-md-6 fr-col-lg-3">
+                    <div th:replace="~{fragments/statCard :: stat-card(${totalUsers}, 'Utilisateurs', 'fr-icon-user-line')}"></div>
+                </div>
+                <div class="fr-col-12 fr-col-md-6 fr-col-lg-3">
+                    <div th:replace="~{fragments/statCard :: stat-card(${totalFriends}, 'Nombre d\'amis', 'fr-icon-group-line')}"></div>
+                </div>
+                <div class="fr-col-12 fr-col-md-6 fr-col-lg-3">
+                    <div th:replace="~{fragments/statCard :: stat-card(${totalComments}, 'Commentaires', 'fr-icon-chat-3-line')}"></div>
+                </div>
+                
+                <div class="fr-col-12 fr-col-md-6 fr-col-lg-3">
+                    <div th:replace="~{fragments/statCard :: stat-card(${totalTypes}, 'Types actif', 'fr-icon-folder-2-line')}"></div>
+                </div>
+                <div class="fr-col-12 fr-col-md-6 fr-col-lg-3">
+                    <div th:replace="~{fragments/statCard :: stat-card(${totalRelations}, 'Relations actives', 'fr-icon-links-line')}"></div>
+                </div>
+                <div class="fr-col-12 fr-col-md-6 fr-col-lg-3">
+                    <div th:replace="~{fragments/statCard :: stat-card(${totalCategories}, 'Catégories actives', 'fr-icon-folder-2-line')}"></div>
+                </div>
+            </div>
+            
+            <div class="fr-grid-row fr-grid-row--gutters">
+                
+                <div class="fr-col-12 fr-col-md-6 fr-col-lg-4">
+                    <h3 class="fr-mb-2w">Ressources par catégorie</h3>
+                    <div class="fr-table fr-table--no-caption" style="width: 100%;">
+                        <table style="min-width: 100%; display: table; width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>Catégorie</th>
+                                    <th style="text-align: right;">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="stat : ${ressourcesByCategory}">
+                                    <td th:text="${stat.key}"></td>
+                                    <td style="text-align: right;">
+                                        <span class="fr-badge fr-badge--info" th:text="${stat.count}"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="fr-col-12 fr-col-md-6 fr-col-lg-4">
+                    <h3 class="fr-mb-2w">Ressources par statut</h3>
+                    <div class="fr-table fr-table--no-caption" style="width: 100%;">
+                        <table style="min-width: 100%; display: table; width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>Statut</th>
+                                    <th style="text-align: right;">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="stat : ${ressourcesByStatus}">
+                                    <td th:text="${stat.key}"></td>
+                                    <td style="text-align: right;">
+                                        <span class="fr-badge fr-badge--info" th:text="${stat.count}"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="fr-col-12 fr-col-md-6 fr-col-lg-4">
+                    <h3 class="fr-mb-2w">Ressources par visibilité</h3>
+                    <div class="fr-table fr-table--no-caption" style="width: 100%;">
+                        <table style="min-width: 100%; display: table; width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>Visibilité</th>
+                                    <th style="text-align: right;">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="stat : ${ressourcesByVisibility}">
+                                    <td th:text="${stat.key}"></td>
+                                    <td style="text-align: right;">
+                                        <span class="fr-badge fr-badge--info" th:text="${stat.count}"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</body>
+</html>

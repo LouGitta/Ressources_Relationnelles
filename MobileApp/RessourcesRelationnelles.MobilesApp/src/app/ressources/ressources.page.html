@@ -1,0 +1,34 @@
+<ion-content [fullscreen]="true">
+  <ion-content [fullscreen]="true">
+    <h1 class="title">Ressources</h1>
+
+    <ion-list [lines]="'nones'">
+      @for (ressource of ressources; track ressource) {
+      <ion-item class="mb-2">
+        <dsfr-card
+          [customBackground]="'default'"
+          [customBorder]="'default'"
+          [disabled]="false"
+          [downloadDirect]="true"
+          [downloadAssessFile]="true"
+          [enlargeLink]="true"
+          [heading]="ressource.title"
+          [description] = "ressource.content"
+          [enlargeLink]="true"
+          [headingLevel]="'H3'"
+          [horizontal]="false"
+          [panelSize]="'MD'"
+          [download]="false"
+          [badges]="[{label: ressource.category.name, customClass:'fr-badge--blue-ecume'},{label: ressource.type.name, customClass: 'fr-badge--yellow-tournesol'}]"
+          [detailBottom]="`Publié le ${getFormattedDate(ressource.createdAt)} par ${ressource.user.username}`"
+          [hasFooter]="false"
+          [imagePath]="'/assets/imgs/books.webp'"
+          [noIcon]="false"
+          [imageType]="'img'"
+          (click)="goToRessourceDetailsPage(ressource.id)"
+        ></dsfr-card>
+      </ion-item>
+      } @empty { Aucune ressource n'a été trouvée }
+    </ion-list>
+  </ion-content>
+</ion-content>

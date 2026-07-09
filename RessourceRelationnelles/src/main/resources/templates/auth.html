@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion</title>
+    <link rel="stylesheet" th:href="@{/dsfr/dsfr.min.css}">
+    <link rel="stylesheet" th:href="@{/dsfr/utility/icons/icons.min.css}">
+</head>
+<body>
+    <div class="fr-container">
+        <div class="fr-grid-row fr-grid-row--center fr-my-10w">
+            <div class="fr-col-12 fr-col-md-6">
+                <div class="fr-card fr-p-5w">
+                    <h1 class="fr-h3 fr-mb-3w">Connexion</h1>
+
+                    <!-- Message d'inscription réussie -->
+                    <div th:if="${param.registered}" class="fr-alert fr-alert--success fr-mb-3w">
+                        <p class="fr-alert__title">Compte créé avec succès !</p>
+                        <p>Votre compte a bien été créé. Connectez-vous avec votre adresse email.</p>
+                    </div>
+
+                    <!-- Message d'erreur -->
+                    <div th:if="${param.error}" class="fr-alert fr-alert--error fr-mb-3w">
+                        <p class="fr-alert__title">Erreur de connexion</p>
+                        <p>Adresse email ou mot de passe incorrect.</p>
+                    </div>
+
+                    <!-- Message de déconnexion -->
+                    <div th:if="${param.logout}" class="fr-alert fr-alert--success fr-mb-3w">
+                        <p>Vous avez été déconnecté avec succès.</p>
+                    </div>
+
+                    <!-- Formulaire de connexion -->
+                    <form th:action="@{/login}" method="post">
+                        <div class="fr-form-group">
+                            <label class="fr-label" for="username">
+                                Adresse email
+                            </label>
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                            <input class="fr-input" type="email" id="username" name="username"
+                                   autocomplete="email" placeholder="exemple@domaine.fr" required>
+                        </div>
+                        
+                        <div class="fr-form-group">
+                            <label class="fr-label" for="password">
+                                Mot de passe
+                            </label>
+                            <input class="fr-input" type="password" id="password" name="password"
+                                   autocomplete="current-password" required>
+                        </div>
+                        
+                        <button class="fr-btn" type="submit">
+                            Se connecter
+                        </button>
+                        <li class="fr-label">
+                            <a class="fr-label-link" th:href="@{/app/create-account}">Vous n'avez pas encore de compte? Créez vous en un ici</a>
+                        </li>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer th:insert="~{fragments/footer :: footer}"></footer>
+
+    <script type="module" th:src="@{/dsfr/dsfr.module.min.js}"></script>
+    <script type="text/javascript" nomodule th:src="@{/dsfr/dsfr.nomodule.min.js}"></script>
+</body>
+</html>

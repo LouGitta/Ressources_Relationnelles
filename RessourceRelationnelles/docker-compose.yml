@@ -11,8 +11,27 @@ services :
       MYSQL_PASSWORD: mysql_password
     ports:
       - "3306:3306"
+    volumes:
+      - "./../BDD/init_bdd.sql:/docker-entrypoint-initdb.d/initbdd.sql"
+      ##- "mysql_data:/var/lib/mysql"
     healthcheck:
       test: ["CMD-SHELL","mysql --user=mysql_user --password=mysql_password --execute=\"SHOW DATABASES;\""]
       interval: 5s
       timeout: 5s
       retries: 20
+
+  backend-auth:
+    image: rereapi:latest
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql_db:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql_db:3306/ressources_relationnelles?allowPublicKeyRetrieval=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
