@@ -43,7 +43,7 @@ docker compose version
 
 ## Etape 2 : Preparation des fichiers sur la VM
 
-Nous allons creer la structure necessaire et y copier les fichiers indispensables.
+Nous allons creer la structure necessaire et recuperer les fichiers indispensables.
 
 ### 1. Creer les dossiers de l'application
 Sur votre VM, creez un repertoire pour le projet :
@@ -51,7 +51,27 @@ Sur votre VM, creez un repertoire pour le projet :
 mkdir -p ~/ressources_relationnelles/BDD
 ```
 
-### 2. Copier les fichiers de configuration vers la VM (via SCP)
+### 2. Recuperer les fichiers de configuration
+
+Vous pouvez recuperer les fichiers necessaires de deux manieres :
+
+#### Methode A : Recuperation directe sur la VM via `curl` (Recommandee)
+Connecte en SSH sur la VM, placez-vous dans le dossier de l'application et telechargez directement les fichiers depuis GitHub :
+```bash
+cd ~/ressources_relationnelles
+
+# 1. Recuperer le docker-compose
+curl -L https://raw.githubusercontent.com/LouGitta/Ressources_Relationnelles/main/tools/docker-compose.yml -o docker-compose.yml
+
+# 2. Recuperer le modele .env
+curl -L https://raw.githubusercontent.com/LouGitta/Ressources_Relationnelles/main/tools/.env.example -o .env
+
+# 3. Recuperer le script SQL d'initialisation de la BDD
+curl -L https://raw.githubusercontent.com/LouGitta/Ressources_Relationnelles/main/BDD/init_bdd.sql -o BDD/init_bdd.sql
+```
+*(Note : Si votre depot GitHub est en prive, vous devrez ajouter l'en-tete `-H "Authorization: token <VOTRE_PAT>"` a chaque commande curl).*
+
+#### Methode B : Copie depuis votre machine locale (via SCP)
 Depuis votre machine locale, ouvrez un terminal a la racine du projet et executez les commandes suivantes pour copier les fichiers (remplacez `user` et `IP_VM` par vos identifiants de VM) :
 
 ```bash
@@ -66,7 +86,7 @@ scp tools/.env.example user@IP_VM:~/ressources_relationnelles/.env
 ```
 
 > [!NOTE]
-> Une fois les fichiers copies, connectez-vous a la VM et editez le fichier `.env` pour y inserer vos propres mots de passe de production :
+> Une fois les fichiers recuperes, connectez-vous a la VM et editez le fichier `.env` pour y inserer vos propres mots de passe de production :
 > ```bash
 > nano ~/ressources_relationnelles/.env
 > ```
@@ -76,11 +96,17 @@ scp tools/.env.example user@IP_VM:~/ressources_relationnelles/.env
 ## Etape 3 : Lancement de l'application
 
 ### 1. Connexion au GitHub Container Registry (GHCR)
-Si le package Docker sur GitHub est configure comme prive, vous devez vous authentifier a l'aide d'un Personal Access Token (PAT) GitHub contenant la portee read:packages :
-```bash
-docker login ghcr.io -u <VOTRE_PSEUDO_GITHUB>
-```
-*Saisissez votre Personal Access Token lorsque le mot de passe est demande.*
+
+> [!NOTE]
+> **Si votre package Docker sur GitHub est configure en "Public" (recommande) :**
+> Vous n'avez pas besoin de vous authentifier. Vous pouvez passer directement a l'etape 3.2.
+>
+> **Si le package est configure en "Prive" :**
+> Vous devez vous authentifier a l'aide d'un Personal Access Token (PAT) GitHub contenant la portee `read:packages` :
+> ```bash
+> docker login ghcr.io -u <VOTRE_PSEUDO_GITHUB>
+> ```
+> *Saisissez votre Personal Access Token lorsque le mot de passe est demande.*
 
 ### 2. Demarrer les conteneurs
 Rendez-vous dans le repertoire de l'application sur la VM et lancez Docker Compose en arriere-plan :
